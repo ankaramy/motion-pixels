@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+mp-env/
+venv/
+mp-data/raw/videos/
+mp-data/models/
+mp-data/outputs/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"c:/Users/OWNER/Desktop/IAAC/IAAC_Thesis/motion-pixels/mp-core/trajectory-extraction\"/*.MOV \"c:/Users/OWNER/Desktop/IAAC/IAAC_Thesis/motion-pixels/mp-core/trajectory-extraction\"/*.mp4)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}

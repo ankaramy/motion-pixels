@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motion Pixels — Research Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER — project identity + session selectors
+     ============================================================ -->
+<header class="site-header">
+  <div>
+    <div class="brand-title">Motion Pixels</div>
+    <div class="brand-sub">Video-to-Spatial Urban Analysis · IAAC Thesis Prototype</div>
+  </div>
+
+  <div class="header-controls">
+    <!-- Dataset selector — populated by app.js from mock_data.js -->
+    <select class="header-select" id="dataset-select" title="Active dataset">
+      <!-- options injected by app.js -->
+    </select>
+
+    <!-- Experiment / session label -->
+    <select class="header-select" title="Experiment session">
+      <option id="experiment-label">Run 03 — 2025-03-19</option>
+    </select>
+
+    <span class="status-pill">Mock Data</span>
+  </div>
+</header>
+
+<!-- ============================================================
+     PIPELINE STRIP — stage progress indicator
+     ============================================================ -->
+<div class="pipeline-strip">
+  <div class="pipeline-step done">
+    <span class="step-dot"></span>Video Input
+  </div>
+  <span class="step-sep">→</span>
+  <div class="pipeline-step done">
+    <span class="step-dot"></span>Detection
+  </div>
+  <span class="step-sep">→</span>
+  <div class="pipeline-step done">
+    <span class="step-dot"></span>Tracking
+  </div>
+  <span class="step-sep">→</span>
+  <div class="pipeline-step active">
+    <span class="step-dot"></span>Behavioral Analysis
+  </div>
+  <span class="step-sep">→</span>
+  <div class="pipeline-step">
+    <span class="step-dot"></span>Spatial Mapping
+  </div>
+  <span class="step-sep">→</span>
+  <div class="pipeline-step">
+    <span class="step-dot"></span>Insights
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN GRID
+     ============================================================ -->
+<div class="main-grid">
+
+  <!-- ── LEFT COLUMN ── -->
+  <div class="col-left">
+
+    <!-- A. Video Input Panel -->
+    <div class="panel" style="flex: 1.1;">
+      <div class="panel-header">
+        <span class="panel-title">A · Video Input</span>
+        <span class="panel-badge green">● Live Mock</span>
+      </div>
+
+      <!-- SVG mock: annotated camera view with detection boxes -->
+      <div class="viz-wrap">
+        <svg viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"
+             xmlns="http://www.w3.org/2000/svg" aria-label="Mock annotated video frame">
+
+          <!-- Background — dark urban scene suggestion -->
+          <rect width="640" height="340" fill="#090c11"/>
+
+          <!-- Sky zone -->
+          <rect width="640" height="170" fill="#0c1018"/>
+
+          <!-- Building silhouettes (far, low contrast) -->
+          <rect x="0"   y="50"  width="90"  height="120" fill="#0f1520" stroke="#181f2c" stroke-width="0.5"/>
+          <rect x="95"  y="75"  width="65"  height="95"  fill="#0e1420" stroke="#181f2c" stroke-width="0.5"/>
+          <rect x="165" y="60"  width="85"  height="110" fill="#101620" stroke="#181f2c" stroke-width="0.5"/>
+          <rect x="380" y="70"  width="75"  height="100" fill="#0f1520" stroke="#181f2c" stroke-width="0.5"/>
+          <rect x="460" y="55"  width="90"  height="115" fill="#101620" stroke="#181f2c" stroke-width="0.5"/>
+          <rect x="555" y="85"  width="85"  height="85"  fill="#0e1420" stroke="#181f2c" stroke-width="0.5"/>
+          <!-- Windows suggestions -->
+          <rect x="15"  y="65"  width="8" height="6" fill="#1a2535" opacity="0.7"/>
+          <rect x="28"  y="65"  width="8" height="6" fill="#1a2535" opacity="0.5"/>
+          <rect x="15"  y="78"  width="8" height="6" fill="#1a2535" opacity="0.6"/>
+          <rect x="480" y="70"  width="8" height="6" fill="#1a2535" opacity="0.6"/>
+          <rect x="494" y="70"  width="8" height="6" fill="#1a2535" opacity="0.8"/>
+          <rect x="480" y="83"  width="8" height="6" fill="#1a2535" opacity="0.4"/>
+
+          <!-- Ground plane -->
+          <rect x="0" y="170" width="640" height="170" fill="#0c1018"/>
+
+          <!-- Ground perspective grid -->
+          <line x1="0"   y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <line x1="107" y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <line x1="213" y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <line x1="320" y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <line x1="427" y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <line x1="533" y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <line x1="640" y1="340" x2="320" y2="170" stroke="#141920" stroke-width="0.8"/>
+          <!-- Horizontal ground lines -->
+          <line x1="0" y1="220" x2="640" y2="220" stroke="#121820" stroke-width="0.5"/>
+          <line x1="0" y1="270" x2="640" y2="270" stroke="#121820" stroke-width="0.5"/>
+          <line x1="0" y1="310" x2="640" y2="310" stroke="#121820" stroke-width="0.5"/>
+
+          <!-- Track history lines (past trajectories trailing behind detections) -->
+          <path d="M 120 340 Q 125 295 128 248" stroke="#58a6ff" stroke-width="1.2" fill="none" opacity="0.35"/>
+          <path d="M 248 338 Q 255 295 262 255" stroke="#58a6ff" stroke-width="1.2" fill="none" opacity="0.35"/>
+          <path d="M 358 334 Q 352 292 348 255" stroke="#3fb950" stroke-width="1"   fill="none" opacity="0.30"/>
+          <path d="M 472 337 Q 479 295 483 252" stroke="#58a6ff" stroke-width="1"   fill="none" opacity="0.30"/>
+          <path d="M 75  332 Q 80  290 83  250" stroke="#3fb950" stroke-width="0.8" fill="none" opacity="0.25"/>
+
+          <!-- ── Detection boxes ── -->
+
+          <!-- ID:01 — confident, green -->
+          <rect x="95"  y="210" width="58" height="118" fill="none" stroke="#3fb950" stroke-width="1.5"/>
+          <rect x="95"  y="199" width="40" height="13"  fill="#3fb950"/>
+          <text x="97"  y="209" fill="#090c11" font-size="8.5" font-family="monospace" font-weight="bold">ID:01</text>
+          <text x="156" y="213" fill="#3fb950"  font-size="7.5" font-family="monospace">0.93</text>
+
+          <!-- ID:02 — confident, green -->
+          <rect x="228" y="222" width="62"  height="110" fill="none" stroke="#3fb950" stroke-width="1.5"/>
+          <rect x="228" y="211" width="40"  height="13"  fill="#3fb950"/>
+          <text x="230" y="221" fill="#090c11" font-size="8.5" font-family="monospace" font-weight="bold">ID:02</text>
+          <text x="293" y="225" fill="#3fb950"  font-size="7.5" font-family="monospace">0.91</text>
+
+          <!-- ID:05 — lower conf, amber, dashed (partial occlusion) -->
+          <rect x="320" y="228" width="58"  height="105" fill="none" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <rect x="320" y="217" width="40"  height="13"  fill="#e3b341"/>
+          <text x="322" y="227" fill="#090c11" font-size="8.5" font-family="monospace" font-weight="bold">ID:05</text>
+          <text x="381" y="231" fill="#e3b341"  font-size="7.5" font-family="monospace">0.79</text>
+
+          <!-- ID:07 — confident, green -->
+          <rect x="438" y="215" width="56"  height="112" fill="none" stroke="#3fb950" stroke-width="1.5"/>
+          <rect x="438" y="204" width="40"  height="13"  fill="#3fb950"/>
+          <text x="440" y="214" fill="#090c11" font-size="8.5" font-family="monospace" font-weight="bold">ID:07</text>
+          <text x="497" y="218" fill="#3fb950"  font-size="7.5" font-family="monospace">0.88</text>
+
+          <!-- ID:09 — distant, smaller, dim green -->
+          <rect x="548" y="200" width="42" height="85"  fill="none" stroke="#3fb950" stroke-width="1" opacity="0.7"/>
+          <rect x="548" y="191" width="32" height="11"  fill="#3fb950" opacity="0.7"/>
+          <text x="549" y="200" fill="#090c11" font-size="7.5" font-family="monospace" font-weight="bold">ID:09</text>
+
+          <!-- ── HUD overlay ── -->
+          <!-- Top bar -->
+          <rect width="640" height="20" fill="rgba(9,12,17,0.82)"/>
+          <circle cx="10" cy="10" r="4" fill="#f85149"/>
+          <text x="18" y="14" fill="#f85149" font-size="9" font-family="monospace" font-weight="bold">REC</text>
+          <text x="44" y="14" fill="#484f58" font-size="9" font-family="monospace"> │ </text>
+          <text x="55" y="14" fill="#8b949e" font-size="9" font-family="monospace">YOLOv8s + ByteTrack  │  5 active tracks  │  conf ≥ 0.35</text>
+          <text x="530" y="14" fill="#484f58" font-size="9" font-family="monospace" text-anchor="start">18:42:13</text>
+
+          <!-- Bottom bar -->
+          <rect x="0" y="321" width="640" height="19" fill="rgba(9,12,17,0.75)"/>
+          <text x="8" y="333" fill="#484f58" font-size="8.5" font-family="monospace">input_skate_1.MOV  │  25 fps  │  1920×1080  │  MOCK FRAME</text>
+        </svg>
+        <div class="viz-caption">RAW INPUT — annotated frame (mock bounding boxes)</div>
+      </div>
+    </div>
+
+    <!-- B. Behavioral Analysis Panel -->
+    <div class="panel" style="flex: 1;">
+      <div class="panel-header">
+        <span class="panel-title">B · Behavioral Analysis</span>
+        <span class="panel-badge">draw_trajectories.py</span>
+      </div>
+
+      <!-- SVG mock: extracted trajectory lines + dwell zones -->
+      <div class="viz-wrap">
+        <svg viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"
+             xmlns="http://www.w3.org/2000/svg" aria-label="Mock behavioral analysis view">
+
+          <!-- Background -->
+          <rect width="640" height="280" fill="#090c11"/>
+
+          <!-- Reference grid — very subtle -->
+          <defs>
+            <pattern id="grid-small" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#131920" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="640" height="280" fill="url(#grid-small)"/>
+
+          <!-- ── Dwell zones (semi-transparent, behind trajectories) ── -->
+          <!-- Main dwell cluster -->
+          <circle cx="168" cy="185" r="42" fill="#e3b341" fill-opacity="0.08" stroke="#e3b341" stroke-width="0.8" stroke-opacity="0.35"/>
+          <circle cx="168" cy="185" r="22" fill="#e3b341" fill-opacity="0.08" stroke="#e3b341" stroke-width="0.5" stroke-opacity="0.30"/>
+          <!-- Secondary cluster -->
+          <circle cx="415" cy="200" r="30" fill="#e3b341" fill-opacity="0.06" stroke="#e3b341" stroke-width="0.6" stroke-opacity="0.28"/>
+          <!-- Linger zone -->
+          <circle cx="530" cy="148" r="35" fill="#bc8cff" fill-opacity="0.07" stroke="#bc8cff" stroke-width="0.6" stroke-opacity="0.25"/>
+
+          <!-- ── Trajectory paths ── -->
+          <!-- Fast tracks — blue -->
+          <path d="M 28 255 C 100 235, 200 195, 310 162 C 420 128, 540 115, 628 105"
+                stroke="#58a6ff" stroke-width="1.8" fill="none" opacity="0.80"/>
+          <path d="M 28 200 C 90 188, 180 178, 280 182 C 370 186, 460 168, 628 158"
+                stroke="#58a6ff" stroke-width="1.1" fill="none" opacity="0.50"/>
+
+          <!-- Medium tracks — green -->
+          <path d="M 28 148 C 120 148, 230 162, 340 175 C 430 186, 510 190, 628 195"
+                stroke="#3fb950" stroke-width="1.6" fill="none" opacity="0.72"/>
+          <path d="M 240 265 C 295 242, 375 215, 455 205 C 510 198, 560 195, 628 200"
+                stroke="#3fb950" stroke-width="1.0" fill="none" opacity="0.48"/>
+
+          <!-- Slow / dwell track — amber, looping -->
+          <path d="M 95 148 C 130 155, 158 170, 168 185 C 178 200, 172 215, 168 210
+                   C 160 205, 155 195, 160 182 C 165 168, 178 158, 205 148"
+                stroke="#e3b341" stroke-width="1.6" fill="none" opacity="0.72"/>
+          <!-- Extension after dwell -->
+          <path d="M 205 148 C 270 138, 360 148, 415 200"
+                stroke="#e3b341" stroke-width="1.0" fill="none" opacity="0.42"/>
+
+          <!-- Direction arrows -->
+          <!-- Blue main path at ~(310,162) -->
+          <polygon points="308,157 316,162 308,167" fill="#58a6ff" opacity="0.80"/>
+          <!-- Green path at ~(340,175) -->
+          <polygon points="337,171 345,175 337,179" fill="#3fb950" opacity="0.75"/>
+          <!-- Amber path after dwell at ~(310,143) -->
+          <polygon points="307,139 315,143 307,147" fill="#e3b341" opacity="0.72"/>
+
+          <!-- Dwell marker points -->
+          <circle cx="168" cy="185" r="5" fill="#e3b341" opacity="0.95"/>
+          <circle cx="415" cy="200" r="4" fill="#e3b341" opacity="0.80"/>
+          <circle cx="530" cy="148" r="5" fill="#bc8cff" opacity="0.85"/>
+
+          <!-- Track endpoint dots (current positions) -->
+          <circle cx="628" cy="105" r="3.5" fill="#58a6ff"/>
+          <circle cx="628" cy="158" r="3.0" fill="#58a6ff" opacity="0.7"/>
+          <circle cx="628" cy="195" r="3.5" fill="#3fb950"/>
+          <circle cx="628" cy="200" r="2.5" fill="#3fb950" opacity="0.6"/>
+
+          <!-- ── Legend ── -->
+          <line x1="10" y1="18" x2="30" y2="18" stroke="#58a6ff" stroke-width="1.8"/>
+          <text x="34" y="22" fill="#8b949e" font-size="8.5" font-family="monospace">Fast (&gt;0.97 m/s)</text>
+          <line x1="142" y1="18" x2="162" y2="18" stroke="#3fb950" stroke-width="1.8"/>
+          <text x="166" y="22" fill="#8b949e" font-size="8.5" font-family="monospace">Medium</text>
+          <line x1="230" y1="18" x2="250" y2="18" stroke="#e3b341" stroke-width="1.8"/>
+          <text x="254" y="22" fill="#8b949e" font-size="8.5" font-family="monospace">Slow/dwell (&lt;0.31 m/s)</text>
+          <circle cx="410" cy="18" r="4" fill="#bc8cff" opacity="0.85"/>
+          <text x="418" y="22" fill="#8b949e" font-size="8.5" font-family="monospace">Linger zone</text>
+
+          <!-- Caption bar -->
+          <rect x="0" y="261" width="640" height="19" fill="rgba(9,12,17,0.75)"/>
+          <text x="8" y="273" fill="#484f58" font-size="8.5" font-family="monospace">EXTRACTED FEATURES  │  draw_trajectories.py  │  p20/p65 adaptive thresholds  │  MOCK</text>
+        </svg>
+        <div class="viz-caption">BEHAVIORAL FEATURES — extracted trajectories + dwell zones</div>
+      </div>
+    </div>
+
+  </div><!-- /col-left -->
+
+
+  <!-- ── CENTER COLUMN — Spatial Mapping ── -->
+  <div class="col-center">
+    <div class="panel" style="height: 100%;">
+      <div class="panel-header">
+        <span class="panel-title">C · Spatial Mapping</span>
+        <span class="panel-badge">calibrate_homography.py · world coords (m)</span>
+      </div>
+
+      <!-- SVG mock: top-down architectural plan + projected trajectories -->
+      <!-- SVG groups use class="layer-*" so app.js can toggle visibility -->
+      <div class="viz-wrap" style="flex: 1;">
+        <svg id="spatial-svg" viewBox="0 0 540 680" preserveAspectRatio="xMidYMid meet"
+             xmlns="http://www.w3.org/2000/svg" aria-label="Mock top-down spatial map">
+
+          <!-- Background -->
+          <rect width="540" height="680" fill="#090c11"/>
+
+          <!-- Reference grid (5m cells ≈ 28px at this scale) -->
+          <defs>
+            <pattern id="grid-spatial" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#111820" stroke-width="0.6"/>
+            </pattern>
+          </defs>
+          <rect width="540" height="680" fill="url(#grid-spatial)"/>
+
+          <!-- ── Building footprints (plan view, permanent — not a layer) ── -->
+          <!-- NW block -->
+          <rect x="18" y="18"  width="158" height="118" fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <text x="97"  y="82"  fill="#21262d" font-size="9" font-family="monospace" text-anchor="middle">BLOCK A</text>
+          <!-- NE block -->
+          <rect x="216" y="18"  width="172" height="100" fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <text x="302" y="72"  fill="#21262d" font-size="9" font-family="monospace" text-anchor="middle">BLOCK B</text>
+          <!-- Far right top -->
+          <rect x="430" y="58"  width="96"  height="98"  fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <!-- West block -->
+          <rect x="18" y="196" width="138" height="158" fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <text x="87"  y="278" fill="#21262d" font-size="9" font-family="monospace" text-anchor="middle">BLOCK C</text>
+          <!-- East block -->
+          <rect x="260" y="188" width="158" height="198" fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <text x="339" y="290" fill="#21262d" font-size="9" font-family="monospace" text-anchor="middle">BLOCK D</text>
+          <!-- Far right mid -->
+          <rect x="450" y="368" width="76"  height="82"  fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <!-- SW block -->
+          <rect x="18" y="440" width="168" height="158" fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <text x="102" y="522" fill="#21262d" font-size="9" font-family="monospace" text-anchor="middle">BLOCK E</text>
+          <!-- SE block -->
+          <rect x="258" y="462" width="172" height="160" fill="#141b24" stroke="#21262d" stroke-width="1.5"/>
+          <text x="344" y="545" fill="#21262d" font-size="9" font-family="monospace" text-anchor="middle">BLOCK F</text>
+
+          <!-- ── LAYER: Heatmap ── density zones in open pedestrian areas -->
+          <g class="layer-heatmap">
+            <!-- Main intersection zone (high density) -->
+            <circle cx="193" cy="372" r="62" fill="#f85149" fill-opacity="0.10"/>
+            <circle cx="193" cy="372" r="40" fill="#f85149" fill-opacity="0.10"/>
+            <circle cx="193" cy="372" r="22" fill="#f85149" fill-opacity="0.12"/>
+            <!-- NW corridor zone -->
+            <circle cx="193" cy="155" r="42" fill="#e3b341" fill-opacity="0.10"/>
+            <circle cx="193" cy="155" r="24" fill="#e3b341" fill-opacity="0.10"/>
+            <!-- East cross zone -->
+            <circle cx="390" cy="372" r="28" fill="#e3b341" fill-opacity="0.08"/>
+          </g>
+
+          <!-- ── LAYER: Trajectories ── -->
+          <g class="layer-trajectories">
+            <!-- Main flow N→S through central corridor (blue, fast) -->
+            <path d="M 193 25 C 193 80, 193 120, 193 155 C 193 195, 193 290, 193 372 C 193 430, 180 490, 145 620"
+                  stroke="#58a6ff" stroke-width="2.0" fill="none" opacity="0.80"/>
+            <!-- Parallel fast track (blue, thinner) -->
+            <path d="M 165 25 C 170 80, 175 120, 178 155 C 182 195, 186 290, 188 372 C 188 430, 175 490, 138 620"
+                  stroke="#58a6ff" stroke-width="1.1" fill="none" opacity="0.45"/>
+            <!-- Cross flow W→E (green, medium speed) -->
+            <path d="M 18 372 C 60 365, 120 362, 193 372 C 260 382, 330 386, 420 380"
+                  stroke="#3fb950" stroke-width="1.8" fill="none" opacity="0.72"/>
+            <!-- Dwell + meander path (amber) -->
+            <path d="M 193 155 C 200 200, 215 240, 220 270 C 225 292, 218 305, 210 295
+                     C 200 282, 193 295, 193 320 C 193 345, 193 360, 193 372"
+                  stroke="#e3b341" stroke-width="1.6" fill="none" opacity="0.68"/>
+            <!-- NE diagonal (green, arriving from top-right) -->
+            <path d="M 475 25 C 420 70, 360 120, 300 155 C 255 182, 218 195, 193 372"
+                  stroke="#3fb950" stroke-width="1.2" fill="none" opacity="0.50"/>
+
+            <!-- Direction arrows -->
+            <!-- Blue main, at ~(193,230) going south -->
+            <polygon points="189,226 193,234 197,226" fill="#58a6ff" opacity="0.85"/>
+            <!-- Blue main, at ~(193,330) -->
+            <polygon points="189,326 193,334 197,326" fill="#58a6ff" opacity="0.75"/>
+            <!-- Green E at ~(270,379) -->
+            <polygon points="267,375 275,379 267,383" fill="#3fb950" opacity="0.80"/>
+            <!-- NE diagonal at ~(300,155) -->
+            <polygon points="296,152 304,155 300,163" fill="#3fb950" opacity="0.65"/>
+          </g>
+
+          <!-- ── LAYER: Dwell Zones ── -->
+          <g class="layer-dwell">
+            <!-- Main intersection dwell -->
+            <circle cx="193" cy="372" r="10" fill="none" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.85"/>
+            <text x="206" y="368" fill="#e3b341" font-size="8" font-family="monospace" opacity="0.8">dwell 4.2s</text>
+            <!-- NW junction dwell -->
+            <circle cx="220" cy="278" r="8"  fill="none" stroke="#e3b341" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.75"/>
+            <text x="232" y="275" fill="#e3b341" font-size="8" font-family="monospace" opacity="0.7">dwell 2.1s</text>
+            <!-- Linger zone -->
+            <circle cx="193" cy="155" r="16" fill="#bc8cff" fill-opacity="0.12" stroke="#bc8cff" stroke-width="1.2" stroke-dasharray="4,2" opacity="0.75"/>
+            <text x="212" y="152" fill="#bc8cff" font-size="8" font-family="monospace" opacity="0.75">linger</text>
+          </g>
+
+          <!-- ── LAYER: Track IDs ── current position dots + labels -->
+          <g class="layer-ids">
+            <!-- Current frame pedestrian positions -->
+            <circle cx="193" cy="310" r="5" fill="#58a6ff" stroke="#090c11" stroke-width="1"/>
+            <text x="201" y="307" fill="#58a6ff" font-size="8" font-family="monospace">01</text>
+
+            <circle cx="178" cy="335" r="4" fill="#58a6ff" stroke="#090c11" stroke-width="1" opacity="0.8"/>
+            <text x="186" y="332" fill="#58a6ff" font-size="8" font-family="monospace" opacity="0.8">02</text>
+
+            <circle cx="305" cy="148" r="5" fill="#3fb950" stroke="#090c11" stroke-width="1"/>
+            <text x="313" y="145" fill="#3fb950" font-size="8" font-family="monospace">05</text>
+
+            <circle cx="295" cy="375" r="4" fill="#3fb950" stroke="#090c11" stroke-width="1"/>
+            <text x="303" y="372" fill="#3fb950" font-size="8" font-family="monospace">07</text>
+
+            <circle cx="220" cy="270" r="5" fill="#e3b341" stroke="#090c11" stroke-width="1"/>
+            <text x="228" y="267" fill="#e3b341" font-size="8" font-family="monospace">09</text>
+          </g>
+
+          <!-- ── Scale bar ── -->
+          <line x1="18"  y1="648" x2="74"  y2="648" stroke="#484f58" stroke-width="1.5"/>
+          <line x1="18"  y1="643" x2="18"  y2="653" stroke="#484f58" stroke-width="1.5"/>
+          <line x1="74"  y1="643" x2="74"  y2="653" stroke="#484f58" stroke-width="1.5"/>
+          <text x="30"   y="662"  fill="#484f58" font-size="8.5" font-family="monospace">≈ 10 m</text>
+
+          <!-- ── North indicator ── -->
+          <text x="510" y="30" fill="#484f58" font-size="10" font-family="monospace" text-anchor="middle" font-weight="600">N</text>
+          <line x1="510" y1="34" x2="510" y2="52" stroke="#484f58" stroke-width="1.5"/>
+          <polygon points="510,34 506,46 510,42 514,46" fill="#484f58"/>
+
+          <!-- Caption bar -->
+          <rect x="0" y="661" width="540" height="19" fill="rgba(9,12,17,0.80)"/>
+          <text x="8" y="673" fill="#484f58" font-size="8" font-family="monospace">WORLD COORDS (m)  │  homography projection  │  plan: top-view.png  │  MOCK</text>
+        </svg>
+        <div class="viz-caption">SPATIAL MAP — top-down plan + projected trajectories</div>
+      </div>
+
+    </div>
+  </div><!-- /col-center -->
+
+
+  <!-- ── RIGHT COLUMN — Metrics + Controls ── -->
+  <div class="col-right">
+
+    <!-- D. Metrics Panel -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">D · Metrics</span>
+        <span class="panel-badge">compute_metrics.py</span>
+      </div>
+      <!-- Metric cards injected by app.js -->
+      <div class="metrics-grid" id="metrics-grid"></div>
+    </div>
+
+    <!-- E. Layers / Controls Panel -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">E · Layers</span>
+        <span class="panel-badge">toggle overlays</span>
+      </div>
+      <!-- Layer checkboxes injected by app.js -->
+      <div class="layer-list" id="layer-list"></div>
+    </div>
+
+    <!-- Frame reference card — small informational block -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Session Info</span>
+      </div>
+      <div class="panel-body" style="font-family: var(--mono, monospace); font-size: 11px; color: #8b949e; display: flex; flex-direction: column; gap: 6px;">
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">dataset</span>
+          <span style="color:#c9d1d9; font-size:10px;">input_skate_1.MOV</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">calib</span>
+          <span style="color:#c9d1d9; font-size:10px;">calib.json</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">pairs</span>
+          <span style="color:#c9d1d9;">7 (5 inliers)</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">repr. median</span>
+          <span style="color:#3fb950;">0.30 m</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">repr. max</span>
+          <span style="color:#e3b341;">18.1 m ⚠</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">mpp (plan)</span>
+          <span style="color:#c9d1d9;">0.0560 m/px</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:#484f58;">model</span>
+          <span style="color:#c9d1d9; font-size:10px;">yolov8s</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /col-right -->
+
+
+  <!-- ── NOTES ROW — full-width ── -->
+  <div class="col-notes">
+    <div class="panel notes-panel">
+      <div class="panel-header">
+        <span class="panel-title">F · Observations &amp; Notes</span>
+        <span class="panel-badge">scaffold — replace with real annotations</span>
+      </div>
+      <div class="panel-body">
+        <!-- Observation items injected by app.js -->
+        <div class="obs-list" id="obs-list"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-grid -->
+
+
+<!-- ============================================================
+     BOTTOM STRIP — pipeline status bar
+     ============================================================ -->
+<div class="bottom-strip">
+  <span>Motion Pixels</span>
+  <span class="sep">│</span>
+  <span id="status-dataset">—</span>
+  <span class="sep">│</span>
+  <span>calib: <span id="status-calib">—</span></span>
+  <span class="sep">│</span>
+  <span><span id="status-fps">—</span></span>
+  <span class="sep">│</span>
+  <span style="color: #e3b341;">prototype scaffold</span>
+
+  <!-- Animated frame counter (cosmetic only) -->
+  <span class="frame-counter" id="frame-counter">Frame — / —</span>
+</div>
+
+
+<!-- Scripts — mock data must load before app -->
+<script src="mock_data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

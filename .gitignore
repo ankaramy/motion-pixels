@@ -1,10 +1,15 @@
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
 mp-env/
 venv/
+
 mp-data/raw/videos/
 mp-data/models/
 mp-data/outputs/
+
 .DS_Store
 Thumbs.db
 .vscode/

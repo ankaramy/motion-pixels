@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "experiment": "schema_ablation_bridge_overfit10x",
+  "warning": "OVERFIT10X \u2014 not thesis generalization evidence",
+  "description": "OVERFIT10X capacity check. Same recipe as schema_ablation_bridge (old motion_dataset_v2 recipe ported to the v21C encoding), but every base trajectory has been duplicated \u00d710 with unique trajectory_id offsets. Train/val/test splits will consequently share trajectory content \u2014 by design.",
+  "normalization": {
+    "u_v": "global MinMax over dataset world_x/world_y",
+    "du_dv_speed": "raw metres/step (NOT scaled here; fit StandardScaler at train time)",
+    "turn_rate": "radians in (\u2212\u03c0, \u03c0]",
+    "dist_*_norm": "percentile rank ascending (0 = closest, 1 = farthest)",
+    "entrance_affinity_norm": "percentile rank descending (1 = closest to entrance)"
+  },
+  "world_bounds_used": {
+    "xmin": 0.2709,
+    "xmax": 13.19,
+    "ymin": -26.2501,
+    "ymax": 24.4128,
+    "xrng": 12.9191,
+    "yrng": 50.6629
+  },
+  "min_track_length_filter": 11,
+  "duplicate_n": 10,
+  "duplicate_id_multiplier": 1000,
+  "n_base_tracks": 52,
+  "n_base_rows": 18014,
+  "n_rows": 180140,
+  "n_tracks": 520,
+  "columns": [
+    "trajectory_id",
+    "timestep",
+    "u",
+    "v",
+    "du",
+    "dv",
+    "speed",
+    "heading_sin",
+    "heading_cos",
+    "turn_rate",
+    "dist_to_obstacle_norm",
+    "dist_to_boundary_norm",
+    "entrance_affinity_norm",
+    "target_du",
+    "target_dv"
+  ],
+  "has_openness_lr_asymmetry": false,
+  "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\processed\\rerun_macba_2026-05-19\\spatial_v21C\\trajectories_encoded.csv"
+}

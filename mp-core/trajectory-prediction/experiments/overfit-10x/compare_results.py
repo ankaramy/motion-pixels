@@ -50,7 +50,7 @@ FEATURE_COLS = [
     "dist_to_obstacle", "dist_to_boundary", "dist_to_entrance",
     "frame_number", "delta_x", "delta_y",
 ]
-TARGET_COLS = ["world_x", "world_y"]
+TARGET_COLS = ["delta_x", "delta_y"]   # PHASE 1B: delta prediction
 
 
 # ---------------------------------------------------------------------------

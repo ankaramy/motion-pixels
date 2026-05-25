@@ -1,0 +1,5 @@
+model,n_features,best_val_mse,test_ade_m,test_fde_m,mean_angular_err,mean_turn_rate_pred,mean_turn_rate_gt,path_length_ratio,cum_heading_ratio,angularity_ratio,curvature_corr,n_trajs
+A_motion_only,6,0.512916,0.48706,0.89977,0.76197,0.04061,0.74027,0.42396,0.10526,0.0,0.01789,9
+B_motion_position,8,0.508968,0.50538,0.94783,1.03672,0.05549,0.74027,0.58262,0.04851,0.03439,-0.04832,9
+C_motion_position_spatial,10,0.521802,0.53152,0.98093,0.93292,0.04946,0.74027,0.48818,0.07468,0.01587,-0.03179,9
+D_full_relational,11,0.524244,0.52731,1.01315,1.03524,0.04978,0.74027,0.72304,0.05177,0.0,-0.07778,9

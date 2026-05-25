@@ -1,0 +1,4 @@
+recording_id,location,typology,interior_exterior,daytime,fps,video_path,plan_path,calibration_path,tracking_csv_path,encoded_csv_path,usable,split,notes
+macba_01,MACBA,plaza,exterior,day,30,,,,,mp-data/processed/rerun_macba_2026-05-19/spatial_v21C/trajectories_encoded.csv,yes,train,Existing sandbox MACBA v21C dataset
+raval_01,Raval,mixed_plaza,exterior,day,30,,,,,mp-data/recordings/raval_01/spatial_encoding/trajectories_encoded.csv,no,pending,Placeholder recording
+skate_02,Skate,irregular_motion,exterior,day,30,,,,,mp-data/recordings/skate_02/spatial_encoding/trajectories_encoded.csv,no,pending,Placeholder recording

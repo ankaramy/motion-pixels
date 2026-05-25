@@ -1,0 +1,110 @@
+"""
+Shared paths, hyperparameters, and feature lists for the
+schema_angular_lstm_v4 experiment.
+
+Lineage of changes:
+  v2 — MOTION_SCALE, freeze penalty, early stopping.
+  v3 — MOTION_SCALE=250, stronger angular weights, path-length L1 loss,
+       HORIZON shortened to 15 for tuning, FREEZE_MAG_THRESH=0.05.
+  v4 — rebalanced loss weights toward angular behaviour, NEW
+       angular_event_loss that punishes a frozen turn rate at moments
+       where GT has a true turn event (|target_turn_rate| > 0.12).
+"""
+
+from pathlib import Path
+
+HERE     = Path(__file__).resolve().parent
+MP_ROOT  = HERE.parent.parent.parent.parent          # .../motion-pixels
+MP_DATA  = MP_ROOT / "mp-data"
+
+# Input: the newly calibrated Skate 1 encoded trajectories.
+RERUN          = MP_DATA / "processed" / "rerun_macba_2026-05-19"
+ENCODED_CSV    = RERUN / "spatial_v21C" / "trajectories_encoded.csv"
+ENTRY_EXIT_CSV = RERUN / "spatial_v21C" / "entry_exit_points.csv"
+TOPVIEW_PNG    = RERUN / "inputs" / "top_view.png"
+
+# Experiment outputs live next to this script.
+EXP                  = HERE
+SCHEMA_CSV           = EXP / "trajectories_schema_relational.csv"
+SCHEMA_MD            = EXP / "schema_summary.md"
+WORLD_EXTENTS_CSV    = EXP / "world_extents.csv"
+SCALER_PKL           = EXP / "scalers.pkl"
+MODEL_PTH            = EXP / "model.pth"
+LOSS_PNG             = EXP / "loss_curve.png"
+TRAIN_SUMMARY_CSV    = EXP / "training_summary.csv"
+ROLLOUT_CSV          = EXP / "rollout_predictions.csv"
+CONTACT_PNG          = EXP / "contact_sheet_angular_lstm.png"
+PER_TRACK_DIR        = EXP / "per_track_plots"
+METRICS_CSV          = EXP / "metrics.csv"
+METRICS_MD           = EXP / "summary.md"
+
+# Hyperparameters.
+MIN_TRACK_LEN  = 35
+WINDOW_SIZE    = 10
+HORIZON        = 15          # v3: shorter rollout for tuning
+HIDDEN_SIZE    = 256
+NUM_LAYERS     = 2
+EPOCHS         = 40
+PATIENCE       = 8
+BATCH_SIZE     = 32
+LR             = 1e-3
+TRAIN_FRAC     = 0.85
+
+# v3: stronger motion scale so the network sees motion at a more
+# learnable amplitude.
+MOTION_SCALE   = 250.0
+
+# Behavioural thresholds (in the relative-feature space).
+STOP_THRESH_REL    = 0.02
+SHIFT_THRESH_DEG   = 15.0
+
+# v4 loss weighting — rebalanced toward angular behaviour.
+W_POSITION = 0.8
+W_TURN     = 1.5
+W_HEADING  = 1.5
+W_PATH     = 0.8
+W_FREEZE   = 0.05
+W_EVENT    = 1.0             # v4: NEW angular event loss weight
+
+# Freeze threshold (compared against predicted |du, dv| in scaled space).
+FREEZE_MAG_THRESH = 0.05
+
+# v4: angular event threshold (in turn_rate_rel units = turn_rad / pi).
+# 0.12 ≈ 21.6° / step. A "turn event" is a step where GT |turn_rate_rel|
+# exceeds this threshold; the event loss penalises a flat predicted turn
+# at those steps.
+EVENT_TURN_THRESH = 0.12
+
+# Tracks to spotlight in the rollout contact sheet.
+PRESET_TRACKS = [50, 24, 32, 17, 37, 45, 25, 31, 49, 51]
+
+# Feature / target column lists. ORDER MATTERS.
+SCHEMA_COLS = [
+    "track_id", "frame_idx",
+    "u", "v",
+    "du", "dv",
+    "speed_rel",
+    "heading_sin", "heading_cos",
+    "turn_rate_rel",
+    "is_stop", "is_shift",
+    "obstacle_clearance_pct",
+    "boundary_clearance_pct",
+    "entrance_affinity_pct",
+    "local_space_openness",
+    "target_du", "target_dv", "target_turn_rate",
+]
+
+FEATURE_COLS = [
+    "u", "v",
+    "du", "dv",
+    "speed_rel",
+    "heading_sin", "heading_cos",
+    "turn_rate_rel",
+    "is_stop", "is_shift",
+    "obstacle_clearance_pct",
+    "boundary_clearance_pct",
+    "entrance_affinity_pct",
+    "local_space_openness",
+]
+
+TARGET_COLS = ["target_du", "target_dv", "target_turn_rate"]

@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion Pixels — Video-to-Spatial Urban Analysis</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #07090f;
+  --surface:      #0d1117;
+  --surface-2:    #111827;
+  --border:       rgba(255,255,255,0.07);
+  --border-hi:    rgba(0,212,255,0.35);
+  --cyan:         #00d4ff;
+  --cyan-dim:     rgba(0,212,255,0.12);
+  --orange:       #ff6b35;
+  --orange-dim:   rgba(255,107,53,0.12);
+  --amber:        #fbbf24;
+  --green:        #10b981;
+  --purple:       #8b5cf6;
+  --purple-dim:   rgba(139,92,246,0.15);
+  --red:          #ef4444;
+  --text:         #e2e8f0;
+  --text-muted:   #64748b;
+  --text-dim:     #94a3b8;
+  --sidebar-w:    60px;
+  --topbar-h:     50px;
+  --timeline-h:   84px;
+}
+
+html, body {
+  height: 100%; width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* ─── SIDEBAR ─────────────────────────────── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: rgba(10,12,20,0.97);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px 0;
+  z-index: 200;
+}
+
+.logo {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: conic-gradient(from 200deg, var(--cyan) 0%, var(--purple) 50%, var(--cyan) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 900; color: #000; letter-spacing: -1px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(0,212,255,0.25);
+  flex-shrink: 0;
+}
+
+.nav-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-muted);
+  transition: all 0.18s; position: relative;
+  border: 1px solid transparent;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.04); color: var(--text-dim); }
+.nav-btn.active {
+  background: var(--cyan-dim); color: var(--cyan);
+  border-color: rgba(0,212,255,0.2);
+}
+.nav-btn.active::after {
+  content: '';
+  position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+  width: 2px; height: 18px;
+  background: var(--cyan); border-radius: 2px 0 0 2px;
+}
+.nav-btn svg { width: 17px; height: 17px; }
+.nav-spacer { flex: 1; }
+
+/* ─── APP SHELL ─────────────────────────────── */
+#app {
+  margin-left: var(--sidebar-w);
+  height: 100vh;
+  display: flex; flex-direction: column;
+}
+
+/* ─── TOPBAR ─────────────────────────────── */
+#topbar {
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 18px; gap: 14px;
+  background: rgba(7,9,15,0.9);
+  backdrop-filter: blur(24px);
+  flex-shrink: 0; z-index: 100;
+}
+
+.brand { display: flex; flex-direction: column; gap: 1px; }
+.brand-name { font-size: 13px; font-weight: 700; letter-spacing: 0.01em; }
+.brand-sub  { font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.sep { width: 1px; height: 26px; background: var(--border); }
+
+.location-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: 7px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: 12px; color: var(--text-dim); cursor: pointer;
+  transition: border-color 0.18s;
+}
+.location-pill:hover { border-color: rgba(0,212,255,0.25); }
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan); box-shadow: 0 0 6px var(--cyan);
+  animation: blink 2.2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+.time-tabs {
+  display: flex;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 7px;
+  overflow: hidden;
+}
+.time-tab {
+  padding: 4px 11px; font-size: 11px; cursor: pointer;
+  color: var(--text-muted); transition: all 0.18s; letter-spacing: 0.03em;
+}
+.time-tab:hover { color: var(--text-dim); }
+.time-tab.active { background: var(--cyan-dim); color: var(--cyan); }
+
+.alert-chip {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border-radius: 6px;
+  background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.22);
+  font-size: 10px; color: var(--amber); letter-spacing: 0.02em;
+}
+.alert-chip svg { width: 11px; height: 11px; }
+
+.mode-tag {
+  padding: 4px 9px; border-radius: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--purple-dim); border: 1px solid rgba(139,92,246,0.28); color: var(--purple);
+}
+
+/* ─── CANVAS AREA ─────────────────────────────── */
+#canvas-area {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr 252px;
+  border-top: none;
+  min-height: 0; overflow: hidden;
+}
+
+.panel {
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  overflow: hidden; position: relative;
+}
+.panel:last-child { border-right: none; }
+
+.panel-hdr {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  height: 34px;
+}
+.panel-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.panel-lbl {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-muted);
+}
+.panel-actions { margin-left: auto; display: flex; gap: 3px; }
+
+.icon-btn {
+  width: 24px; height: 24px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-muted);
+  transition: all 0.15s; border: 1px solid transparent;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-dim); border-color: var(--border); }
+.icon-btn svg { width: 12px; height: 12px; }
+
+/* ─── VIDEO PANEL ─────────────────────────────── */
+#video-wrap {
+  flex: 1; position: relative; background: #000; overflow: hidden;
+}
+#video-canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
+
+.v-badge {
+  position: absolute;
+  padding: 2px 7px; border-radius: 4px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+#vb-detect { top:9px; left:9px; background:var(--cyan-dim); border:1px solid rgba(0,212,255,0.28); color:var(--cyan); }
+#vb-track  { top:9px; right:9px; background:var(--purple-dim); border:1px solid rgba(139,92,246,0.3); color:var(--purple); }
+#vb-time   { position:absolute; bottom:9px; right:9px; font-size:10px; font-family:'SF Mono',monospace; color:rgba(255,255,255,0.4); }
+
+/* ─── SPATIAL PANEL ─────────────────────────────── */
+#spatial-panel { background: #050810; }
+#spatial-wrap  { flex:1; position:relative; overflow:hidden; }
+#spatial-canvas { width:100%; height:100%; display:block; cursor:crosshair; }
+
+.pred-legend {
+  display: flex; align-items: center; gap: 10px; margin-left: 8px;
+}
+.pl-item { display:flex; align-items:center; gap:4px; font-size:9px; color:var(--text-muted); }
+.pl-line { width:18px; height:2px; border-radius:1px; }
+.pl-line.past    { background:rgba(255,255,255,0.3); }
+.pl-line.present { background:var(--cyan); box-shadow:0 0 4px var(--cyan); }
+.pl-line.future  { background:repeating-linear-gradient(90deg,var(--purple) 0 3px,transparent 3px 7px); }
+
+.spatial-overlay { position:absolute; bottom:12px; left:12px; display:flex; flex-direction:column; gap:3px; }
+.north-arrow     { position:absolute; top:12px; right:12px; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.north-arrow svg { width:18px; height:24px; }
+.north-lbl       { font-size:8px; font-weight:700; color:var(--text-muted); letter-spacing:0.1em; }
+
+.scale-row { display:flex; align-items:center; gap:6px; font-size:9px; color:var(--text-muted); }
+.scale-line { width:36px; height:2px; border:solid rgba(255,255,255,0.18); border-width:0 1px; background:rgba(255,255,255,0.18); }
+.coord-txt  { font-size:9px; font-family:'SF Mono',monospace; color:var(--text-muted); opacity:0; transition:opacity 0.2s; }
+#spatial-wrap:hover .coord-txt { opacity:1; }
+
+/* ─── BEHAVIOR PANEL ─────────────────────────────── */
+#behavior-panel { overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+#behavior-panel::-webkit-scrollbar { width:3px; }
+#behavior-panel::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.b-content { padding:12px; display:flex; flex-direction:column; gap:14px; }
+
+.sec-title {
+  font-size:9px; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--text-muted);
+  display:flex; align-items:center; gap:8px; margin-bottom:7px;
+}
+.sec-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Entity card */
+#entity-card {
+  background: rgba(0,212,255,0.05);
+  border: 1px solid var(--border-hi);
+  border-radius: 9px; padding: 11px;
+  display: none; flex-direction: column; gap: 8px;
+  box-shadow: 0 0 16px rgba(0,212,255,0.08);
+}
+#entity-card.open { display: flex; }
+.ec-hdr { display:flex; align-items:center; gap:7px; }
+.ec-id  { padding:2px 7px; background:var(--cyan-dim); border:1px solid rgba(0,212,255,0.3); border-radius:4px; font-size:10px; font-weight:700; color:var(--cyan); font-family:'SF Mono',monospace; }
+.ec-type { font-size:10px; color:var(--text-muted); }
+.ec-close { margin-left:auto; cursor:pointer; color:var(--text-muted); font-size:13px; line-height:1; transition:color 0.15s; }
+.ec-close:hover { color:var(--text); }
+.ec-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
+.ec-stat { text-align:center; padding:5px 4px; background:rgba(255,255,255,0.03); border-radius:5px; }
+.ec-val  { font-size:14px; font-weight:700; color:var(--text); }
+.ec-lbl  { font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; }
+
+/* Insight cards */
+.insight-card {
+  padding:9px 11px; border-radius:8px; border:1px solid;
+  display:flex; flex-direction:column; gap:2px;
+}
+.insight-card.warn     { background:rgba(251,191,36,0.06); border-color:rgba(251,191,36,0.2); }
+.insight-card.positive { background:rgba(16,185,129,0.06);  border-color:rgba(16,185,129,0.2); }
+.insight-card.neutral  { background:rgba(139,92,246,0.06); border-color:rgba(139,92,246,0.2); }
+.ic-lbl { font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; }
+.insight-card.warn     .ic-lbl { color:var(--amber); }
+.insight-card.positive .ic-lbl { color:var(--green); }
+.insight-card.neutral  .ic-lbl { color:var(--purple); }
+.ic-val { font-size:18px; font-weight:700; color:var(--text); line-height:1; }
+.ic-sub { font-size:10px; color:var(--text-muted); }
+
+/* Stats grid */
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+.stat-box { padding:7px 9px; background:var(--surface-2); border:1px solid var(--border); border-radius:7px; }
+.stat-val { font-size:15px; font-weight:700; color:var(--text); }
+.stat-unit{ font-size:9px; color:var(--text-muted); }
+.stat-lbl { font-size:9px; color:var(--text-muted); margin-top:1px; }
+
+/* Layer list */
+.layer-list { display:flex; flex-direction:column; gap:2px; }
+.layer-row {
+  display:flex; align-items:center; gap:7px;
+  padding:6px 7px; border-radius:6px;
+  cursor:pointer; transition:all 0.18s;
+  border:1px solid transparent;
+}
+.layer-row:hover { background:rgba(255,255,255,0.03); }
+.layer-row.on {  background:rgba(255,255,255,0.04); border-color:var(--border); }
+.layer-swatch { width:9px; height:9px; border-radius:2px; flex-shrink:0; }
+.layer-name   { flex:1; font-size:11px; color:var(--text-muted); }
+.layer-row.on .layer-name { color:var(--text-dim); }
+.toggle {
+  width:28px; height:15px; border-radius:8px;
+  background:var(--surface-2); border:1px solid var(--border);
+  position:relative; transition:all 0.2s; flex-shrink:0;
+}
+.toggle::after {
+  content:''; position:absolute; top:2px; left:2px;
+  width:9px; height:9px; border-radius:50%;
+  background:var(--text-muted); transition:all 0.2s;
+}
+.layer-row.on .toggle { border-color:currentColor; }
+.layer-row.on .toggle::after { left:15px; background:currentColor; }
+
+/* ─── TIMELINE ─────────────────────────────── */
+#timeline {
+  height: var(--timeline-h);
+  border-top: 1px solid var(--border);
+  background: rgba(7,9,15,0.97);
+  padding: 8px 16px 9px;
+  display: flex; flex-direction: column; gap: 6px;
+  flex-shrink: 0;
+}
+
+.tl-controls { display:flex; align-items:center; gap:10px; }
+
+.pb-btn {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:var(--text-muted); border:1px solid var(--border);
+  transition:all 0.18s; flex-shrink:0;
+}
+.pb-btn:hover { background:var(--surface-2); color:var(--text); }
+.pb-btn.primary {
+  background:var(--cyan-dim); border-color:rgba(0,212,255,0.3);
+  color:var(--cyan); width:32px; height:32px;
+}
+.pb-btn.primary:hover { background:rgba(0,212,255,0.22); box-shadow:0 0 14px rgba(0,212,255,0.25); }
+.pb-btn svg { width:13px; height:13px; }
+
+.time-disp { font-family:'SF Mono',monospace; font-size:11px; color:var(--text-dim); min-width:82px; }
+
+.speed-opts { display:flex; gap:2px; margin-left:4px; }
+.sp-opt { padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted); transition:all 0.15s; }
+.sp-opt:hover { color:var(--text-dim); }
+.sp-opt.on { background:var(--surface-2); border:1px solid var(--border); color:var(--text); }
+
+.tl-meta { margin-left:auto; font-size:9px; color:var(--text-muted); }
+
+.tl-track { position:relative; }
+.tl-events { position:absolute; top:0; left:0; right:0; pointer-events:none; height:22px; }
+.ev-mark {
+  position:absolute; top:6px;
+  width:6px; height:6px; border-radius:50%;
+  transform:translateX(-50%); cursor:pointer; pointer-events:all;
+}
+.ev-mark.congestion { background:var(--amber); box-shadow:0 0 5px var(--amber); }
+.ev-mark.flow       { background:var(--green);  box-shadow:0 0 5px var(--green); }
+
+.tl-bg {
+  width:100%; height:4px; background:var(--surface-2); border-radius:2px;
+  position:relative; cursor:pointer; margin-top:22px;
+}
+.tl-fill {
+  height:100%; border-radius:2px; pointer-events:none;
+  background:linear-gradient(90deg,var(--cyan),rgba(139,92,246,0.9));
+  position:relative;
+}
+.tl-handle {
+  position:absolute; right:-6px; top:50%; transform:translateY(-50%);
+  width:13px; height:13px; border-radius:50%;
+  background:#fff; box-shadow:0 0 8px rgba(0,212,255,0.7);
+  cursor:grab;
+}
+.tl-handle:active { cursor:grabbing; }
+
+.tl-labels { display:flex; justify-content:space-between; margin-top:3px; }
+.tl-lbl { font-size:8px; color:var(--text-muted); font-family:'SF Mono',monospace; }
+
+/* ─── ZONE TOOLTIP ─────────────────────────────── */
+#zone-tip {
+  position:fixed; background:rgba(13,17,27,0.97); border:1px solid var(--border);
+  border-radius:9px; padding:11px 13px; min-width:150px;
+  backdrop-filter:blur(20px); box-shadow:0 8px 28px rgba(0,0,0,0.5);
+  display:none; z-index:300; pointer-events:none;
+}
+#zone-tip.open { display:block; }
+.zt-name { font-size:11px; font-weight:600; color:var(--text); margin-bottom:6px; }
+.zt-row  { display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); padding:1px 0; }
+.zt-row span:last-child { color:var(--text-dim); }
+
+/* ─── UTILS ─────────────────────────────── */
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.fade-in { animation: fadeIn 0.25s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div class="logo">MP</div>
+
+  <div class="nav-btn active" title="Live Analysis">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M15 10l4.55-2.66A1 1 0 0121 8.27v7.46a1 1 0 01-1.45.88L15 14"/>
+      <rect x="2" y="7" width="13" height="10" rx="1.5"/>
+    </svg>
+  </div>
+
+  <div class="nav-btn" title="Spatial Map" onclick="this.closest('#sidebar').querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+      <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
+    </svg>
+  </div>
+
+  <div class="nav-btn" title="Analytics" onclick="this.closest('#sidebar').querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+  </div>
+
+  <div class="nav-btn" title="Export" onclick="this.closest('#sidebar').querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  </div>
+
+  <div class="nav-spacer"></div>
+
+  <div class="nav-btn" title="Settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M2 12h2M20 12h2"/>
+    </svg>
+  </div>
+</aside>
+
+<!-- ═══ APP ═══════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-name">Motion Pixels</span>
+      <span class="brand-sub">Video-to-Spatial Platform</span>
+    </div>
+    <div class="sep"></div>
+    <div class="location-pill">
+      <span class="live-dot"></span>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      Plaça Catalunya — Node A
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="time-tabs">
+      <div class="time-tab" onclick="setTab(this)">Morning</div>
+      <div class="time-tab active" onclick="setTab(this)">Afternoon</div>
+      <div class="time-tab" onclick="setTab(this)">Evening</div>
+    </div>
+    <div class="alert-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      High congestion — Zone C
+    </div>
+    <div class="mode-tag">Analysis</div>
+  </header>
+
+  <!-- MAIN CANVAS AREA -->
+  <div id="canvas-area">
+
+    <!-- VIDEO PANEL -->
+    <div class="panel" id="video-panel">
+      <div class="panel-hdr">
+        <span class="panel-dot" style="background:#00d4ff;box-shadow:0 0 5px #00d4ff"></span>
+        <span class="panel-lbl">Video — Reality</span>
+        <div class="panel-actions">
+          <div class="icon-btn" title="Fullscreen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+              <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="video-wrap">
+        <canvas id="video-canvas"></canvas>
+        <div class="v-badge" id="vb-detect">YOLO v8</div>
+        <div class="v-badge" id="vb-track">ByteTrack</div>
+        <div id="vb-time">00:00:00</div>
+      </div>
+    </div>
+
+    <!-- SPATIAL PANEL -->
+    <div class="panel" id="spatial-panel">
+      <div class="panel-hdr">
+        <span class="panel-dot" style="background:#8b5cf6;box-shadow:0 0 5px #8b5cf6"></span>
+        <span class="panel-lbl">Spatial Plan — Translation</span>
+        <div class="pred-legend">
+          <div class="pl-item"><div class="pl-line past"></div><span>Past</span></div>
+          <div class="pl-item"><div class="pl-line present"></div><span>Now</span></div>
+          <div class="pl-item"><div class="pl-line future"></div><span>Predicted</span></div>
+        </div>
+        <div class="panel-actions">
+          <div class="icon-btn" title="Reset view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div id="spatial-wrap">
+        <canvas id="spatial-canvas"></canvas>
+        <div class="spatial-overlay">
+          <div class="scale-row"><div class="scale-line"></div><span>10 m</span></div>
+          <div class="coord-txt" id="coord-txt">x: — &nbsp; y: —</div>
+        </div>
+        <div class="north-arrow">
+          <svg viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="9,0 15,14 9,10 3,14" fill="rgba(255,255,255,0.5)"/>
+            <polygon points="9,24 3,10 9,14 15,10" fill="rgba(255,255,255,0.18)"/>
+          </svg>
+          <span class="north-lbl">N</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEHAVIOR PANEL -->
+    <div class="panel" id="behavior-panel">
+      <div class="panel-hdr">
+        <span class="panel-dot" style="background:#ff6b35;box-shadow:0 0 5px #ff6b35"></span>
+        <span class="panel-lbl">Behavior — Interpretation</span>
+      </div>
+      <div class="b-content">
+
+        <!-- Entity info (shown on selection) -->
+        <div id="entity-card">
+          <div class="ec-hdr">
+            <div class="ec-id" id="ec-id">P001</div>
+            <span class="ec-type">Pedestrian</span>
+            <span class="ec-close" onclick="deselect()">✕</span>
+          </div>
+          <div class="ec-stats">
+            <div class="ec-stat"><div class="ec-val" id="ec-speed">—</div><div class="ec-lbl">m/s</div></div>
+            <div class="ec-stat"><div class="ec-val" id="ec-dwell">—</div><div class="ec-lbl">dwell</div></div>
+            <div class="ec-stat"><div class="ec-val" id="ec-dist">—</div><div class="ec-lbl">dist</div></div>
+          </div>
+        </div>
+
+        <!-- Insights -->
+        <div>
+          <div class="sec-title">Insights</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div class="insight-card warn">
+              <span class="ic-lbl">Congestion</span>
+              <span class="ic-val">Zone C</span>
+              <span class="ic-sub">4.2 p/m² · sustained 28 min</span>
+            </div>
+            <div class="insight-card positive">
+              <span class="ic-lbl">Pedestrian Flow</span>
+              <span class="ic-val">+32%</span>
+              <span class="ic-sub">vs. morning average</span>
+            </div>
+            <div class="insight-card neutral">
+              <span class="ic-lbl">Linger Pattern</span>
+              <span class="ic-val">Zone D</span>
+              <span class="ic-sub">Avg dwell 5.2 h · social cluster</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live stats -->
+        <div>
+          <div class="sec-title">Current</div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div><span class="stat-val" id="s-speed">1.2</span><span class="stat-unit"> m/s</span></div>
+              <div class="stat-lbl">Avg Speed</div>
+            </div>
+            <div class="stat-box">
+              <div><span class="stat-val" id="s-count">47</span><span class="stat-unit"> p</span></div>
+              <div class="stat-lbl">In Frame</div>
+            </div>
+            <div class="stat-box">
+              <div><span class="stat-val" id="s-density">2.8</span><span class="stat-unit"> p/m²</span></div>
+              <div class="stat-lbl">Density</div>
+            </div>
+            <div class="stat-box">
+              <div><span class="stat-val" id="s-dwell">5.2</span><span class="stat-unit"> h</span></div>
+              <div class="stat-lbl">Total Dwell</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer controls -->
+        <div>
+          <div class="sec-title">Layers</div>
+          <div class="layer-list" id="layer-list">
+            <div class="layer-row on" data-layer="trajectories" style="color:#00d4ff" onclick="toggleLayer(this)">
+              <div class="layer-swatch" style="background:#00d4ff"></div>
+              <span class="layer-name">Trajectories</span>
+              <div class="toggle"></div>
+            </div>
+            <div class="layer-row on" data-layer="speed" style="color:#10b981" onclick="toggleLayer(this)">
+              <div class="layer-swatch" style="background:linear-gradient(90deg,#3b82f6,#10b981,#fbbf24,#ef4444)"></div>
+              <span class="layer-name">Speed Coloring</span>
+              <div class="toggle"></div>
+            </div>
+            <div class="layer-row on" data-layer="density" style="color:#ff6b35" onclick="toggleLayer(this)">
+              <div class="layer-swatch" style="background:#ff6b35"></div>
+              <span class="layer-name">Density Heatmap</span>
+              <div class="toggle"></div>
+            </div>
+            <div class="layer-row" data-layer="flow" style="color:#8b5cf6" onclick="toggleLayer(this)">
+              <div class="layer-swatch" style="background:#8b5cf6"></div>
+              <span class="layer-name">Flow Vectors</span>
+              <div class="toggle"></div>
+            </div>
+            <div class="layer-row" data-layer="bottlenecks" style="color:#fbbf24" onclick="toggleLayer(this)">
+              <div class="layer-swatch" style="background:#fbbf24"></div>
+              <span class="layer-name">Bottlenecks</span>
+              <div class="toggle"></div>
+            </div>
+            <div class="layer-row on" data-layer="prediction" style="color:#a78bfa" onclick="toggleLayer(this)">
+              <div class="layer-swatch" style="background:repeating-linear-gradient(90deg,#a78bfa 0 3px,transparent 3px 7px)"></div>
+              <span class="layer-name">Prediction</span>
+              <div class="toggle"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /canvas-area -->
+
+  <!-- TIMELINE -->
+  <div id="timeline">
+    <div class="tl-controls">
+      <div class="pb-btn" onclick="skipBack()" title="−10s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="19 20 9 12 19 4 19 20" fill="currentColor" stroke="none"/>
+          <line x1="5" y1="19" x2="5" y2="5"/>
+        </svg>
+      </div>
+      <div class="pb-btn primary" id="play-btn" onclick="togglePlay()">
+        <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </div>
+      <div class="pb-btn" onclick="skipFwd()" title="+10s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 4 15 12 5 20 5 4" fill="currentColor" stroke="none"/>
+          <line x1="19" y1="5" x2="19" y2="19"/>
+        </svg>
+      </div>
+      <div class="time-disp" id="time-disp">12:30:00</div>
+      <div class="speed-opts">
+        <span class="sp-opt" onclick="setSpeed(this,0.5)">0.5×</span>
+        <span class="sp-opt on" onclick="setSpeed(this,1)">1×</span>
+        <span class="sp-opt" onclick="setSpeed(this,2)">2×</span>
+        <span class="sp-opt" onclick="setSpeed(this,4)">4×</span>
+      </div>
+      <div class="tl-meta">Session 45 min · 2,847 trajectories · Space to play</div>
+    </div>
+    <div class="tl-track">
+      <div id="tl-events" class="tl-events"></div>
+      <div class="tl-bg" id="tl-bg" onclick="seekClick(event)">
+        <div class="tl-fill" id="tl-fill" style="width:35%">
+          <div class="tl-handle" id="tl-handle"></div>
+        </div>
+      </div>
+      <div class="tl-labels">
+        <span class="tl-lbl">12:00</span>
+        <span class="tl-lbl">12:15</span>
+        <span class="tl-lbl">12:30</span>
+        <span class="tl-lbl">12:45</span>
+        <span class="tl-lbl">13:00</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- ZONE TOOLTIP -->
+<div id="zone-tip">
+  <div class="zt-name" id="zt-name">Zone —</div>
+  <div class="zt-row"><span>Density</span><span id="zt-density">—</span></div>
+  <div class="zt-row"><span>Avg Speed</span><span id="zt-speed">—</span></div>
+  <div class="zt-row"><span>Flow Dir</span><span id="zt-flow">—</span></div>
+  <div class="zt-row"><span>Status</span><span id="zt-status">—</span></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+
+const ZONES = [
+  { id:'A', name:'Entry Node',       cx:105, cy:315, r:42, density:'1.2 p/m²', speed:'1.6 m/s', flow:'N → S',    status:'Clear'    },
+  { id:'B', name:'Main Crossing',    cx:310, cy:230, r:58, density:'3.8 p/m²', speed:'0.9 m/s', flow:'Radial',   status:'Moderate' },
+  { id:'C', name:'Congestion Zone',  cx:460, cy:170, r:48, density:'4.2 p/m²', speed:'0.5 m/s', flow:'Blocked',  status:'⚠ High'   },
+  { id:'D', name:'Linger Area',      cx:215, cy:138, r:34, density:'2.1 p/m²', speed:'0.3 m/s', flow:'Circular', status:'Dwell'    },
+  { id:'E', name:'Exit Stream',      cx:555, cy:315, r:38, density:'1.8 p/m²', speed:'1.4 m/s', flow:'E → W',    status:'Clear'    },
+];
+
+// Pedestrian paths: waypoints [{t,x,y}] where t ∈ [0,1]
+const PEDS = [
+  { id:'P001', color:'#00d4ff', speed:1.4, dwell:8,  dist:42,
+    path:[{t:0,x:55,y:350},{t:.18,x:140,y:305},{t:.42,x:275,y:248},{t:.62,x:385,y:208},{t:.82,x:470,y:178},{t:1,x:570,y:145}],
+    future:[{t:1,x:570,y:145},{t:1.25,x:640,y:128}] },
+  { id:'P002', color:'#10b981', speed:0.7, dwell:24, dist:25,
+    path:[{t:0,x:195,y:395},{t:.28,x:230,y:295},{t:.55,x:250,y:198},{t:.78,x:232,y:155},{t:1,x:210,y:126}],
+    future:[{t:1,x:210,y:126},{t:1.28,x:195,y:108}] },
+  { id:'P003', color:'#f59e0b', speed:1.8, dwell:3,  dist:58,
+    path:[{t:0,x:575,y:395},{t:.15,x:495,y:345},{t:.35,x:372,y:285},{t:.58,x:272,y:238},{t:.78,x:172,y:198},{t:1,x:72,y:158}],
+    future:[{t:1,x:72,y:158},{t:1.18,x:42,y:140}] },
+  { id:'P004', color:'#ef4444', speed:0.4, dwell:48, dist:14,
+    path:[{t:0,x:425,y:178},{t:.22,x:455,y:172},{t:.44,x:482,y:183},{t:.66,x:468,y:193},{t:.88,x:438,y:182},{t:1,x:418,y:176}],
+    future:[{t:1,x:418,y:176},{t:1.22,x:408,y:168}] },
+  { id:'P005', color:'#a78bfa', speed:1.2, dwell:13, dist:40,
+    path:[{t:.05,x:92,y:118},{t:.28,x:175,y:158},{t:.52,x:298,y:228},{t:.75,x:418,y:278},{t:1,x:538,y:342}],
+    future:[{t:1,x:538,y:342},{t:1.22,x:605,y:378}] },
+  { id:'P006', color:'#06b6d4', speed:1.5, dwell:6,  dist:51,
+    path:[{t:.1,x:295,y:415},{t:.28,x:308,y:338},{t:.48,x:322,y:258},{t:.68,x:362,y:198},{t:.88,x:435,y:162},{t:1,x:508,y:142}],
+    future:[{t:1,x:508,y:142},{t:1.2,x:568,y:128}] },
+  { id:'P007', color:'#fb923c', speed:0.9, dwell:19, dist:32,
+    path:[{t:.08,x:75,y:248},{t:.3,x:158,y:238},{t:.55,x:268,y:232},{t:.75,x:338,y:248},{t:1,x:418,y:268}],
+    future:[{t:1,x:418,y:268},{t:1.22,x:485,y:282}] },
+  { id:'P008', color:'#34d399', speed:1.1, dwell:15, dist:36,
+    path:[{t:0,x:535,y:198},{t:.22,x:472,y:228},{t:.45,x:375,y:262},{t:.7,x:272,y:298},{t:1,x:155,y:338}],
+    future:[{t:1,x:155,y:338},{t:1.22,x:95,y:368}] },
+  { id:'P009', color:'#f472b6', speed:1.6, dwell:4,  dist:45,
+    path:[{t:.15,x:42,y:178},{t:.38,x:148,y:218},{t:.62,x:278,y:265},{t:.85,x:408,y:308},{t:1,x:515,y:352}],
+    future:[{t:1,x:515,y:352},{t:1.18,x:578,y:385}] },
+];
+
+const EVENTS = [
+  { t:.30, type:'congestion', label:'High congestion onset' },
+  { t:.55, type:'flow',       label:'Flow peak +32%' },
+  { t:.76, type:'congestion', label:'Secondary bottleneck' },
+];
+
+const BUILDINGS = [
+  {x:15,y:15,w:175,h:78},{x:418,y:15,w:182,h:88},
+  {x:235,y:15,w:138,h:48},
+  {x:15,y:338,w:135,h:78},{x:475,y:355,w:138,h:60},
+];
+const COLUMNS = [
+  {x:178,y:178},{x:248,y:178},{x:348,y:178},{x:418,y:178},
+  {x:178,y:268},{x:248,y:268},{x:348,y:268},{x:418,y:268},
+];
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+const S = {
+  progress: 0.35,
+  playing: true,
+  speed: 1,
+  selectedPed: null,
+  hoveredZone: null,
+  flashAlpha: 0,
+  layers: { trajectories:true, speed:true, density:true, flow:false, bottlenecks:false, prediction:true },
+};
+
+// ══════════════════════════════════════════════════════════
+// CANVAS SETUP
+// ══════════════════════════════════════════════════════════
+const SC = document.getElementById('spatial-canvas');
+const SX = SC.getContext('2d');
+const VC = document.getElementById('video-canvas');
+const VX = VC.getContext('2d');
+
+function resize() {
+  const sw = document.getElementById('spatial-wrap');
+  SC.width  = sw.clientWidth;
+  SC.height = sw.clientHeight;
+  const vw = document.getElementById('video-wrap');
+  VC.width  = vw.clientWidth;
+  VC.height = vw.clientHeight;
+}
+
+// ══════════════════════════════════════════════════════════
+// MATH
+// ══════════════════════════════════════════════════════════
+const lerp = (a,b,t) => a + (b-a)*t;
+
+function pathAt(path, t) {
+  if (t <= path[0].t) return {x:path[0].x, y:path[0].y};
+  const last = path[path.length-1];
+  if (t >= last.t) return {x:last.x, y:last.y};
+  for (let i=0; i<path.length-1; i++) {
+    if (t >= path[i].t && t <= path[i+1].t) {
+      const s = (t - path[i].t) / (path[i+1].t - path[i].t);
+      return { x: lerp(path[i].x, path[i+1].x, s), y: lerp(path[i].y, path[i+1].y, s) };
+    }
+  }
+  return {x:last.x, y:last.y};
+}
+
+// Coordinate mapping: spatial data space (640×430) → canvas pixels
+function sx(v) { return (v / 640) * SC.width;  }
+function sy(v) { return (v / 430) * SC.height; }
+const sm = () => Math.min(SC.width/640, SC.height/430);
+
+// ══════════════════════════════════════════════════════════
+// SPATIAL RENDERING
+// ══════════════════════════════════════════════════════════
+function drawSpatial() {
+  const ctx = SX, W = SC.width, H = SC.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Background
+  ctx.fillStyle = '#050810';
+  ctx.fillRect(0,0,W,H);
+
+  drawGrid(ctx, W, H);
+  drawFloorPlan(ctx);
+  drawZones(ctx);
+  if (S.layers.density)     drawHeatmap(ctx);
+  if (S.layers.flow)        drawFlowVectors(ctx);
+  if (S.layers.trajectories) drawTrajectories(ctx);
+  if (S.layers.prediction)  drawPredictions(ctx);
+  drawPositions(ctx);
+  if (S.layers.bottlenecks) drawBottlenecks(ctx);
+}
+
+function drawGrid(ctx, W, H) {
+  const step = 36;
+  ctx.strokeStyle = 'rgba(255,255,255,0.022)';
+  ctx.lineWidth = 0.5;
+  for (let x=0; x<W; x+=step) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y=0; y<H; y+=step) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  ctx.strokeStyle = 'rgba(255,255,255,0.048)';
+  ctx.lineWidth = 0.8;
+  for (let x=0; x<W; x+=step*5) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y=0; y<H; y+=step*5) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+}
+
+function drawFloorPlan(ctx) {
+  // Plaza area
+  ctx.fillStyle = 'rgba(255,255,255,0.016)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.rect(sx(15), sy(105), sx(612), sy(308));
+  ctx.fill(); ctx.stroke();
+
+  // Plaza label
+  ctx.fillStyle = 'rgba(255,255,255,0.12)';
+  ctx.font = `bold ${9*sm()}px 'SF Mono',monospace`;
+  ctx.letterSpacing = '0.2em';
+  ctx.fillText('MAIN PLAZA', sx(28), sy(122));
+
+  // Dimension dash line
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+  ctx.lineWidth = 0.6;
+  ctx.setLineDash([3,5]);
+  ctx.beginPath(); ctx.moveTo(sx(15), sy(415)); ctx.lineTo(sx(627), sy(415)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sx(627), sy(105)); ctx.lineTo(sx(627), sy(420)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(255,255,255,0.1)';
+  ctx.font = `${8*sm()}px 'SF Mono',monospace`;
+  ctx.fillText('≈ 80 m', sx(300), sy(425));
+
+  // Buildings
+  ctx.fillStyle = 'rgba(22,34,55,0.95)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.13)';
+  ctx.lineWidth = 1;
+  BUILDINGS.forEach(b => {
+    ctx.beginPath();
+    ctx.rect(sx(b.x), sy(b.y), sx(b.w), sy(b.h));
+    ctx.fill(); ctx.stroke();
+  });
+
+  // Columns
+  ctx.fillStyle = 'rgba(45,60,90,0.85)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  ctx.lineWidth = 0.8;
+  COLUMNS.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(sx(c.x), sy(c.y), 7*sm(), 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+  });
+}
+
+function drawZones(ctx) {
+  const zColors = { A:'16,185,129', B:'0,212,255', C:'239,68,68', D:'251,191,36', E:'139,92,246' };
+  ZONES.forEach(z => {
+    const rgb = zColors[z.id] || '255,255,255';
+    const hov = S.hoveredZone === z.id;
+    const cx2 = sx(z.cx), cy2 = sy(z.cy), r2 = z.r * sm();
+
+    ctx.beginPath(); ctx.arc(cx2, cy2, r2, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(${rgb},${hov ? 0.1 : 0.04})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${rgb},${hov ? 0.5 : 0.18})`;
+    ctx.lineWidth = hov ? 1.5 : 0.9;
+    ctx.setLineDash([4,5]); ctx.stroke(); ctx.setLineDash([]);
+
+    ctx.fillStyle = `rgba(${rgb},0.6)`;
+    ctx.font = `bold ${9*sm()}px system-ui`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`Z${z.id}`, cx2, cy2 - r2 - 5*sm());
+    ctx.textAlign = 'left';
+  });
+}
+
+function drawHeatmap(ctx) {
+  PEDS.forEach(p => {
+    const prog = S.progress;
+    if (prog < p.path[0].t || prog > p.path[p.path.length-1].t) return;
+    const pos = pathAt(p.path, prog);
+    const px = sx(pos.x), py = sy(pos.y);
+    const r = 55 * sm();
+    const intensity = p.speed < 0.6 ? 0.28 : p.speed < 1.0 ? 0.16 : 0.09;
+    const g = ctx.createRadialGradient(px,py,0,px,py,r);
+    g.addColorStop(0, `rgba(255,100,40,${intensity})`);
+    g.addColorStop(0.5,`rgba(255,140,0,${intensity*0.4})`);
+    g.addColorStop(1,  `rgba(255,100,40,0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.fill();
+  });
+}
+
+function drawFlowVectors(ctx) {
+  const gs = 62;
+  for (let gx=55; gx<620; gx+=gs) {
+    for (let gy=130; gy<390; gy+=gs) {
+      let dx=0, dy=0, cnt=0;
+      PEDS.forEach(p => {
+        const prog = S.progress;
+        if (prog < p.path[0].t || prog > p.path[p.path.length-1].t) return;
+        const pos = pathAt(p.path, prog);
+        if (Math.hypot(pos.x-gx, pos.y-gy) < gs*1.4) {
+          const pos2 = pathAt(p.path, Math.min(1, prog+0.025));
+          dx += pos2.x - pos.x; dy += pos2.y - pos.y; cnt++;
+        }
+      });
+      if (cnt > 0 && (Math.abs(dx)+Math.abs(dy)) > 0.05) {
+        dx/=cnt; dy/=cnt;
+        const mag = Math.hypot(dx,dy);
+        const ndx = dx/mag*16, ndy = dy/mag*16;
+        const px = sx(gx), py = sy(gy);
+        const angle = Math.atan2(ndy,ndx);
+        const ex = px + ndx*sm()*0.9, ey = py + ndy*sm()*0.9;
+        ctx.strokeStyle = 'rgba(139,92,246,0.55)';
+        ctx.fillStyle   = 'rgba(139,92,246,0.55)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(px - ndx*sm()*0.3, py - ndy*sm()*0.3);
+        ctx.lineTo(ex, ey); ctx.stroke();
+        const aLen = 5;
+        ctx.beginPath();
+        ctx.moveTo(ex, ey);
+        ctx.lineTo(ex - aLen*Math.cos(angle-0.38), ey - aLen*Math.sin(angle-0.38));
+        ctx.lineTo(ex - aLen*Math.cos(angle+0.38), ey - aLen*Math.sin(angle+0.38));
+        ctx.closePath(); ctx.fill();
+      }
+    }
+  }
+}
+
+function drawTrajectories(ctx) {
+  PEDS.forEach(p => {
+    const isSelected = S.selectedPed === p.id;
+    const prog = S.progress;
+    const t0 = p.path[0].t, tEnd = p.path[p.path.length-1].t;
+    const drawTo = Math.min(prog, tEnd);
+    if (drawTo < t0) return;
+
+    const pts = [];
+    for (let t=t0; t<=drawTo+0.001; t+=0.025) {
+      const pos = pathAt(p.path, Math.min(t,drawTo));
+      pts.push({x:sx(pos.x), y:sy(pos.y), t});
+    }
+    if (pts.length < 2) return;
+
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (let i=1; i<pts.length; i++) {
+      const age = i / pts.length;
+      let color;
+      if (S.layers.speed) {
+        const sp = p.speed;
+        const a = (0.15 + 0.55*age) * (isSelected ? 1.5 : 1);
+        color = sp < 0.6 ? `rgba(239,68,68,${Math.min(a,0.9)})`
+              : sp < 1.0 ? `rgba(251,191,36,${Math.min(a,0.9)})`
+              : sp < 1.4 ? `rgba(16,185,129,${Math.min(a,0.9)})`
+              :             `rgba(59,130,246,${Math.min(a,0.9)})`;
+      } else {
+        const rgb = hexRGB(p.color);
+        color = `rgba(${rgb},${(0.1+0.6*age)*(isSelected?1.4:1)})`;
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = isSelected ? 2 : 1.2;
+      ctx.beginPath();
+      ctx.moveTo(pts[i-1].x, pts[i-1].y);
+      ctx.lineTo(pts[i].x,   pts[i].y);
+      ctx.stroke();
+    }
+  });
+}
+
+function drawPredictions(ctx) {
+  PEDS.forEach(p => {
+    const prog = S.progress;
+    const t0 = p.path[0].t, tEnd = p.path[p.path.length-1].t;
+
+    ctx.lineWidth = 1.3;
+    ctx.setLineDash([4,7]);
+    ctx.strokeStyle = 'rgba(167,139,250,0.35)';
+    ctx.lineCap = 'round';
+
+    if (prog < t0) {
+      // Ghost: full predicted path
+      ctx.beginPath();
+      ctx.moveTo(sx(p.path[0].x), sy(p.path[0].y));
+      p.path.forEach(pt => ctx.lineTo(sx(pt.x), sy(pt.y)));
+      if (p.future) p.future.forEach(pt => ctx.lineTo(sx(pt.x), sy(pt.y)));
+      ctx.stroke();
+    } else if (prog <= tEnd) {
+      // Active: remaining path
+      const cur = pathAt(p.path, prog);
+      ctx.beginPath(); ctx.moveTo(sx(cur.x), sy(cur.y));
+      for (let t=prog+0.02; t<=tEnd; t+=0.02) {
+        const pos = pathAt(p.path, t);
+        ctx.lineTo(sx(pos.x), sy(pos.y));
+      }
+      const last = p.path[p.path.length-1];
+      ctx.lineTo(sx(last.x), sy(last.y));
+      if (p.future) p.future.forEach(pt => ctx.lineTo(sx(pt.x), sy(pt.y)));
+      ctx.stroke();
+    } else {
+      // Past end: draw future array
+      if (!p.future || p.future.length < 2) return;
+      const last = p.path[p.path.length-1];
+      ctx.beginPath(); ctx.moveTo(sx(last.x), sy(last.y));
+      p.future.forEach(pt => ctx.lineTo(sx(pt.x), sy(pt.y)));
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+  });
+}
+
+function drawPositions(ctx) {
+  const t = performance.now() / 1000;
+  PEDS.forEach(p => {
+    const prog = S.progress;
+    if (prog < p.path[0].t || prog > p.path[p.path.length-1].t) return;
+    const pos = pathAt(p.path, prog);
+    const px = sx(pos.x), py = sy(pos.y);
+    const isSel = S.selectedPed === p.id;
+    const r = 5.5 * sm();
+
+    if (isSel) {
+      const pulse = Math.sin(t*3)*0.25+0.75;
+      ctx.beginPath(); ctx.arc(px,py,14*sm(),0,Math.PI*2);
+      ctx.fillStyle = `rgba(0,212,255,${0.14*pulse})`; ctx.fill();
+      // Glow path
+      ctx.shadowBlur = 10; ctx.shadowColor = '#00d4ff';
+    }
+    ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2);
+    ctx.strokeStyle = isSel ? '#00d4ff' : p.color;
+    ctx.lineWidth = isSel ? 2.2 : 1.6; ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.beginPath(); ctx.arc(px,py,r*0.45,0,Math.PI*2);
+    ctx.fillStyle = isSel ? '#00d4ff' : p.color; ctx.fill();
+
+    const lbl = S.selectedPed === null || isSel;
+    if (lbl) {
+      ctx.fillStyle = isSel ? '#fff' : `${p.color}aa`;
+      ctx.font = `${8.5*sm()}px 'SF Mono',monospace`;
+      ctx.fillText(p.id.slice(1), px+7*sm(), py-5*sm());
+    }
+  });
+}
+
+function drawBottlenecks(ctx) {
+  const t = performance.now() / 1000;
+  const z = ZONES[2]; // Zone C
+  const cx2 = sx(z.cx), cy2 = sy(z.cy);
+  const pulse = Math.sin(t*2)*0.3+0.7;
+  const rBase = z.r * sm();
+
+  ctx.beginPath();
+  ctx.arc(cx2, cy2, rBase + (8 + Math.sin(t*2)*5)*sm(), 0, Math.PI*2);
+  ctx.strokeStyle = `rgba(251,191,36,${0.42*pulse})`;
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6,5]); ctx.stroke(); ctx.setLineDash([]);
+
+  ctx.fillStyle = `rgba(251,191,36,${0.85*pulse})`;
+  ctx.font = `${13*sm()}px system-ui`;
+  ctx.textAlign = 'center';
+  ctx.fillText('⚠', cx2, cy2 - rBase - 14*sm());
+  ctx.textAlign = 'left';
+}
+
+// ══════════════════════════════════════════════════════════
+// VIDEO RENDERING
+// ══════════════════════════════════════════════════════════
+function drawVideo() {
+  const ctx = VX, W = VC.width, H = VC.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Dark urban scene background
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0, '#161824');
+  bg.addColorStop(0.35, '#0e1320');
+  bg.addColorStop(1, '#070a14');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  // Perspective pavement grid
+  const vp = {x:W*0.5, y:H*0.28};
+  ctx.strokeStyle = 'rgba(255,255,255,0.038)'; ctx.lineWidth=0.8;
+  for (let i=0; i<=10; i++) {
+    const bx = (i/10)*W;
+    ctx.beginPath(); ctx.moveTo(vp.x,vp.y); ctx.lineTo(bx,H); ctx.stroke();
+  }
+  for (let i=1; i<=5; i++) {
+    const y = vp.y + (H-vp.y)*(i/5)*0.95;
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+  }
+
+  // Horizon glow
+  const hg = ctx.createLinearGradient(0, vp.y-20, 0, vp.y+40);
+  hg.addColorStop(0,'rgba(0,212,255,0)');
+  hg.addColorStop(0.5,'rgba(0,212,255,0.04)');
+  hg.addColorStop(1,'rgba(0,212,255,0)');
+  ctx.fillStyle=hg; ctx.fillRect(0,vp.y-20,W,60);
+
+  // Pedestrian bounding boxes
+  const vPositions = computeVideoPositions();
+  vPositions.forEach((vp_ped, i) => {
+    if (!vp_ped) return;
+    const p = PEDS[i];
+    const isSel = S.selectedPed === p.id;
+    const {x,y,w,h} = vp_ped;
+    const col = isSel ? '#00d4ff' : p.color;
+    const lw  = isSel ? 2 : 1.4;
+
+    // Box fill
+    ctx.fillStyle = `${col}10`;
+    ctx.fillRect(x,y,w,h);
+
+    // Main stroke
+    ctx.strokeStyle = col; ctx.lineWidth = lw;
+    ctx.strokeRect(x+lw/2,y+lw/2,w-lw,h-lw);
+
+    // Corner accents
+    const cs = Math.min(w*0.3, 9);
+    ctx.lineWidth = lw*1.3;
+    [[x,y,1,1],[x+w,y,-1,1],[x,y+h,1,-1],[x+w,y+h,-1,-1]].forEach(([cx3,cy3,dx3,dy3]) => {
+      ctx.beginPath();
+      ctx.moveTo(cx3+dx3*cs,cy3); ctx.lineTo(cx3,cy3); ctx.lineTo(cx3,cy3+dy3*cs);
+      ctx.stroke();
+    });
+
+    // ID tag
+    ctx.fillStyle = isSel ? 'rgba(0,212,255,0.85)' : 'rgba(0,0,0,0.65)';
+    ctx.fillRect(x, y-15, 36, 13);
+    ctx.fillStyle = isSel ? '#000' : col;
+    ctx.font = `bold 8.5px 'SF Mono',monospace`;
+    ctx.fillText(p.id, x+3, y-5);
+
+    // Trajectory tail in video
+    ctx.strokeStyle = `${col}55`; ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    for (let step=0; step<6; step++) {
+      const tPrev = Math.max(p.path[0].t, S.progress - 0.06*step);
+      const pos = pathAt(p.path, tPrev);
+      const vCoord = spatialToVideo(pos.x, pos.y, W, H);
+      if (step===0) ctx.moveTo(vCoord.x, vCoord.y+h*0.7);
+      else           ctx.lineTo(vCoord.x, vCoord.y+h*0.7);
+    }
+    ctx.stroke();
+  });
+
+  // Selection flash
+  if (S.flashAlpha > 0) {
+    ctx.fillStyle = `rgba(0,212,255,${S.flashAlpha*0.08})`;
+    ctx.fillRect(0,0,W,H);
+    S.flashAlpha -= 0.06;
+  }
+
+  // Scanlines overlay
+  ctx.fillStyle = 'rgba(0,0,0,0.04)';
+  for (let y=0; y<H; y+=3) { ctx.fillRect(0,y,W,1); }
+}
+
+function spatialToVideo(spx, spy, W, H) {
+  const nx = (spx-50) / 550;
+  const ny = (spy-105) / 300;
+  return {
+    x: W*(0.12 + nx*0.76),
+    y: H*(0.28 + ny*0.68),
+  };
+}
+
+function computeVideoPositions() {
+  return PEDS.map(p => {
+    const prog = S.progress;
+    if (prog < p.path[0].t || prog > p.path[p.path.length-1].t) return null;
+    const pos = pathAt(p.path, prog);
+    const W = VC.width, H = VC.height;
+    const vCoord = spatialToVideo(pos.x, pos.y, W, H);
+    const scale = 0.4 + (vCoord.y/H)*0.9;
+    const bw = 28*scale, bh = 64*scale;
+    return { x: vCoord.x-bw/2, y: vCoord.y-bh, w:bw, h:bh };
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// ANIMATION LOOP
+// ══════════════════════════════════════════════════════════
+let lastT = null;
+function loop(ts) {
+  if (S.playing) {
+    if (lastT) {
+      const dt = (ts - lastT) / 1000;
+      S.progress = (S.progress + dt * S.speed * 0.012) % 1;
+    }
+    lastT = ts;
+  } else {
+    lastT = null;
+  }
+  updateHUD();
+  drawSpatial();
+  drawVideo();
+  requestAnimationFrame(loop);
+}
+
+function updateHUD() {
+  // Timeline
+  document.getElementById('tl-fill').style.width = (S.progress*100)+'%';
+
+  // Time display
+  const baseMs = (12*60+30)*60;
+  const sesMs  = S.progress * 45*60;
+  const totalS = baseMs + sesMs;
+  const hh = Math.floor(totalS/3600);
+  const mm = Math.floor((totalS%3600)/60);
+  const ss = Math.floor(totalS%60);
+  const ts2 = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+  document.getElementById('time-disp').textContent = ts2;
+  document.getElementById('vb-time').textContent   = ts2;
+
+  // Stats (with subtle noise)
+  const n = t => (t + Math.sin(S.progress*11+t)*0.1).toFixed(1);
+  const avgSpd = PEDS.reduce((a,p)=>a+p.speed,0)/PEDS.length;
+  document.getElementById('s-speed').textContent   = n(avgSpd);
+  const cnt = PEDS.filter(p => S.progress>=p.path[0].t && S.progress<=p.path[p.path.length-1].t).length;
+  document.getElementById('s-count').textContent   = cnt + Math.round(Math.sin(S.progress*7)*4+38);
+  document.getElementById('s-density').textContent = (2.5+Math.sin(S.progress*5)*0.75).toFixed(1);
+}
+const pad = n => String(n).padStart(2,'0');
+
+// ══════════════════════════════════════════════════════════
+// CONTROLS
+// ══════════════════════════════════════════════════════════
+function togglePlay() {
+  S.playing = !S.playing;
+  const icon = document.getElementById('play-icon');
+  icon.innerHTML = S.playing
+    ? '<polygon points="5 3 19 12 5 21 5 3"/>'
+    : '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+}
+function skipBack()  { S.progress = Math.max(0, S.progress-0.05); }
+function skipFwd()   { S.progress = Math.min(1, S.progress+0.05); }
+function setSpeed(el, spd) {
+  S.speed = spd;
+  document.querySelectorAll('.sp-opt').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+}
+function setTab(el) {
+  document.querySelectorAll('.time-tab').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+}
+function seekClick(e) {
+  const bg = document.getElementById('tl-bg');
+  const r  = bg.getBoundingClientRect();
+  S.progress = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+}
+function toggleLayer(el) {
+  const lyr = el.dataset.layer;
+  S.layers[lyr] = !S.layers[lyr];
+  el.classList.toggle('on', S.layers[lyr]);
+}
+function deselect() {
+  S.selectedPed = null;
+  document.getElementById('entity-card').classList.remove('open');
+}
+function selectPed(id) {
+  const p = PEDS.find(p=>p.id===id);
+  if (!p) return;
+  S.selectedPed = id;
+  S.flashAlpha  = 1;
+  document.getElementById('ec-id').textContent    = p.id;
+  document.getElementById('ec-speed').textContent = p.speed.toFixed(1);
+  document.getElementById('ec-dwell').textContent = p.dwell+'s';
+  document.getElementById('ec-dist').textContent  = p.distM+'m';
+  const card = document.getElementById('entity-card');
+  card.classList.add('open','fade-in');
+}
+
+// ══════════════════════════════════════════════════════════
+// INTERACTIONS
+// ══════════════════════════════════════════════════════════
+SC.addEventListener('click', e => {
+  const r = SC.getBoundingClientRect();
+  const mx = e.clientX-r.left, my = e.clientY-r.top;
+
+  // Pedestrian hit test
+  let hitPed = null;
+  PEDS.forEach(p => {
+    if (S.progress < p.path[0].t || S.progress > p.path[p.path.length-1].t) return;
+    const pos = pathAt(p.path, S.progress);
+    if (Math.hypot(sx(pos.x)-mx, sy(pos.y)-my) < 13) hitPed = p.id;
+  });
+  if (hitPed) {
+    S.selectedPed === hitPed ? deselect() : selectPed(hitPed);
+    return;
+  }
+
+  // Zone hit test
+  let hitZone = null;
+  ZONES.forEach(z => {
+    if (Math.hypot(sx(z.cx)-mx, sy(z.cy)-my) < z.r*sm()) hitZone = z;
+  });
+  if (hitZone) {
+    showZoneTip(hitZone, e.clientX, e.clientY);
+  } else {
+    document.getElementById('zone-tip').classList.remove('open');
+    deselect();
+  }
+});
+
+SC.addEventListener('mousemove', e => {
+  const r = SC.getBoundingClientRect();
+  const mx = e.clientX-r.left, my = e.clientY-r.top;
+  document.getElementById('coord-txt').textContent = `x: ${(mx/sm()|0)}  y: ${(my/sm()|0)}`;
+
+  let anyHit = false;
+  PEDS.forEach(p => {
+    if (S.progress < p.path[0].t || S.progress > p.path[p.path.length-1].t) return;
+    const pos = pathAt(p.path, S.progress);
+    if (Math.hypot(sx(pos.x)-mx, sy(pos.y)-my) < 13) anyHit = true;
+  });
+  S.hoveredZone = null;
+  ZONES.forEach(z => {
+    if (Math.hypot(sx(z.cx)-mx, sy(z.cy)-my) < z.r*sm()) { anyHit=true; S.hoveredZone=z.id; }
+  });
+  SC.style.cursor = anyHit ? 'pointer' : 'crosshair';
+});
+
+VC.addEventListener('click', e => {
+  const r = VC.getBoundingClientRect();
+  const mx = e.clientX-r.left, my = e.clientY-r.top;
+  const vps = computeVideoPositions();
+  let hit = null;
+  vps.forEach((vp_ped,i) => {
+    if (!vp_ped) return;
+    const {x,y,w,h} = vp_ped;
+    if (mx>=x && mx<=x+w && my>=y && my<=y+h) hit = PEDS[i].id;
+  });
+  if (hit) selectPed(hit);
+  else deselect();
+});
+
+VC.addEventListener('mousemove', e => {
+  const r = VC.getBoundingClientRect();
+  const mx = e.clientX-r.left, my = e.clientY-r.top;
+  const vps = computeVideoPositions();
+  const any = vps.some(vp_ped => {
+    if (!vp_ped) return false;
+    const {x,y,w,h} = vp_ped;
+    return mx>=x && mx<=x+w && my>=y && my<=y+h;
+  });
+  VC.style.cursor = any ? 'pointer' : 'default';
+});
+
+// Timeline drag
+let tlDrag = false;
+document.addEventListener('mousedown', e => {
+  if (e.target === document.getElementById('tl-handle') ||
+      e.target.closest('#tl-bg')) tlDrag = true;
+});
+document.addEventListener('mousemove', e => {
+  if (!tlDrag) return;
+  const bg = document.getElementById('tl-bg');
+  const r  = bg.getBoundingClientRect();
+  S.progress = Math.max(0, Math.min(1, (e.clientX-r.left)/r.width));
+});
+document.addEventListener('mouseup', () => { tlDrag = false; });
+
+// Event marker clicks
+function buildEventMarkers() {
+  const c = document.getElementById('tl-events');
+  EVENTS.forEach(ev => {
+    const el = document.createElement('div');
+    el.className = `ev-mark ${ev.type}`;
+    el.style.left = (ev.t*100)+'%';
+    el.title = ev.label;
+    el.onclick = () => { S.progress = ev.t; };
+    c.appendChild(el);
+  });
+}
+
+function showZoneTip(zone, mx, my) {
+  const el = document.getElementById('zone-tip');
+  document.getElementById('zt-name').textContent    = `Zone ${zone.id} — ${zone.name}`;
+  document.getElementById('zt-density').textContent = zone.density;
+  document.getElementById('zt-speed').textContent   = zone.speed;
+  document.getElementById('zt-flow').textContent    = zone.flow;
+  document.getElementById('zt-status').textContent  = zone.status;
+  el.style.left = (mx+14)+'px';
+  el.style.top  = (my-90)+'px';
+  el.classList.add('open');
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+  if (e.code==='Space')       { e.preventDefault(); togglePlay(); }
+  if (e.code==='ArrowLeft')   skipBack();
+  if (e.code==='ArrowRight')  skipFwd();
+  if (e.code==='Escape')      deselect();
+});
+
+// ══════════════════════════════════════════════════════════
+// UTIL
+// ══════════════════════════════════════════════════════════
+function hexRGB(hex) {
+  return [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).join(',');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+function init() {
+  resize();
+  buildEventMarkers();
+  // Start paused so user can orient
+  S.playing = false;
+  document.getElementById('play-icon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', resize);
+init();
+</script>
+</body>
+</html>

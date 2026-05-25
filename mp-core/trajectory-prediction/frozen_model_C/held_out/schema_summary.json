@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "description": "schema_ablation_bridge dataset \u2014 old motion_dataset_v2 recipe ported to the rerun_macba_2026-05-19 v21C encoding. Motion in real metric metres; positions normalised; spatial features percentile-rank relational.",
+  "normalization": {
+    "u_v": "global MinMax over dataset world_x/world_y",
+    "du_dv_speed": "raw metres/step (NOT scaled here; fit StandardScaler at train time)",
+    "turn_rate": "radians in (\u2212\u03c0, \u03c0]",
+    "dist_*_norm": "percentile rank ascending (0 = closest, 1 = farthest)",
+    "entrance_affinity_norm": "percentile rank descending (1 = closest to entrance)"
+  },
+  "world_bounds_used": {
+    "xmin": 0.2709,
+    "xmax": 13.19,
+    "ymin": -26.2501,
+    "ymax": 24.4128,
+    "xrng": 12.9191,
+    "yrng": 50.6629
+  },
+  "min_track_length_filter": 11,
+  "n_rows": 18014,
+  "n_tracks": 52,
+  "columns": [
+    "trajectory_id",
+    "timestep",
+    "u",
+    "v",
+    "du",
+    "dv",
+    "speed",
+    "heading_sin",
+    "heading_cos",
+    "turn_rate",
+    "dist_to_obstacle_norm",
+    "dist_to_boundary_norm",
+    "entrance_affinity_norm",
+    "target_du",
+    "target_dv"
+  ],
+  "has_openness_lr_asymmetry": false,
+  "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\processed\\rerun_macba_2026-05-19\\spatial_v21C\\trajectories_encoded.csv"
+}

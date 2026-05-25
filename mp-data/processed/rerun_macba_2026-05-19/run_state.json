@@ -1,0 +1,13 @@
+{
+  "steps_done": [
+    "step1_plan_image",
+    "step2_calibration",
+    "step3_apply_homography",
+    "step4_encoder",
+    "step5_overlay"
+  ],
+  "log": [
+    "overlay PASS (OK)",
+    "overlay PASS (OK)"
+  ]
+}

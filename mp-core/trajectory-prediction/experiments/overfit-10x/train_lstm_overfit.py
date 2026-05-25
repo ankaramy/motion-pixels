@@ -36,25 +36,28 @@ CSV_PATH  = EXPR_OUT / "trajectories_overfit.csv"
 MODEL_PATH  = LSTM_OUT / "overfit_lstm.pth"
 SCALER_PATH = LSTM_OUT / "overfit_lstm_scaler.pkl"
 PLOT_PATH   = LSTM_OUT / "loss_curve_lstm.png"
+VISUAL_PATH = LSTM_OUT / "prediction_visual_lstm.png"
 
 # ---------------------------------------------------------------------------
-# Hyper-parameters (intentionally set to favour memorisation)
+# Hyper-parameters
 # ---------------------------------------------------------------------------
-WINDOW_SIZE   = 10
-HIDDEN_SIZE   = 256    # 2x main pipeline — more capacity
-EPOCHS        = 500    # 5x main pipeline — time to memorise
-LEARNING_RATE = 1e-3
-BATCH_SIZE    = 32     # smaller — more gradient steps per epoch
-PRINT_EVERY   = 50
+# QUICK SANITY TEST mode — not final overfit evidence
+WINDOW_SIZE    = 10
+HIDDEN_SIZE    = 256
+EPOCHS         = 30
+LEARNING_RATE  = 1e-3
+BATCH_SIZE     = 1024
+PRINT_EVERY    = 5
+MAX_SEQUENCES  = 100_000   # cap for quick-test; set to None for full run
 
 FEATURE_COLS = [
     "world_x", "world_y",
     "dist_to_obstacle", "dist_to_boundary", "dist_to_entrance",
     "frame_number", "delta_x", "delta_y",
 ]
-TARGET_COLS = ["world_x", "world_y"]
+# PHASE 1B: predict displacement, not absolute position
+TARGET_COLS = ["delta_x", "delta_y"]
 
-# Disabled: include near-static sequences to maximise training signal
 MIN_DISPLACEMENT_M = 0.0
 
 
@@ -133,6 +136,97 @@ def train_epoch(model, loader, optimiser, criterion, device):
     return total / len(loader)
 
 
+def generate_prediction_visual(model, scaler_bundle, df_raw, out_path, label, device,
+                               n_rollout=30):
+    """Autoregressive delta rollout: predict (dx,dy), accumulate into position."""
+    model.eval()
+    fs = scaler_bundle["feature_scaler"]
+    ts = scaler_bundle["target_scaler"]
+
+    min_len = WINDOW_SIZE + n_rollout + 1
+    candidates = [(pid, grp) for pid, grp in df_raw.groupby("person_id")
+                  if len(grp) >= min_len]
+    if not candidates:
+        print("[WARN] No track long enough for prediction visual — skipping.")
+        return
+
+    _, track = candidates[len(candidates) // 2]
+    track = track.sort_values("frame_number").reset_index(drop=True).copy()
+    track["delta_x"] = track["world_x"].diff().fillna(0)
+    track["delta_y"] = track["world_y"].diff().fillna(0)
+
+    feats     = track[FEATURE_COLS].to_numpy(dtype=np.float32)           # (T, 8)
+    positions = track[["world_x", "world_y"]].to_numpy(dtype=np.float32) # (T, 2) — for plotting
+    T = len(feats)
+
+    feats_scaled = fs.transform(feats)
+    window = feats_scaled[:WINDOW_SIZE].copy()
+
+    prev_x, prev_y = positions[WINDOW_SIZE - 1, 0], positions[WINDOW_SIZE - 1, 1]
+    pred_x, pred_y = [], []
+
+    for step in range(n_rollout):
+        x_in = torch.tensor(window[np.newaxis], dtype=torch.float32).to(device)
+        with torch.no_grad():
+            p_scaled = model(x_in).cpu().numpy()[0]
+        # Inverse-transform gives predicted (delta_x, delta_y)
+        pred_dx, pred_dy = ts.inverse_transform(p_scaled[np.newaxis])[0]
+        # Accumulate delta into absolute position
+        wx = float(prev_x) + float(pred_dx)
+        wy = float(prev_y) + float(pred_dy)
+        pred_x.append(wx)
+        pred_y.append(wy)
+
+        src = min(WINDOW_SIZE + step, T - 1)
+        new_raw = np.array([
+            wx, wy,
+            feats[src, 2], feats[src, 3], feats[src, 4],  # spatial context from GT
+            feats[src, 5],                                  # frame_number
+            float(pred_dx),                                 # feed back predicted delta_x
+            float(pred_dy),                                 # feed back predicted delta_y
+        ], dtype=np.float32)
+        new_scaled = fs.transform(new_raw[np.newaxis])[0]
+        window = np.vstack([window[1:], new_scaled])
+        prev_x, prev_y = wx, wy
+
+    gt_x = positions[WINDOW_SIZE: WINDOW_SIZE + n_rollout, 0]
+    gt_y = positions[WINDOW_SIZE: WINDOW_SIZE + n_rollout, 1]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+    seed_x = positions[:WINDOW_SIZE, 0]
+    seed_y = positions[:WINDOW_SIZE, 1]
+    ax1.plot(seed_x, seed_y, "g-o", ms=3, label="Seed (GT)", alpha=0.8)
+    ax1.plot(gt_x,   gt_y,   "b-o", ms=3, label="GT continuation", alpha=0.7)
+    ax1.plot(pred_x, pred_y, "r--o", ms=3, label=f"{label} autoregressive (Δ)", alpha=0.8)
+    ax1.legend(fontsize=8)
+    ax1.set_title(f"{label} — 2D trajectory  [delta rollout]")
+    ax1.set_xlabel("world_x (m)")
+    ax1.set_ylabel("world_y (m)")
+    ax1.grid(True, lw=0.4, alpha=0.6)
+
+    steps = list(range(n_rollout))
+    ax2.plot(steps, gt_x,   "b-",  label="GT world_x")
+    ax2.plot(steps, pred_x, "r--", label=f"{label} pred world_x")
+    ax2.plot(steps, gt_y,   "b:",  label="GT world_y")
+    ax2.plot(steps, pred_y, "r-.", label=f"{label} pred world_y")
+    ax2.legend(fontsize=8)
+    ax2.set_title(f"{label} — X/Y over rollout steps")
+    ax2.set_xlabel("Rollout step")
+    ax2.set_ylabel("World coordinate (m)")
+    ax2.grid(True, lw=0.4, alpha=0.6)
+
+    fig.suptitle(
+        f"PHASE 1B — DELTA PREDICTION: {label} autoregressive {n_rollout}-step rollout\n"
+        "[MEMORISATION TEST — NOT generalisation evidence]",
+        fontsize=10, color="#7f0000",
+    )
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)
+    print(f"[INFO] Prediction visual saved: {out_path}")
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -156,9 +250,25 @@ def main():
     if missing:
         sys.exit(f"[ERROR] Missing columns: {missing}\n        Run encode_space.py then make_overfit_dataset.py.")
 
+    # Quick-test: cap persons before sequence building to keep build time short.
+    # ~325 seq/person → 400 persons gives ~130K sequences, enough to subsample to 100K.
+    if MAX_SEQUENCES is not None:
+        all_pids = df["person_id"].unique()
+        n_persons = min(400, len(all_pids))
+        chosen = np.random.default_rng(42).choice(all_pids, n_persons, replace=False)
+        df = df[df["person_id"].isin(chosen)].copy()
+        print(f"[INFO] Quick-test: pre-filtered to {n_persons} persons "
+              f"({len(df):,} rows)")
+
     print("[INFO] Building sequences ...")
     X, y = build_sequences(df)
-    print(f"[INFO] Sequences: {len(X):,}  |  X {X.shape}  y {y.shape}")
+    print(f"[INFO] Sequences (full): {len(X):,}  |  X {X.shape}  y {y.shape}")
+
+    if MAX_SEQUENCES is not None and len(X) > MAX_SEQUENCES:
+        rng = np.random.default_rng(42)
+        idx = rng.choice(len(X), MAX_SEQUENCES, replace=False)
+        X, y = X[idx], y[idx]
+        print(f"[INFO] Subsampled to {len(X):,} sequences  [QUICK SANITY TEST]")
 
     X_scaled, y_scaled, scaler_bundle = normalise(X, y)
     X_tensor = torch.tensor(X_scaled)
@@ -167,7 +277,7 @@ def main():
                           batch_size=BATCH_SIZE, shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"[INFO] Device: {device}")
+    print(f"[INFO] Device: {device}  |  Batches/epoch: {len(loader)}")
 
     model     = TrajectoryLSTM(len(FEATURE_COLS), HIDDEN_SIZE).to(device)
     criterion = nn.MSELoss()
@@ -175,37 +285,47 @@ def main():
 
     total_params = sum(p.numel() for p in model.parameters())
     print(f"[INFO] Parameters: {total_params:,}")
-    print(f"\n[INFO] Training LSTM for {EPOCHS} epochs (overfit target) ...\n")
+    print(f"\n[PHASE 1B — DELTA PREDICTION] LSTM — {EPOCHS} epochs, batch={BATCH_SIZE}, "
+          f"seq={len(X):,}\n")
 
+    import time
+    t0 = time.time()
     loss_history = []
     for epoch in range(1, EPOCHS + 1):
         avg_loss = train_epoch(model, loader, optimiser, criterion, device)
         loss_history.append(avg_loss)
         if epoch % PRINT_EVERY == 0 or epoch == 1:
-            print(f"  Epoch {epoch:>4d}/{EPOCHS}  |  Loss: {avg_loss:.6f}")
+            print(f"  Epoch {epoch:>3d}/{EPOCHS}  |  Loss: {avg_loss:.6f}")
+    elapsed = time.time() - t0
 
     LSTM_OUT.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), MODEL_PATH)
     with open(SCALER_PATH, "wb") as f:
         pickle.dump(scaler_bundle, f)
 
+    generate_prediction_visual(model, scaler_bundle, df, VISUAL_PATH, "LSTM", device)
+
     fig, ax = plt.subplots(figsize=(10, 4))
     ax.plot(range(1, EPOCHS + 1), loss_history, linewidth=1.2, color="#c0392b")
     ax.set_xlabel("Epoch")
     ax.set_ylabel("MSE Loss (normalised)")
-    ax.set_title(f"LSTM Overfit — {EPOCHS} epochs, hidden={HIDDEN_SIZE}, 10x duplicated data")
+    ax.set_title(f"LSTM — PHASE 1B DELTA — {EPOCHS} epochs, "
+                 f"hidden={HIDDEN_SIZE}, {len(X):,} seqs")
     ax.grid(True, linewidth=0.4, alpha=0.6)
     fig.tight_layout()
     fig.savefig(PLOT_PATH, dpi=150)
     plt.close(fig)
 
     print(f"\n{'='*52}")
-    print("  LSTM OVERFIT COMPLETE")
+    print("  LSTM — PHASE 1B DELTA PREDICTION COMPLETE")
     print(f"{'='*52}")
-    print(f"  Final loss   : {loss_history[-1]:.6f}")
-    print(f"  Best loss    : {min(loss_history):.6f}  (epoch {loss_history.index(min(loss_history))+1})")
-    print(f"  Sequences    : {len(X):,}")
-    print(f"  Saved        : {LSTM_OUT}")
+    print(f"  Sequences used : {len(X):,}")
+    print(f"  Batches/epoch  : {len(loader)}")
+    print(f"  Runtime        : {elapsed:.1f}s  ({elapsed/EPOCHS:.2f}s/epoch)")
+    print(f"  Final loss     : {loss_history[-1]:.6f}")
+    print(f"  Best loss      : {min(loss_history):.6f}  "
+          f"(epoch {loss_history.index(min(loss_history))+1})")
+    print(f"  Saved          : {LSTM_OUT}")
     print(f"{'='*52}")
 
 

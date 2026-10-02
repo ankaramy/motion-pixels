@@ -143,8 +143,19 @@ Before archiving, the final material was copied into the repository: 103 files, 
 
 ## Final Git Commit
 
-The documentation commit containing this report completes the pass. The resulting hash and the push verification are recorded in the follow-up section below.
+Content of the pass is complete at `fc566e2` ("Add final thesis documentation and reproducibility guide"). The commit that records this push status follows it. A fresh `git clone` of the committed state was verified to run the final model (`predict_example.py`) without any external data.
 
 ## GitHub Push Status
 
-Pending at the time this report was written; see the update below.
+**Not pushed by the archival session.** `git push origin main` (a fast-forward of 8 commits onto `origin/main` `f2618ac`; no force or history rewrite needed) failed with an authentication error:
+
+```text
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/ankaramy/motion-pixels.git/'
+```
+
+The non-interactive session had no valid GitHub credential: the stored Git Credential Manager token is invalid or expired, and no browser sign-in was possible. No destructive workaround was attempted. To publish, run this from an authenticated terminal (for example VS Code, or after `git credential-manager github login`):
+
+```bash
+git push origin main
+```

@@ -1,0 +1,3 @@
+Calibration setup
+
+The camera view and site plan are displayed side by side. The user selects corresponding landmarks in both views to establish the homography linking image coordinates to the plan. This screenshot shows the start of calibration: zero matched points, no RMSE yet, and confirmation disabled until sufficient points are supplied.

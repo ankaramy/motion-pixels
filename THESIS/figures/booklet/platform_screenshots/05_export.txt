@@ -1,0 +1,3 @@
+Export drawing
+
+The Export Drawing dialog previews the current studio composition. It offers PNG output at 2400 pixels and an SVG option labelled as editable vector layers. The screenshot documents the export options before a download is triggered.

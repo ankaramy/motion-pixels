@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the thesis."
+title: "Motion Pixels: Mapping Out Spatial Intelligence"
+type: software
+authors:
+  - family-names: Anka
+    given-names: Ramy
+    affiliation: "Institute for Advanced Architecture of Catalonia (IAAC)"
+repository-code: "https://github.com/ankaramy/motion-pixels"
+abstract: >-
+  Archival codebase of the Motion Pixels master's thesis (MaAI, IAAC, 2025-2026):
+  pedestrian tracking, plan calibration, behavioral mapping, Encoder V3 spatial encoding and
+  LSTM trajectory prediction (final model MODEL_XC_B_CURV_LIGHT) for architectural analysis.
+keywords:
+  - pedestrian movement
+  - trajectory prediction
+  - behavioural mapping
+  - architectural analysis
+  - computer vision
+preferred-citation:
+  type: thesis
+  thesis-type: "Master's thesis"
+  title: "Motion Pixels: Mapping Out Spatial Intelligence"
+  authors:
+    - family-names: Anka
+      given-names: Ramy
+  institution:
+    name: "Institute for Advanced Architecture of Catalonia (IAAC)"
+    city: Barcelona
+  year: 2026

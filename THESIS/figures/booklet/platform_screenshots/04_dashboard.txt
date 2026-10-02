@@ -1,0 +1,3 @@
+Studio dashboard
+
+The Placa Espanya study is shown as a layered spatial drawing. Speed, flow fields, bottlenecks, and predictions are enabled; the animation is paused approximately eight seconds into playback. The right panel provides saved studies, layer switches, and export controls. Timeline and prediction-horizon controls sit below the map. This is the bundled precomputed demonstration, accessed through the prototype's documented studio review route, not a newly processed or newly calibrated dataset.

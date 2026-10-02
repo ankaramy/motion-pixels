@@ -1,0 +1,3 @@
+Upload footage and spatial reference
+
+The user pairs pedestrian footage with a top-down site plan. This capture shows the bundled tracked.mp4 and placa-espanya.png files selected and ready to continue. The sequence uses the approved prototype's Placa Espanya demonstration assets.

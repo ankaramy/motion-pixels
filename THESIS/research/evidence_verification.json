@@ -1,0 +1,99 @@
+{
+  "H20": {
+    "ade": 0.4458097568330497,
+    "fde": 0.7084838796016417,
+    "angular_err_deg": 74.1305972991684,
+    "windows": 87320,
+    "tracks": 286,
+    "success_percent": 82.67063673843334,
+    "endpoint_normalized_percent": 26.275298243192047,
+    "missing_angular_values": 1582
+  },
+  "H60": {
+    "ade": 1.0112351073660109,
+    "fde": 1.8112527584914775,
+    "angular_err_deg": 79.37271125542662,
+    "windows": 77438,
+    "tracks": 211,
+    "success_percent": 72.29138149229061,
+    "endpoint_normalized_percent": 21.541985658240158,
+    "missing_angular_values": 1518
+  },
+  "H100": {
+    "ade": 1.4185815501528571,
+    "fde": 2.564987545822595,
+    "angular_err_deg": 79.71311300560622,
+    "windows": 69718,
+    "tracks": 175,
+    "success_percent": 71.50233799018905,
+    "endpoint_normalized_percent": 25.39274243452888,
+    "missing_angular_values": 1478
+  },
+  "H200": {
+    "ade": 2.5948681645687133,
+    "fde": 5.016330087730044,
+    "angular_err_deg": 83.72339588128011,
+    "windows": 55505,
+    "tracks": 120,
+    "success_percent": 63.99603639311774,
+    "endpoint_normalized_percent": 21.357256094894264,
+    "missing_angular_values": 1359
+  },
+  "H400": {
+    "ade": 5.079280904920467,
+    "fde": 10.014683065565595,
+    "angular_err_deg": 83.77259069408372,
+    "windows": 38639,
+    "tracks": 63,
+    "success_percent": 55.200703951965636,
+    "endpoint_normalized_percent": 18.213270687526204,
+    "missing_angular_values": 1141
+  },
+  "model_x_split": {
+    "train": 2827,
+    "val": 353,
+    "test": 354,
+    "unique_tracks": 3534
+  },
+  "bridge_schema": {
+    "version": 1,
+    "description": "schema_ablation_bridge dataset \u2014 old motion_dataset_v2 recipe ported to the rerun_macba_2026-05-19 v21C encoding. Motion in real metric metres; positions normalised; spatial features percentile-rank relational.",
+    "normalization": {
+      "u_v": "global MinMax over dataset world_x/world_y",
+      "du_dv_speed": "raw metres/step (NOT scaled here; fit StandardScaler at train time)",
+      "turn_rate": "radians in (\u2212\u03c0, \u03c0]",
+      "dist_*_norm": "percentile rank ascending (0 = closest, 1 = farthest)",
+      "entrance_affinity_norm": "percentile rank descending (1 = closest to entrance)"
+    },
+    "world_bounds_used": {
+      "xmin": 0.2709,
+      "xmax": 13.19,
+      "ymin": -26.2501,
+      "ymax": 24.4128,
+      "xrng": 12.9191,
+      "yrng": 50.6629
+    },
+    "min_track_length_filter": 11,
+    "n_rows": 18014,
+    "n_tracks": 52,
+    "columns": [
+      "trajectory_id",
+      "timestep",
+      "u",
+      "v",
+      "du",
+      "dv",
+      "speed",
+      "heading_sin",
+      "heading_cos",
+      "turn_rate",
+      "dist_to_obstacle_norm",
+      "dist_to_boundary_norm",
+      "entrance_affinity_norm",
+      "target_du",
+      "target_dv"
+    ],
+    "has_openness_lr_asymmetry": false,
+    "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\processed\\rerun_macba_2026-05-19\\spatial_v21C\\trajectories_encoded.csv"
+  }
+}

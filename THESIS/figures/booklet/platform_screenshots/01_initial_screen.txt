@@ -1,0 +1,3 @@
+Initial screen
+
+The Motion Pixels landing page introduces the platform as a tool for mapping spatial intelligence. Start New Study begins a new analysis; Open Last Study returns to a saved session.

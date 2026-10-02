@@ -1,0 +1,189 @@
+
+PAGE 1
+Motion Pixels — Sandbox Exit Brief
+Date: 2026-05-21 Status: Sandbox phase complete. Model C frozen. Next phase: real-video dataset expansion.
+1. What the sandbox was for
+A closed-loop sandbox on a single calibrated recording (MACBA rerun, 2026-05-19) — used to iterate on feature
+schema, training recipe, and rollout machinery without paying the cost of multi-recording ingest. Everything here runs
+on mp-data/processed/rerun_macba_2026-05-19/spatial_v21C/trajectories_encoded.csv: 52 tracks,
+18,014 rows, world bounds ≈ 12.9 × 50.7 m.
+The sandbox is *not* thesis evidence. Its purpose was to answer two questions:
+1. Architecture & schema — what is the right LSTM width + feature set to lock in before we spend ingest effort
+on more recordings?
+2. Are we data-bound or architecture-bound? — is the per-track held-out performance flat because the model
+is too weak, or because there isn't enough data?
+The exit answer to both is now clear. The remainder of this brief documents it.
+2. Two experiments, run back-to-back
+Both use the same TrajectoryLSTM (hidden 128 × 2 layers, dropout 0.2, MSE on (target_du, target_dv),
+window 10, autoregressive 20-step rollout with KDTree-IDW spatial refresh).
+2a. schema_ablation_bridge — real held-out
+52 tracks split into 36 train / 8 val / 9 test. Ports the old experiments/ablation/ recipe onto the v21C MACBA
+rerun encoding. Four feature sets:
+Model
+Features
+n
+A_motion_only
+du, dv, speed, heading_sin/cos, turn_rate
+6
+B_motion_position
+A + u, v
+8
+C_motion_position_spatial
+B + dist_to_obstacle_norm,
+dist_to_boundary_norm
+10
+D_full_relational
+C + entrance_affinity_norm
+11
+Model
+ADE (m)
+FDE (m)
+Ang err (rad)
+path/GT
+ang_ratio
+curv_corr
+A_motion_only
+0.4871
+0.8998
+0.762
+0.424
+0.000
+0.018
+B_motion_positi
+on
+0.5054
+0.9478
+1.037
+0.583
+0.034
+−0.048
+C_motion_posi
+tion_spatial
+0.5315
+0.9809
+0.933
+0.488
+0.016
+−0.032
+D_full_relational
+0.5273
+1.0131
+1.035
+0.723
+0.000
+−0.078
+A/B/C/D are within ~0.05 m ADE of each other across 9 held-out tracks. ang_ratio ≈ 0 and curv_corr ≈ 0 across
+the board. Interpretation: at this sample size, the schema ablation cannot be resolved — all four models collapse to
+nearly straight rollouts. Held-out ADE is dominated by data scarcity, not feature choice.
+2b. schema_ablation_bridge_overfit10x — capacity check
+Same architecture, same recipe, but every base trajectory is duplicated ×10 (520 tracks, 180,140 rows). Train/val/test
+share content by construction — this is *memorisation capacity*, not held-out performance. Marked OVERFIT10X on
+every artefact.
+
+
+PAGE 2
+Model
+ADE (m)
+FDE (m)
+Ang err (rad)
+path/GT
+ang_ratio
+curv_corr
+A_motion_only
+0.1037
+0.2594
+0.819
+0.789
+1.072
+0.287
+B_motion_positi
+on
+0.0957
+0.2491
+0.730
+0.882
+0.989
+0.344
+C_motion_posi
+tion_spatial
+0.0535
+0.1096
+0.569
+0.852
+1.132
+0.496
+D_full_relational
+0.0611
+0.1343
+0.623
+0.862
+0.963
+0.398
+Now the ordering is legible: A < B < D ≈ C, with C the best memoriser. Interpretation: the architecture has the
+capacity to fit. When the signal-to-noise ratio is high enough, spatial features (dist_to_obstacle_norm,
+dist_to_boundary_norm) are the schema increment that buys the biggest jump in fidelity.
+3. The headline finding
+We are data-bound, not architecture-bound.
+The two experiments bracket the gap:
+• Same model, same features, same training code.
+• On 52 held-out tracks: 0.53 m ADE, near-zero curvature correlation.
+• On 520 duplicated tracks: 0.053 m ADE, curvature correlation 0.50, angular ratio ≈ 1.
+The architecture is fine. The schema is fine. The training recipe is fine. The dataset is the lever.
+This is *the* finding the sandbox was designed to surface, and it tells us where the next phase must invest.
+4. Secondary findings worth keeping
+• D regresses below C in overfit10x. Adding entrance_affinity_norm makes the memoriser *worse* (ADE
+0.053 → 0.061, ang_err 0.569 → 0.623). At the current hidden width and dataset, the entrance affinity channel
+adds noise the model can't gate out. Carry as an open question into the next phase — re-evaluate once dataset
+volume grows.
+• Angular error dominates displacement error throughout. Even the best capacity-check model is at ~0.57 rad
+(~33°) mean heading error while ADE is only 5 cm. Position is easy to learn from short windows; heading remains
+hard. The thesis story should account for this asymmetry, and angular metrics should stay on the dashboard, not
+get dropped in favour of ADE/FDE alone.
+• E_full_affordance was correctly skipped. v21C does not emit openness_lr_asymmetry, so the bridge
+code branched to a graceful skip. Don't reintroduce model E until the encoding actually produces that column.
+5. Exit decision — Model C is frozen
+Selected: C_motion_position_spatial (10 features: motion kinematics + normalised world position +
+obstacle/boundary clearance).
+Rationale:
+• Best capacity-check performance on every metric (ADE, FDE, angular error, curvature correlation, angularity
+ratio).
+• Held-out runs are noise-dominated and do not contradict this choice.
+• 10 features keeps inference cheap and the KDTree-IDW rollout simple — entrance_affinity_norm adds a
+third KDTree at every step for unclear benefit.
+
+
+PAGE 3
+• The feature set matches the thesis story: ego-motion + where-you-are + what-is-near-you. No relational /
+global-affordance signals.
+Frozen artefacts live in mp-core/trajectory-prediction/frozen_model_C/:
+• held_out/ — checkpoint from the bridge experiment (real generalization reference).
+• overfit10x/ — checkpoint from the capacity-check experiment (memorisation reference).
+• README.md — load instructions, architecture spec, metrics, do-not-edit-in-place note.
+Both checkpoints are kept so future readers can see the gap between honest and capacity numbers without having to
+re-run the sandbox.
+6. Open risks carried into the next phase
+1. Calibration parity across recordings. The v21C encoding bakes in MACBA rerun world bounds and a single
+top-down.png. New recordings will need their own calibration and reference plan; the normalisation pipeline
+must not silently collapse different rooms into one coordinate frame.
+2. Held-out is per-track, not per-recording. Going forward, the held-out partition should be at *recording*
+granularity — otherwise we'll re-create the same data-bound situation on a different axis.
+3. entrance_affinity_norm is on probation. If it still degrades performance on the expanded dataset, drop it
+from the schema entirely; don't keep dead features.
+4. Angular metrics are not in the loss. The MSE-only objective is what produced the heading-error floor. The
+next phase should consider an auxiliary angular term (e.g., 1 − cos(∆θ)) before claiming the schema has hit its
+ceiling.
+5. Sandbox-shaped tests do not catch ingest bugs. The sandbox uses one CSV. The next phase needs at
+least a minimal multi-recording smoke test in CI so a broken calibration on recording N doesn't silently propagate.
+7. Next phase — real-video dataset expansion
+See docs/dataset_expansion_plan.md for the scope/plan doc. In one line: lift the pipeline from "one MACBA
+rerun" to "a registered set of calibrated recordings" without changing the encoder or the trainer in this phase — just
+the data layer.
+Appendix A — Pointers
+• Bridge experiment (held-out):
+mp-core/trajectory-prediction/experiments/schema_ablation_bridge/
+• Overfit10x experiment (capacity):
+mp-core/trajectory-prediction/experiments/schema_ablation_bridge_overfit10x/
+• Frozen Model C: mp-core/trajectory-prediction/frozen_model_C/
+• Source encoding:
+mp-data/processed/rerun_macba_2026-05-19/spatial_v21C/trajectories_encoded.csv
+• Expansion plan: docs/dataset_expansion_plan.md

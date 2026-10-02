@@ -1,0 +1,8 @@
+# Optional: thesis / booklet / review-PDF builders (THESIS/research/*.py, publication_final/build.py)
+# and one legacy diagnostic script. Not needed for the tracking/prediction pipeline.
+#   pip install -r requirements-publication.txt && playwright install chromium
+markdown-it-py>=3.0
+pymupdf>=1.24          # imported as `fitz`
+playwright>=1.45
+reportlab>=4.4
+seaborn>=0.13

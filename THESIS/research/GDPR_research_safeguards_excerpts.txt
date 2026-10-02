@@ -1,0 +1,240 @@
+PAGE 14
+Milieu Consulting
+Brussels
+Study on the appropriate safeguards under article 89 (1) GDPR for the processing of
+personal data for scientific research / 14
+the right to choose freely the research subjects and research methods, is protected by the Finnish
+Constitution40. Regarding the legal basis for processing personal data for scientific, historical or
+statistical research purposes, the preparatory work refers to Article 6(1) GDPR and states that such legal
+basis can be either consent or legitimate interest. As regards the purpose limitation, personal data can
+be processed if necessary and proportionate to the general interest pursued, and the data controller must
+be able to prove that these criteria are met41. However, since it is not always possible to identify the
+purpose of processing personal data for scientific research purposes while collecting the data42, the data
+subject should be able to consent to certain areas of scientific research, where acknowledged ethical
+standards for scientific research are observed.
+In order to benefit from the exceptions for scientific, historical research or statistic purposes, the data
+controller needs to draw up a research plan43. The Finnish legislation also allows for the processing of
+sensitive data for the purposes of scientific research44. However, when sensitive data is concerned, the
+research in question shall fulfil generally approved ethical principles for science. Furthermore, when
+processing the national identification number, which is a special type of personal data, for scientific
+research purposes, an effort should be made to obtain consent of the data subject45. The Act further
+enables derogations from Articles 15, 16, 18 and 21 of the GDPR when personal data is processed for
+scientific research46. The safeguards required in this case are very similar to those when processing
+sensitive data, and when relying on Article 9.2(j) GDPR (see below). One could say that in Finland, the
+required safeguards are largely linked to data subject rights (and the derogations thereto).
+In addition to the extensive data protection mechanisms of the GDPR47, the safeguards for processing
+of special categories of personal data48 and personal data relating to criminal convictions and offences49,
+Section 31(3) sets specific requirements50 and requires in addition either carrying out a DPIA51, which
+must be submitted in written to the Finnish SA, the Data Protection Ombudsman52, 30 days prior to the
+processing. Alternatively, compliance with codes of conduct that take into account derogations of
+Section 31(1) of the Finnish Data Protection Act must be ensured53. In Finland, for sensitive data,
+controllers shall hence choose between submitting for review to the SA or abiding by a code of conduct.
+40 Hallituksen esitys HE 9/2018 vp, viewed 7 July 2021,
+https://www.eduskunta.fi/FI/vaski/KasittelytiedotValtiopaivaasia/Sivut/HE_9+2018.aspx (Finnish and Swedish only). The
+Finnish Data Protection Act preserves this approach, and should hence be seen as completing the GDPR within the discretion
+of the EEA States.
+41 Highlighted in HE 9/18 vp, p. 50, also referring to Article 5(2) of the GDPR.
+42 The preparatory work also references Recital 33 GDPR in this regard.
+43 Section 31(1) of the Data Protection Act.
+44 Section 6, point 7 of the Data Protection Act. The Finnish Data Protection Act allows for processing of personal data of
+special categories for scientific and historical research or statistics. In such cases, Article 9(1) of the GDPR is not applied.
+45 HE 9 /2018. National identification numbers can be processed, if it is necessary for the historic, scientific research or for
+statistics to “uniquely identify” the data subject. See Section 29 of the Data Protection Act.
+46 This requires that (i) the processing is based on an appropriate research plan; (ii) a person or group responsible for the
+research has been designated; and (iii) the personal data are used and disclosed only for scientific or historical research
+purposes or for other compatible purposes, and the procedure followed is also that data concerning a given individual are not
+revealed to outsiders. See Section 31(1) of the Data Protection Act. Exceptions from this provision are justified when
+exercising the rights would jeopardise the specific purpose of the research or make it too hard to fulfil it, when such
+exception is needed to achieve the purpose of research. For example, the preparatory works mention a situation where data is
+fully pseudonymised and the data controller is not in possession of the data key. In such a case, the data controller should
+assess, on a situation-based approach, whether it is necessary to use the exception.
+47 Also extensively described by the Data Protection Ombudsman on the webpage, viewed 23 March 2021,
+https://tietosuoja.fi/en/rights-of-the-data-subject-in-scientific-research.
+48 Article 9(1) GDPR.
+49 Article 10 GDPR.
+50 Section 31(3) Data Protection Act.
+51 Article 35 GDPR.
+52 All the duties of the Data Protection Ombudsman are described in detail at https://tietosuoja.fi/en/duties (mostly
+compliance with data protection legislation and imposition of admin sanctions).
+53 See also Article 40 GDPR. Those codes of conduct must appropriately take into account the rights of the data subjects, as
+described in Articles 15,16, 18 and 21 of the GDPR. See also Section 31(3) Data Protection Act.
+
+PAGE 18
+Milieu Consulting
+Brussels
+Study on the appropriate safeguards under article 89 (1) GDPR for the processing of
+personal data for scientific research / 18
+the GDPR implementing Personal Data Protection Code (Codice in materia di protezione dei dati
+personali or PDPC)81. Article 105 PDPC establishes the duty on “controllers or others” to
+unambiguously specify the purposes of the scientific research as well as to make them known to the data
+subject in accordance with Articles 13 and 14 of the GDPR. Said article also imposes a prohibition to
+process personal data for decision-making purposes on the data subject or else with a view to processing
+data for different purposes. Article 106 PDPC puts additional onus on the Italian SA (Garante) to
+encourage the adoption of rules of conduct by the private and public entities that are involved in
+processing data for scientific research purposes. The Rules of Conduct shall comprise specific
+measures82, which have to be interpreted against Articles 99, 107, 110, 110-a of the PDPC. The Rules
+of Conduct have been adopted and attached to the PDPC. Among them, a set of rules concerns the
+processing of personal data for scientific research purposes83 and another set of rules concerns the
+processing of personal data for the provision of Official Statistics84. Compliance with such rules is a
+fundamental precondition for the processing of personal data. Italy hence encourages and emphasises
+the development of codes of conduct for research.
+2.1.11 Norway: role of public interest and no exceptions to the rights of data subjects
+in case of legal effects
+The Norwegian GDPR implementing national Data Protection Act85 allows personal data to be
+processed on the basis of Article 6(1) GDPR for the purpose of “public interest, purposes related to
+scientific or historical research or statistical purposes” and in compliance with 89(1) GDPR and its
+rights and principles86. Article 8 of the Act also serves as a legal basis to pass national laws related to
+the processing of personal data for the aforementioned purposes. The Act further states that the
+processing for the aforementioned purposes must provide the necessary guarantees as stated in Article
+81 Personal Data Protection Code containing provisions to adapt the national legislation to Regulation (EU) 2016/679 of the
+European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing
+of personal data and on the free movement of such data, and repealing Directive 95/46/EC, as amended by Law No 160 of 27
+December 2019, viewed 24 January 2021, https://www.garanteprivacy.it/documents/10160/0/Data+Protection+Code.pdf/.
+82 These measures include (i) the prerequisites and procedures to demonstrate and verify that the data are processed for
+appropriate scientific research purposes; (ii) storage period specification, the information to be provided to data subjects in
+respect of the data collected also from third parties, communication and dissemination of the data, the selective criteria to be
+implemented in processing identification data, the specific security measures and the mechanisms to amend the data as a
+result of the exercise of data subjects' rights, by taking account of the principles laid down in the relevant Council of Europe’s
+Recommendations; (iii) the means that can reasonably be used by controllers or others in order to identify a data subject; (iv)
+the safeguards to be complied with if the data subject's consent is unnecessary, by having regard to the principles laid down
+in Council of Europe´s Recommendations; (v) simplified arrangements for the consent of the data subjects as regards special
+categories of data, where required, e.g. the data subject's consent shall not be required for scientific research purposes for
+reasons of public interest in the area of public health the medical, bio-medical or epidemiological sectors if a DPIA is carried
+out and published, it shall also not be required if informing the data subjects proves impossible or entails a disproportionate
+effort on specific grounds, or if it is likely to render impossible or seriously impair the achievement of the research purposes,
+subject to the positive and reasoned assessment of the research project by the competent ethics committee as well as the prior
+consultation of the Data Protection Authority in accordance with Article 36 of the GDPR; (vi) the fairness rules applying to
+data collections and the arrangements for the processing of data by persons under the authority of the controller or processor;
+(vii) the measures to be adopted in order to promote compliance with the data minimization principle and the technical and
+organisational measures referred to in Article 32 of the GDPR, particularly by having regard to access control mechanisms to
+avoid unauthorized access and data transfers; (viii) security and confidentiality measures of authorized and non-authorized
+processing; (ix) measures for minimization and anonymization of the data in case further processing of personal and special
+categories of data by third parties is allowed by the Garante; (x) compliance measures in relation to Article 89(1) of the
+GDPR where the processing of personal data is terminated and such data is kept or transferred to another data controller for
+scientific research purposes.
+83 Annex 5 of the PDPC.
+84 Annex 4 of the PDPC.
+85 Data Protection Act (Personopplysningsloven), LOV-2018-06-15-38, viewed 5 July 2021,
+https://lovdata.no/dokument/NL/lov/2018-06-15-38?q=personopplysning.
+86 Unofficial English translation of Paragraph 8. The relevant Norwegian Ministry has noted in the preparatory works of the
+Data Protection Act that it is not “practical to try and specify these guarantees further” in the Act, while the processing must,
+however, be in accordance with the GDPR’s other provisions, including its principles. See reply by the Norwegian SA and
+the information provided in the questionnaire to the EDPB.
+
+PAGE 37
+Milieu Consulting
+Brussels
+Study on the appropriate safeguards under article 89 (1) GDPR for the processing of
+personal data for scientific research / 37
+Medical Research229, which sets a detailed framework for medical research involving human beings,
+clinical medical trials, research concerning foetuses and embryos and the work of the ethical
+committees230. For medical research including humans, focus lays on an assessment of interests, the
+need to appoint a person in charge of the research, the consent of the person being subject to research
+and the cancellation of such consent231. The Act also defined good clinical practices, and sets
+requirements for declarations, opinions of the ethical committee, reporting of incidents and serious side-
+effects232.
+3.3.6
+France
+In the domain of statistical research, the Official Statistics Law233 states that for official/public
+statistics, communicating and disclosing any data related to the statistical survey, especially personal
+data, can only be made after the approval of the Committee for Statistical Secrecy234. In the domain of
+the public archives the personal data, which are already not useful for archival purposes, or purposes
+of scientific or historic research, should be deleted235. Furthermore, data related to the state of health
+shall be given back to the person entitled to it236.
+Research for medical and health-related purposes is robustly regulated by law and requires
+safeguards237. In principle, in addition to the possibilities provided for in Article 9(2) of the GDPR, the
+processing of health data for research purposes is lawful provided that: (i) processing is in the public
+interest; (ii) processing complies with standards issued by the CNIL (methodologies of reference
+MR001 to MR006238 – see also Annex 2) and the data controller sends a declaration of compliance
+to the CNIL 239; or (iii) after the authorisation of the CNIL, if the processing does not comply with
+one of the standards
+The French Public Health Code (Code de la Sante Publique240) sets general principles for the
+implementation of health research. For example, there needs to be an appointed person responsible
+229 Act on Medical Research (Laki lääketieteellisestä tutkimuksesta), 9.4.1999/488, viewed 5 July
+2021,https://www.finlex.fi/en/laki/kaannokset/1999/19990488 (unofficial translation available for the original act from
+1999).
+230 There are both regional and national ethical committees. The law also sets criteria for the evaluation of research projects,
+the compilation of the ethical committees and rules for the members of that committee.
+231 Persons with handicaps, minors, pregnant or breast-feeding women and inmates or patients of forensic psychiatry. There
+are also special rules regarding certain categories of individuals.
+232 Chapter 2a of the Act.
+233 Act No. 51-711 of 7 June 1951, viewed 7 July 2021, Loi n° 51-711 du 7 juin 1951 sur l'obligation, la coordination et le
+secret en matière de statistiques. - Légifrance (legifrance.gouv.fr).
+234 Article 6 bis of the Loi n° 51-711 du 7 juin 1951 sur l'obligation, la coordination et le secret en matière de statistiques,
+viewed 5 July 2021, https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000038314928and Article 17 of the Décret n°
+2009-318 du 20 mars 2009 relatif au Conseil national de l'information statistique, au comité du secret statistique et au comité
+du label de la statistique publique, viewed 5 July 2021,
+https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000034247251/2021-01-19. Furthermore, any statistical survey of
+public services must be subject to the prior approval of the Minister responsible for the economy and the Minister to whose
+jurisdiction the interested parties belong (Article 2 Loi n° 51-711 du 7 juin 1951).
+235 Article L.212-3 of the Code du patrimoine, viewed 5 July 2021,
+https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000037825470. Furthermore, data related to the state of health
+shall be moreover given back to the person entitled to it.
+236 Article L212-4 of the Code du patrimoine.
+237 See Articles 64-77 Loi n° 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés.
+238 CNIL - Méthodologie de référence MR-006, Accessed 7 July 2021, Études nécessitant l’accès aux données du PMSI par
+les industriels de santé Méthodologie de référence MR-006 | CNIL
+239 As explained by the French SA “MR are sorts of “framework” to comply with in order to reduce formalities. Those
+formalities (prior authorisation from CNIL) must still be complied with including if the data subject expressed consent when
+the research does not fall under the scope of a MR”.
+240 Article L1121-3 of the Code de la sante publique Chapitre Ier: Principes généraux relatifs aux recherches impliquant la
+personne humaine (Articles L1121-1 à L1121-17), viewed 5 July 2021,
+https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006072665/LEGISCTA000006170998/.
+
+PAGE 44
+Milieu Consulting
+Brussels
+Study on the appropriate safeguards under article 89 (1) GDPR for the processing of
+personal data for scientific research / 44
+presymptomatic and susceptibility tests can be carried out exclusively for research purposes aimed at
+protecting health.
+In the domain of official statistics, the Legislative Decree No 322 of 6.9.1989 lays down the rules on
+the National Statistical System and on the reorganisation of the National Statistical Institute by
+highlighting appropriate measures for data minimisation274. Furthermore, the Italian SA has issued
+significant decisions with regard to the principles of data minimisation, storage limitation and data
+protection by design to reduce the risk of re-identification of data subjects when disseminating statistical
+results275.
+3.3.11 Norway
+The Norwegian Health Research Act (Helseforskningsloven or HRA)276 stipulates that all proposed
+health projects must be approved in advance by the Regional Committee for Medical and Health
+Research Ethics (REK)277. REK’s approval is often regarded as a supplementary legal ground for the
+research, but legal grounds for the processing of health personal data for research purposes are limited
+to the legal grounds provided under GDPR. In addition to the REK approval, the controller must –
+together with the DPO (if applicable) – identify a suitable legal ground for the processing of the personal
+data, as per the GDPR. Furthermore, REK can also decide to exempt the health personnel from his/her
+duty of client confidentiality278.
+Finally, the Health Register Act (Helseregisterloven)279 provides a legal basis for establishing health
+registries, from which the data for a lot of scientific research is derived. Section 20 of the Health Register
+Act states an exemption from the duty of confidentiality for indirectly identifiable health information.
+Confidentiality does not prevent data controllers from making indirectly identifiable health information
+available for research purposes. This exemption applies to health information included in statutory
+health registries, listed in Section 11280. These are health registers where names, national identity number
+and other information based on which persons can be identified, such as the register for causes of death,
+medical birth register and the Norwegian Patient Register281. Also, the health information can only be
+disclosed if the processing of the information is (i) of significant interest to society; (ii) the consideration
+of the patient’s integrity and confidentiality is safeguarded; and (iii) the processing of the information
+is unproblematic282 from an ethical, medical and health perspective283. The data controller can also set
+conditions for the disclosure, to ensure the protection of the fundamental rights and interests of data
+subjects284. Further, it can be mentioned that the Health Register Act is being amended at the time of the
+writing of this report. Some legislative amendments have been adopted, but have not yet entered into
+force. An administrative regulation is also subject to public consultation. Among other things, more
+concrete requirements will be set for deletion of datasets used for research, and due to the new analysis
+274 According to Article 6-bis of said Legislative Decree, personal data should be rendered anonymous after being gathered or
+when their availability is no more necessary for statistical processing. It further states that separation measures for recorded
+data should be in place, except if it is proved to be impossible because of particular processing peculiarities or for implying
+the use of evidently excessive means, and only temporarily matched with personal information if essential for statistical
+purposes.
+275 See in particular the decision of 23 January 2020, viewed 4 August, https://www.garanteprivacy.it/home/docweb/-
+/docweb-display/docweb/9261093.
+276 Lov om medisinsk og helsefaglig forskning (helseforskningsloven), LOV-2008-06-20-44.
+277 Cf. the Health Research Act Chapter 3. REK undertakes a standard evaluation of the research ethics of the project and
+judges whether the project satisfies the requirements laid down in HRA, and may specify conditions for approval and
+appropriate safeguards for the research project, e.g. data minimisation (Paragraph 10 HRA).
+278 Confidentiality could in practice be regarded as additional safeguards (Chapter 5 HRA).
+279 Lov om helseregistre og behandling av helseopplysninger (helseregisterloven) LOV-2014-06-20-43, viewed 26 May
+2021, https://lovdata.no/dokument/NL/lov/2014-06-20-43.
+280 Section 20(1) of Lov om helseregistre og behandling av helseopplysninger.
+281 The full list available in Section 11 of the Lov om helseregistre og behandling av helseopplysninger.
+282 The Norwegian law uses the wording “unbetenkelig”.
+283 Section 20 (2) of Lov om helseregistre og behandling av helseopplysninger.
+284 Idem.

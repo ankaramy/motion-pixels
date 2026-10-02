@@ -1,0 +1,236 @@
+{
+  "word_counts": {
+    "01_the_flaw_in_the_plan.md": {
+      "target": 2000,
+      "actual": 1976,
+      "within_5_percent": true,
+      "sections": [
+        {
+          "section": "Introduction to topic",
+          "target": 850,
+          "actual": 839,
+          "within_5_percent": true
+        },
+        {
+          "section": "Early references",
+          "target": 500,
+          "actual": 499,
+          "within_5_percent": true
+        },
+        {
+          "section": "Research question",
+          "target": 350,
+          "actual": 349,
+          "within_5_percent": true
+        },
+        {
+          "section": "Hypothesis",
+          "target": 300,
+          "actual": 289,
+          "within_5_percent": true
+        }
+      ]
+    },
+    "02_tools_and_instruments_for_behavioral_analysis.md": {
+      "target": 3000,
+      "actual": 2951,
+      "within_5_percent": true,
+      "sections": [
+        {
+          "section": "Space Syntax",
+          "target": 450,
+          "actual": 430,
+          "within_5_percent": true
+        },
+        {
+          "section": "Literature review",
+          "target": 700,
+          "actual": 695,
+          "within_5_percent": true
+        },
+        {
+          "section": "Practical review",
+          "target": 350,
+          "actual": 348,
+          "within_5_percent": true
+        },
+        {
+          "section": "The gaps and positioning",
+          "target": 350,
+          "actual": 333,
+          "within_5_percent": true
+        },
+        {
+          "section": "Computational pipeline",
+          "target": 800,
+          "actual": 804,
+          "within_5_percent": true
+        },
+        {
+          "section": "The Ethical Question",
+          "target": 350,
+          "actual": 341,
+          "within_5_percent": true
+        }
+      ]
+    },
+    "03_motion_pixels_learning_movement_from_barcelona.md": {
+      "target": 6000,
+      "actual": 5904,
+      "within_5_percent": true,
+      "sections": [
+        {
+          "section": "MACBA, the sandbox experiment",
+          "target": 2000,
+          "actual": 1957,
+          "within_5_percent": true
+        },
+        {
+          "section": "Building the dataset",
+          "target": 1250,
+          "actual": 1239,
+          "within_5_percent": true
+        },
+        {
+          "section": "The Behavioral Maps",
+          "target": 950,
+          "actual": 948,
+          "within_5_percent": true
+        },
+        {
+          "section": "Predictive Layer: Horizon Rollouts",
+          "target": 1000,
+          "actual": 969,
+          "within_5_percent": true
+        },
+        {
+          "section": "Building the prototype",
+          "target": 800,
+          "actual": 791,
+          "within_5_percent": true
+        }
+      ]
+    },
+    "04_what_comes_next.md": {
+      "target": 2500,
+      "actual": 2429,
+      "within_5_percent": true,
+      "sections": [
+        {
+          "section": "What did the model learn",
+          "target": 650,
+          "actual": 622,
+          "within_5_percent": true
+        },
+        {
+          "section": "Limitations of research",
+          "target": 650,
+          "actual": 628,
+          "within_5_percent": true
+        },
+        {
+          "section": "The meaning of it all",
+          "target": 600,
+          "actual": 579,
+          "within_5_percent": true
+        },
+        {
+          "section": "Future research directions",
+          "target": 600,
+          "actual": 600,
+          "within_5_percent": true
+        }
+      ]
+    },
+    "05_conclusion_and_closing.md": {
+      "target": 600,
+      "actual": 582,
+      "within_5_percent": true,
+      "sections": []
+    },
+    "abstract": {
+      "target": 300,
+      "actual": 303
+    }
+  },
+  "prose_total": 14145,
+  "em_dashes": 0,
+  "style_pattern_matches": {},
+  "duplicate_paragraphs": [],
+  "common_paragraph_openings": [
+    [
+      "The capacity experiment",
+      2
+    ],
+    [
+      "A plan can",
+      1
+    ],
+    [
+      "The starting point",
+      1
+    ],
+    [
+      "Design drawings are",
+      1
+    ],
+    [
+      "Movement supplies part",
+      1
+    ],
+    [
+      "An architectural reading",
+      1
+    ],
+    [
+      "The project takes",
+      1
+    ],
+    [
+      "There is a",
+      1
+    ],
+    [
+      "Prediction enters the",
+      1
+    ],
+    [
+      "This gives the",
+      1
+    ],
+    [
+      "The relationship between",
+      1
+    ],
+    [
+      "For this project,",
+      1
+    ]
+  ],
+  "placeholders": [
+    {
+      "file": "front_matter/00_cover_and_declaration.md",
+      "marker": "[AUTHOR INPUT REQUIRED: confirm full author name, official degree title, supervisors, academic year, submission date, and required cover wording.]"
+    },
+    {
+      "file": "front_matter/00_cover_and_declaration.md",
+      "marker": "[AUTHOR INPUT REQUIRED: review and confirm the supplied declaration against actual practice before submission, including final review of this manuscript.]"
+    },
+    {
+      "file": "chapters/02_tools_and_instruments_for_behavioral_analysis.md",
+      "marker": "[AUTHOR INPUT REQUIRED: supply the original literature corpus or full bibliographic records for the unresolved outline entries.]"
+    },
+    {
+      "file": "chapters/02_tools_and_instruments_for_behavioral_analysis.md",
+      "marker": "[AUTHOR INPUT REQUIRED: confirm the controller, lawful basis, institutional review, participant-information arrangements, retention period, access controls, and anonymization or publication-review procedures applied to this research.]"
+    },
+    {
+      "file": "chapters/03_motion_pixels_learning_movement_from_barcelona.md",
+      "marker": "[AUTHOR INPUT REQUIRED: identify the original four-model comparison figure, its dataset, checkpoints, and numerical evaluation.]"
+    },
+    {
+      "file": "chapters/03_motion_pixels_learning_movement_from_barcelona.md",
+      "marker": "[AUTHOR INPUT REQUIRED: provide the 40/60/100 m stress-test outputs, checkpoint identities, unit conversion, eligible tracks, and selection criteria.]"
+    }
+  ]
+}

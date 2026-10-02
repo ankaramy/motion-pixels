@@ -1,0 +1,31 @@
+horizon,rank,recording,track_id,window_id,gt_net_displacement,model_xc_net_displacement,model_xc_net_ratio,model_xc_cosine,model_xc_shape_ratio,model_xr_net_ratio,visual_score,individual_plot_path,collage_path,selection_notes
+H20,1,placa_espanya_01,6268,36047,9.362,10.075,1.076,1.0,0.212,1.149,0.8705,H20\individual\H20_best_01.png,H20\H20_collage.png,realistic length; well-aligned
+H20,2,placa_espanya_01,4394,33949,6.397,7.739,1.21,1.0,0.575,1.102,0.8551,H20\individual\H20_best_02.png,H20\H20_collage.png,XC adds curvature vs XR-straight; well-aligned
+H20,3,stairs_montjuic_01,1261,40219,3.762,4.428,1.177,0.988,0.656,0.597,0.7612,H20\individual\H20_best_03.png,H20\H20_collage.png,XC adds curvature vs XR-straight; well-aligned
+H20,4,esplanade_espanya_01,2820,7182,8.496,6.419,0.755,0.989,0.769,0.462,0.7432,H20\individual\H20_best_04.png,H20\H20_collage.png,well-aligned
+H20,5,esplanade_espanya_01,1882,4881,3.642,2.828,0.776,0.988,0.969,0.633,0.7225,H20\individual\H20_best_05.png,H20\H20_collage.png,XC adds curvature vs XR-straight; well-aligned
+H20,6,red_bridge_combined_01,1969,37921,2.344,2.103,0.897,0.975,0.41,0.476,0.6639,H20\individual\H20_best_06.png,H20\H20_collage.png,realistic length; well-aligned
+H60,1,placa_espanya_01,4394,30738,19.863,20.982,1.056,0.998,1.068,0.928,0.8918,H60\individual\H60_best_01.png,H60\H60_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H60,2,placa_espanya_01,6268,32498,11.994,14.832,1.237,0.999,0.96,2.094,0.7292,H60\individual\H60_best_02.png,H60\H60_collage.png,XC adds curvature vs XR-straight; well-aligned
+H60,3,placa_catalunya_01,1846,14520,2.18,1.695,0.777,0.999,0.694,0.747,0.6705,H60\individual\H60_best_03.png,H60\H60_collage.png,well-aligned
+H60,4,esplanade_espanya_01,112,1069,4.471,3.357,0.751,0.968,0.803,0.836,0.6693,H60\individual\H60_best_04.png,H60\H60_collage.png,XC adds curvature vs XR-straight; well-aligned
+H60,5,esplanade_espanya_01,516,8831,2.834,2.989,1.055,0.936,1.059,1.36,0.6509,H60\individual\H60_best_05.png,H60\H60_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H60,6,red_bridge_combined_01,1969,33832,5.374,4.07,0.757,0.926,1.108,0.412,0.6439,H60\individual\H60_best_06.png,H60\H60_collage.png,well-aligned
+H100,1,esplanade_espanya_01,750,11145,27.826,25.807,0.927,0.971,0.781,1.334,0.9175,H100\individual\H100_best_01.png,H100\H100_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H100,2,placa_espanya_01,4394,28130,22.713,23.428,1.031,1.0,0.906,0.3,0.7512,H100\individual\H100_best_02.png,H100\H100_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H100,3,placa_espanya_01,1647,24969,21.685,27.965,1.29,0.987,0.101,1.341,0.7442,H100\individual\H100_best_03.png,H100\H100_collage.png,well-aligned
+H100,4,esplanade_espanya_01,112,1245,5.397,6.459,1.197,0.972,0.708,1.39,0.6954,H100\individual\H100_best_04.png,H100\H100_collage.png,XC adds curvature vs XR-straight; well-aligned
+H100,5,placa_catalunya_01,4703,19376,3.23,2.801,0.867,1.0,1.023,0.852,0.6834,H100\individual\H100_best_05.png,H100\H100_collage.png,realistic length; well-aligned
+H100,6,placa_catalunya_01,1846,13623,3.73,2.824,0.757,1.0,1.282,0.721,0.6612,H100\individual\H100_best_06.png,H100\H100_collage.png,well-aligned
+H200,1,placa_espanya_01,1647,20659,41.156,50.577,1.229,0.988,0.248,0.24,0.869,H200\individual\H200_best_01.png,H200\H200_collage.png,well-aligned
+H200,2,esplanade_espanya_01,750,9684,38.948,45.659,1.172,0.976,0.569,2.489,0.7907,H200\individual\H200_best_02.png,H200\H200_collage.png,XC adds curvature vs XR-straight; well-aligned
+H200,3,esplanade_espanya_01,4152,6496,5.282,6.21,1.176,0.999,0.985,1.504,0.6713,H200\individual\H200_best_03.png,H200\H200_collage.png,XC adds curvature vs XR-straight; well-aligned
+H200,4,placa_catalunya_01,5350,17102,6.957,6.084,0.874,0.979,0.734,0.814,0.6594,H200\individual\H200_best_04.png,H200\H200_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H200,5,placa_catalunya_01,3084,13486,6.303,5.916,0.939,1.0,0.66,0.931,0.652,H200\individual\H200_best_05.png,H200\H200_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H200,6,red_bridge_combined_01,1178,24608,5.383,4.074,0.757,0.892,0.89,1.396,0.5891,H200\individual\H200_best_06.png,H200\H200_collage.png,XC adds curvature vs XR-straight; well-aligned
+H400,1,esplanade_espanya_01,585,5567,22.383,25.232,1.127,0.922,1.378,1.462,0.7921,H400\individual\H400_best_01.png,H400\H400_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H400,2,placa_espanya_01,3,15889,15.267,17.349,1.136,0.972,0.993,1.717,0.7877,H400\individual\H400_best_02.png,H400\H400_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H400,3,esplanade_espanya_01,112,210,17.611,16.756,0.951,0.995,0.622,0.998,0.7557,H400\individual\H400_best_03.png,H400\H400_collage.png,XC adds curvature vs XR-straight; realistic length; well-aligned
+H400,4,red_bridge_combined_01,2039,17662,8.731,10.392,1.19,0.997,1.043,1.773,0.6254,H400\individual\H400_best_04.png,H400\H400_collage.png,XC adds curvature vs XR-straight; well-aligned
+H400,5,stairs_montjuic_01,540,19316,8.026,9.518,1.186,0.862,1.118,1.908,0.5988,H400\individual\H400_best_05.png,H400\H400_collage.png,XC adds curvature vs XR-straight; well-aligned
+H400,6,placa_espanya_01,3790,16135,21.316,23.819,1.117,0.861,0.052,0.955,0.562,H400\individual\H400_best_06.png,H400\H400_collage.png,realistic length; well-aligned

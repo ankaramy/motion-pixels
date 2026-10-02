@@ -1,0 +1,66 @@
+{
+  "placa_catalunya_01": [
+    {
+      "trajectory_id": "placa_catalunya_01__3941",
+      "ade": 0.9365991894881341,
+      "fde": 3.220753390122051,
+      "gt_len": 11.493890296177968,
+      "pred_len": 6.17249750807056,
+      "len_ratio": 0.537024223219103,
+      "angular_err_deg": 15.293894358619136,
+      "start_idx": 2
+    },
+    {
+      "trajectory_id": "placa_catalunya_01__264",
+      "ade": 2.797630664829762,
+      "fde": 6.915681554126007,
+      "gt_len": 18.815433771158553,
+      "pred_len": 11.292574629905014,
+      "len_ratio": 0.6001761515174294,
+      "angular_err_deg": 171.98948290243078,
+      "start_idx": 4
+    },
+    {
+      "trajectory_id": "placa_catalunya_01__5477",
+      "ade": 1.229050520998656,
+      "fde": 3.404630882415346,
+      "gt_len": 4.550863397955025,
+      "pred_len": 5.419615152951344,
+      "len_ratio": 1.1908982272213886,
+      "angular_err_deg": 144.33671655593238,
+      "start_idx": 63
+    }
+  ],
+  "placa_espanya_01": [
+    {
+      "trajectory_id": "placa_espanya_01__6268",
+      "ade": 6.231628416183896,
+      "fde": 16.00211100244965,
+      "gt_len": 110.28826729105378,
+      "pred_len": 17.81663814759388,
+      "len_ratio": 0.1615460881308007,
+      "angular_err_deg": 16.781092577349366,
+      "start_idx": 277
+    },
+    {
+      "trajectory_id": "placa_espanya_01__4394",
+      "ade": 1.0964588047405621,
+      "fde": 1.5477479753171888,
+      "gt_len": 85.46279082419306,
+      "pred_len": 10.950720409906245,
+      "len_ratio": 0.1281343647252657,
+      "angular_err_deg": 91.03488636998607,
+      "start_idx": 386
+    },
+    {
+      "trajectory_id": "placa_espanya_01__122",
+      "ade": 2.2045881665460723,
+      "fde": 1.1227416338677316,
+      "gt_len": 45.23619077922339,
+      "pred_len": 18.13059930967568,
+      "len_ratio": 0.40079854199401144,
+      "angular_err_deg": 178.71298501207323,
+      "start_idx": 721
+    }
+  ]
+}

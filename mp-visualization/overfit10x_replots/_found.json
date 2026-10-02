@@ -1,0 +1,20 @@
+{
+  "1001": {
+    "A_motion_only": 0.028188829150873684,
+    "B_motion_position": 0.027802945409516795,
+    "C_motion_position_spatial": 0.04532686088743394,
+    "D_full_relational": 0.02923041944568868
+  },
+  "12007": {
+    "A_motion_only": 0.11178078675318655,
+    "B_motion_position": 0.09912387567901389,
+    "C_motion_position_spatial": 0.037758682364513144,
+    "D_full_relational": 0.09372501076408297
+  },
+  "14007": {
+    "A_motion_only": 0.014975672722919369,
+    "B_motion_position": 0.03805494735513225,
+    "C_motion_position_spatial": 0.011115472534600535,
+    "D_full_relational": 0.01548966040338085
+  }
+}

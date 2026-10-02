@@ -1,0 +1,27 @@
+{
+  "rows_master": 1064379,
+  "tracks_master": 3534,
+  "n_nan_in_model_C": 0,
+  "split_track_counts": {
+    "train": 2601,
+    "val": 334,
+    "test": 599
+  },
+  "split_row_counts": {
+    "train": 850927,
+    "val": 127605,
+    "test": 85847
+  },
+  "feature_order_model_C": [
+    "u",
+    "v",
+    "du",
+    "dv",
+    "speed",
+    "heading_sin",
+    "heading_cos",
+    "turn_rate",
+    "dist_to_obstacle_norm",
+    "dist_to_boundary_norm"
+  ]
+}

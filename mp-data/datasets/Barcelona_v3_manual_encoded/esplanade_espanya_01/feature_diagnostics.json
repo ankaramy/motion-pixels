@@ -1,0 +1,44 @@
+{
+  "recording_id": "esplanade_espanya_01",
+  "status": "PASS",
+  "row_count": 283875,
+  "track_count": 568,
+  "percent_inbounds": 99.918,
+  "percent_inside_walkable": 91.973,
+  "percent_inside_walkable_of_inbounds": 92.048,
+  "percent_inside_obstacle": 7.837,
+  "percent_invalid_dist_nan": 0.082,
+  "percent_invalid_clearance_nan": 0.083,
+  "dist_to_obstacle_v3_m": {
+    "min": 0.0,
+    "mean": 3.6228,
+    "max": 11.2364
+  },
+  "dist_to_walkable_boundary_v3_m": {
+    "min": 0.0,
+    "mean": 4.2305,
+    "max": 20.9682
+  },
+  "clearance_forward_v3_m": {
+    "min": 0.25,
+    "mean": 18.9149,
+    "max": 25.0
+  },
+  "clearance_left_v3_m": {
+    "min": 0.25,
+    "mean": 7.1028,
+    "max": 25.0
+  },
+  "clearance_right_v3_m": {
+    "min": 0.25,
+    "mean": 7.3461,
+    "max": 25.0
+  },
+  "mean_metres_per_pixel": 0.124811,
+  "transform_rms_px": 0.0,
+  "transform_anisotropy": 1.0,
+  "warnings": [
+    "0.0% rows had undefined heading (stationary); directional features NaN there."
+  ],
+  "output_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v3_manual_encoded\\esplanade_espanya_01\\spatial_v3_manual\\trajectories_encoded_v3.csv"
+}

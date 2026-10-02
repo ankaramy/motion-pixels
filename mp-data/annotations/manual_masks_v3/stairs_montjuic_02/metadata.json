@@ -1,0 +1,14 @@
+{
+  "recording_id": "stairs_montjuic_02",
+  "source_image_path": "C:\\Users\\OWNER\\Desktop\\new_datasets\\stairs_montjuic_02\\plan\\stairs-montjuic-2.png",
+  "created_at": "2026-06-08T15:24:20",
+  "image_width": 1732,
+  "image_height": 1237,
+  "brush_size_last": 41,
+  "walkable_pixels": 1174292,
+  "obstacle_pixels": 953453,
+  "overlap_pixels": 0,
+  "walkable_coverage_percent": 54.81,
+  "obstacle_coverage_percent": 44.502,
+  "notes": ""
+}

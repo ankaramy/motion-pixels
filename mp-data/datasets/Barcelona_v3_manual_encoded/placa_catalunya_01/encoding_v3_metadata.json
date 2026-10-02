@@ -1,0 +1,54 @@
+{
+  "recording_id": "placa_catalunya_01",
+  "created_at": "2026-06-08T21:32:13",
+  "encoder": "v3_manual",
+  "source_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_catalunya_01\\filtered_250m\\trajectories_world_filtered_250m.csv",
+  "calib_json": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_catalunya_01\\calibration\\calib.json",
+  "walkable_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\placa_catalunya_01\\walkable_mask_v3_manual.png",
+  "obstacle_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\placa_catalunya_01\\obstacle_mask_v3_manual.png",
+  "plan_image": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_catalunya_01\\plan\\placa-catalunya.png",
+  "mask_width": 2122,
+  "mask_height": 982,
+  "invert_plan_y": false,
+  "meters_per_plan_pixel": 0.047420737453263216,
+  "scale_px_per_m_from_fit": 21.08782,
+  "metres_per_pixel_from_fit": 0.047421,
+  "transform_world_to_plan_3x2": [
+    [
+      21.08782038395094,
+      -5.415317967223269e-07
+    ],
+    [
+      1.1717722259163565e-07,
+      21.087821442555008
+    ],
+    [
+      1718.499997005855,
+      609.0289905721908
+    ]
+  ],
+  "transform_plan_to_world_3x2": [
+    [
+      0.04742073774305546,
+      1.2177567690185126e-09
+    ],
+    [
+      -2.634995277528418e-10,
+      0.0474207353625448
+    ],
+    [
+      -81.49253750897753,
+      -28.88060468275666
+    ]
+  ],
+  "rms_world_to_plan_px": 0.0,
+  "rms_plan_to_world_px": 0.0,
+  "anisotropy": 1.0,
+  "scale_consistency_rel_err": 0.0,
+  "transform_ambiguous": false,
+  "clearance_step_m": 0.25,
+  "clearance_max_m": 25.0,
+  "row_count": 358351,
+  "track_count": 1537,
+  "left_right_convention": "left = heading + 90deg (CCW in world frame), right = heading - 90deg; clearance_asymmetry = (right-left)/(right+left+eps)."
+}

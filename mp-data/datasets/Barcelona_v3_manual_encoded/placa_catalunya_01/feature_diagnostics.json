@@ -1,0 +1,44 @@
+{
+  "recording_id": "placa_catalunya_01",
+  "status": "PASS",
+  "row_count": 358351,
+  "track_count": 1537,
+  "percent_inbounds": 98.009,
+  "percent_inside_walkable": 89.201,
+  "percent_inside_walkable_of_inbounds": 91.013,
+  "percent_inside_obstacle": 4.747,
+  "percent_invalid_dist_nan": 1.991,
+  "percent_invalid_clearance_nan": 1.994,
+  "dist_to_obstacle_v3_m": {
+    "min": 0.0,
+    "mean": 2.6284,
+    "max": 7.3976
+  },
+  "dist_to_walkable_boundary_v3_m": {
+    "min": 0.0,
+    "mean": 2.5722,
+    "max": 8.2399
+  },
+  "clearance_forward_v3_m": {
+    "min": 0.25,
+    "mean": 12.1682,
+    "max": 25.0
+  },
+  "clearance_left_v3_m": {
+    "min": 0.25,
+    "mean": 11.0421,
+    "max": 25.0
+  },
+  "clearance_right_v3_m": {
+    "min": 0.25,
+    "mean": 11.3306,
+    "max": 25.0
+  },
+  "mean_metres_per_pixel": 0.047421,
+  "transform_rms_px": 0.0,
+  "transform_anisotropy": 1.0,
+  "warnings": [
+    "0.0% rows had undefined heading (stationary); directional features NaN there."
+  ],
+  "output_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v3_manual_encoded\\placa_catalunya_01\\spatial_v3_manual\\trajectories_encoded_v3.csv"
+}

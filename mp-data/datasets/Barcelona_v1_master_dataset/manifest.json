@@ -1,0 +1,214 @@
+{
+  "dataset_version": "Barcelona_v1_master",
+  "encoded_source_root": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v1_encoded",
+  "recipe": "frozen make_bridge_dataset.py (per-recording), C_motion_position_spatial Model C feature set",
+  "min_track_length_filter": 11,
+  "split_rule": "recording-level (each recording in exactly one split)",
+  "recordings": [
+    {
+      "recording_id": "esplanade_espanya_01",
+      "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v1_encoded\\esplanade_espanya_01\\spatial_v21C\\trajectories_encoded.csv",
+      "split": "train",
+      "rows_in": 283875,
+      "tracks_in": 568,
+      "rows_used": 283120,
+      "tracks_used": 522,
+      "world_bounds": {
+        "xmin": -131.1647,
+        "xmax": 132.0347,
+        "ymin": -13.2276,
+        "ymax": 34.4432,
+        "xrng": 263.19939999999997,
+        "yrng": 47.6708
+      },
+      "normalization_ranges": {
+        "u": [
+          0.0,
+          0.9999863221572696
+        ],
+        "v": [
+          0.0,
+          1.0
+        ],
+        "dist_to_obstacle_norm": [
+          1.5865069347980905e-05,
+          0.9999964744290338
+        ],
+        "dist_to_boundary_norm": [
+          0.004805353226955106,
+          0.9999964744290338
+        ]
+      },
+      "notes": "frozen bridge recipe (MIN_TRACK_LEN=11) applied per-recording; percentile-rank spatial features; entrance_affinity_norm kept diagnostic-only (Model D feature, excluded from Model C)."
+    },
+    {
+      "recording_id": "placa_catalunya_01",
+      "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v1_encoded\\placa_catalunya_01\\spatial_v21C\\trajectories_encoded.csv",
+      "split": "train",
+      "rows_in": 358351,
+      "tracks_in": 1537,
+      "rows_used": 355583,
+      "tracks_used": 1255,
+      "world_bounds": {
+        "xmin": -80.2338,
+        "xmax": -17.9613,
+        "ymin": -94.7212,
+        "ymax": 4.738,
+        "xrng": 62.2725,
+        "yrng": 99.4592
+      },
+      "normalization_ranges": {
+        "u": [
+          0.0021373800634308707,
+          0.9998554739250873
+        ],
+        "v": [
+          0.0067877079244554606,
+          1.0
+        ],
+        "dist_to_obstacle_norm": [
+          6.025143062117824e-05,
+          0.9999957964118171
+        ],
+        "dist_to_boundary_norm": [
+          0.0019420577404872799,
+          1.0
+        ]
+      },
+      "notes": "frozen bridge recipe (MIN_TRACK_LEN=11) applied per-recording; percentile-rank spatial features; entrance_affinity_norm kept diagnostic-only (Model D feature, excluded from Model C)."
+    },
+    {
+      "recording_id": "placa_espanya_01",
+      "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v1_encoded\\placa_espanya_01\\spatial_v21C\\trajectories_encoded.csv",
+      "split": "train",
+      "rows_in": 213618,
+      "tracks_in": 923,
+      "rows_used": 212224,
+      "tracks_used": 824,
+      "world_bounds": {
+        "xmin": -131.2831,
+        "xmax": 205.8424,
+        "ymin": -37.9073,
+        "ymax": 54.2163,
+        "xrng": 337.1255,
+        "yrng": 92.1236
+      },
+      "normalization_ranges": {
+        "u": [
+          0.0,
+          1.0
+        ],
+        "v": [
+          0.0005036711548397853,
+          1.0
+        ],
+        "dist_to_obstacle_norm": [
+          7.0406668919680075e-06,
+          1.0
+        ],
+        "dist_to_boundary_norm": [
+          0.005008261049153242,
+          1.0
+        ]
+      },
+      "notes": "frozen bridge recipe (MIN_TRACK_LEN=11) applied per-recording; percentile-rank spatial features; entrance_affinity_norm kept diagnostic-only (Model D feature, excluded from Model C)."
+    },
+    {
+      "recording_id": "stairs_montjuic_01",
+      "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v1_encoded\\stairs_montjuic_01\\spatial_v21C\\trajectories_encoded.csv",
+      "split": "val",
+      "rows_in": 128259,
+      "tracks_in": 392,
+      "rows_used": 127605,
+      "tracks_used": 334,
+      "world_bounds": {
+        "xmin": -5.2248,
+        "xmax": 7.8244,
+        "ymin": -18.1657,
+        "ymax": 7.4461,
+        "xrng": 13.049199999999999,
+        "yrng": 25.611800000000002
+      },
+      "normalization_ranges": {
+        "u": [
+          0.0,
+          0.9999616834748492
+        ],
+        "v": [
+          0.0,
+          1.0
+        ],
+        "dist_to_obstacle_norm": [
+          7.03460242771946e-05,
+          0.9999804594377008
+        ],
+        "dist_to_boundary_norm": [
+          0.002462110849701811,
+          1.0
+        ]
+      },
+      "notes": "frozen bridge recipe (MIN_TRACK_LEN=11) applied per-recording; percentile-rank spatial features; entrance_affinity_norm kept diagnostic-only (Model D feature, excluded from Model C)."
+    },
+    {
+      "recording_id": "red_bridge_combined_01",
+      "source_encoded_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v1_encoded\\red_bridge_combined_01\\spatial_v21C\\trajectories_encoded.csv",
+      "split": "test",
+      "rows_in": 87076,
+      "tracks_in": 716,
+      "rows_used": 85847,
+      "tracks_used": 599,
+      "world_bounds": {
+        "xmin": -2.2871,
+        "xmax": 13.2127,
+        "ymin": -27.9703,
+        "ymax": 10.2471,
+        "xrng": 15.4998,
+        "yrng": 38.2174
+      },
+      "normalization_ranges": {
+        "u": [
+          0.0,
+          1.0
+        ],
+        "v": [
+          0.0,
+          0.9995499432195807
+        ],
+        "dist_to_obstacle_norm": [
+          0.018115355250676722,
+          0.9999595122966939
+        ],
+        "dist_to_boundary_norm": [
+          0.018115355250676722,
+          0.9999595122966939
+        ]
+      },
+      "notes": "frozen bridge recipe (MIN_TRACK_LEN=11) applied per-recording; percentile-rank spatial features; entrance_affinity_norm kept diagnostic-only (Model D feature, excluded from Model C)."
+    }
+  ],
+  "totals": {
+    "rows_master": 1064379,
+    "tracks_master": 3534
+  },
+  "model_C_columns": [
+    "recording_id",
+    "trajectory_id",
+    "timestep",
+    "split",
+    "u",
+    "v",
+    "du",
+    "dv",
+    "speed",
+    "heading_sin",
+    "heading_cos",
+    "turn_rate",
+    "dist_to_obstacle_norm",
+    "dist_to_boundary_norm",
+    "target_du",
+    "target_dv"
+  ],
+  "excluded_from_model_C": [
+    "entrance_affinity_norm"
+  ]
+}

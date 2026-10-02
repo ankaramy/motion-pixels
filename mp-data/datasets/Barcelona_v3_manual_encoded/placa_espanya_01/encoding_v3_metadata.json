@@ -1,0 +1,54 @@
+{
+  "recording_id": "placa_espanya_01",
+  "created_at": "2026-06-08T21:31:58",
+  "encoder": "v3_manual",
+  "source_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_espanya_01\\filtered_250m\\trajectories_world_filtered_250m.csv",
+  "calib_json": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_espanya_01\\calibration\\calib.json",
+  "walkable_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\placa_espanya_01\\walkable_mask_v3_manual.png",
+  "obstacle_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\placa_espanya_01\\obstacle_mask_v3_manual.png",
+  "plan_image": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_espanya_01\\plan\\placa-espanya.png",
+  "mask_width": 2311,
+  "mask_height": 1227,
+  "invert_plan_y": false,
+  "meters_per_plan_pixel": 0.09972699226400716,
+  "scale_px_per_m_from_fit": 10.02738,
+  "metres_per_pixel_from_fit": 0.099727,
+  "transform_world_to_plan_3x2": [
+    [
+      10.027375472182895,
+      7.492855544703977e-09
+    ],
+    [
+      1.662119544221241e-07,
+      10.027375578718747
+    ],
+    [
+      1569.1190000015981,
+      1021.2140003779098
+    ]
+  ],
+  "transform_plan_to_world_3x2": [
+    [
+      0.09972699264868906,
+      -7.451820498525663e-11
+    ],
+    [
+      -1.6530607716003232e-09,
+      0.09972699158913408
+    ],
+    [
+      -156.48351728994888,
+      -101.84259990946579
+    ]
+  ],
+  "rms_world_to_plan_px": 0.0,
+  "rms_plan_to_world_px": 0.0,
+  "anisotropy": 1.0,
+  "scale_consistency_rel_err": 0.0,
+  "transform_ambiguous": false,
+  "clearance_step_m": 0.25,
+  "clearance_max_m": 25.0,
+  "row_count": 213618,
+  "track_count": 923,
+  "left_right_convention": "left = heading + 90deg (CCW in world frame), right = heading - 90deg; clearance_asymmetry = (right-left)/(right+left+eps)."
+}

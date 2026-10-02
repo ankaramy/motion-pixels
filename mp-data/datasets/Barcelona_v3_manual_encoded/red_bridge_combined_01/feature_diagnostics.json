@@ -1,0 +1,45 @@
+{
+  "recording_id": "red_bridge_combined_01",
+  "status": "CHECK",
+  "row_count": 87076,
+  "track_count": 716,
+  "percent_inbounds": 72.451,
+  "percent_inside_walkable": 72.424,
+  "percent_inside_walkable_of_inbounds": 99.964,
+  "percent_inside_obstacle": 0.023,
+  "percent_invalid_dist_nan": 27.549,
+  "percent_invalid_clearance_nan": 27.556,
+  "dist_to_obstacle_v3_m": {
+    "min": 0.0,
+    "mean": 3.9013,
+    "max": 5.4232
+  },
+  "dist_to_walkable_boundary_v3_m": {
+    "min": 0.0,
+    "mean": 3.5746,
+    "max": 5.36
+  },
+  "clearance_forward_v3_m": {
+    "min": 0.25,
+    "mean": 10.0676,
+    "max": 25.0
+  },
+  "clearance_left_v3_m": {
+    "min": 0.25,
+    "mean": 10.2604,
+    "max": 25.0
+  },
+  "clearance_right_v3_m": {
+    "min": 0.25,
+    "mean": 8.3066,
+    "max": 25.0
+  },
+  "mean_metres_per_pixel": 0.044696,
+  "transform_rms_px": 0.0,
+  "transform_anisotropy": 1.0,
+  "warnings": [
+    "27.5% of points map OUTSIDE the mask image (plan crop does not cover full trajectory extent).",
+    "0.01% rows had undefined heading (stationary); directional features NaN there."
+  ],
+  "output_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v3_manual_encoded\\red_bridge_combined_01\\spatial_v3_manual\\trajectories_encoded_v3.csv"
+}

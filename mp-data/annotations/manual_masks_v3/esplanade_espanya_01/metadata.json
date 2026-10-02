@@ -1,0 +1,14 @@
+{
+  "recording_id": "esplanade_espanya_01",
+  "source_image_path": "C:\\Users\\OWNER\\Desktop\\new_datasets\\esplanade_espanya_01\\plan\\esplanade-espanya.png",
+  "created_at": "2026-06-08T15:10:22",
+  "image_width": 2401,
+  "image_height": 694,
+  "brush_size_last": 24,
+  "walkable_pixels": 342462,
+  "obstacle_pixels": 1298389,
+  "overlap_pixels": 0,
+  "walkable_coverage_percent": 20.552,
+  "obstacle_coverage_percent": 77.921,
+  "notes": ""
+}

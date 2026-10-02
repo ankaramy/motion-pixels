@@ -1,0 +1,14 @@
+{
+  "recording_id": "placa_espanya_01",
+  "source_image_path": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_espanya_01\\plan\\placa-espanya.png",
+  "created_at": "2026-06-08T21:30:07",
+  "image_width": 2311,
+  "image_height": 1227,
+  "brush_size_last": 23,
+  "walkable_pixels": 886801,
+  "obstacle_pixels": 1925888,
+  "overlap_pixels": 0,
+  "walkable_coverage_percent": 31.274,
+  "obstacle_coverage_percent": 67.918,
+  "notes": ""
+}

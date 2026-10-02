@@ -1,0 +1,14 @@
+{
+  "recording_id": "placa_montjuic_01",
+  "source_image_path": "C:\\Users\\OWNER\\Desktop\\new_datasets\\placa_montjuic_01\\plan\\placa-montjuic.png",
+  "created_at": "2026-06-08T15:21:07",
+  "image_width": 1678,
+  "image_height": 1114,
+  "brush_size_last": 54,
+  "walkable_pixels": 1102702,
+  "obstacle_pixels": 759895,
+  "overlap_pixels": 0,
+  "walkable_coverage_percent": 58.99,
+  "obstacle_coverage_percent": 40.651,
+  "notes": ""
+}

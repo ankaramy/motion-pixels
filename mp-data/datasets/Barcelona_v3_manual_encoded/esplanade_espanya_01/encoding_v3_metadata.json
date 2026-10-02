@@ -1,0 +1,54 @@
+{
+  "recording_id": "esplanade_espanya_01",
+  "created_at": "2026-06-08T21:31:49",
+  "encoder": "v3_manual",
+  "source_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\esplanade_espanya_01\\filtered_250m\\trajectories_world_filtered_250m.csv",
+  "calib_json": "C:\\Users\\OWNER\\Desktop\\new_datasets\\esplanade_espanya_01\\calibration\\calib.json",
+  "walkable_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\esplanade_espanya_01\\walkable_mask_v3_manual.png",
+  "obstacle_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\esplanade_espanya_01\\obstacle_mask_v3_manual.png",
+  "plan_image": "C:\\Users\\OWNER\\Desktop\\new_datasets\\esplanade_espanya_01\\plan\\esplanade-espanya.png",
+  "mask_width": 2401,
+  "mask_height": 694,
+  "invert_plan_y": false,
+  "meters_per_plan_pixel": 0.12481060317703176,
+  "scale_px_per_m_from_fit": 8.01214,
+  "metres_per_pixel_from_fit": 0.124811,
+  "transform_world_to_plan_3x2": [
+    [
+      8.012139799092045,
+      -4.870280934752913e-09
+    ],
+    [
+      -2.2384647024864535e-07,
+      8.01213961882354
+    ],
+    [
+      934.231000223181,
+      440.4229992320492
+    ]
+  ],
+  "transform_plan_to_world_3x2": [
+    [
+      0.12481060304430978,
+      7.586732881266063e-11
+    ],
+    [
+      3.4870129561603846e-09,
+      0.12481060585247788
+    ],
+    [
+      -116.601936056304,
+      -54.969461436394795
+    ]
+  ],
+  "rms_world_to_plan_px": 0.0,
+  "rms_plan_to_world_px": 0.0,
+  "anisotropy": 1.0,
+  "scale_consistency_rel_err": 0.0,
+  "transform_ambiguous": false,
+  "clearance_step_m": 0.25,
+  "clearance_max_m": 25.0,
+  "row_count": 283875,
+  "track_count": 568,
+  "left_right_convention": "left = heading + 90deg (CCW in world frame), right = heading - 90deg; clearance_asymmetry = (right-left)/(right+left+eps)."
+}

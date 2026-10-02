@@ -1,0 +1,14 @@
+{
+  "recording_id": "red_bridge_combined_01",
+  "source_image_path": "C:\\Users\\OWNER\\Desktop\\new_datasets\\red_bridge_combined_01\\plan\\red-bridge-combined.png",
+  "created_at": "2026-06-08T21:26:23",
+  "image_width": 1696,
+  "image_height": 1159,
+  "brush_size_last": 16,
+  "walkable_pixels": 957855,
+  "obstacle_pixels": 980332,
+  "overlap_pixels": 0,
+  "walkable_coverage_percent": 48.729,
+  "obstacle_coverage_percent": 49.873,
+  "notes": ""
+}

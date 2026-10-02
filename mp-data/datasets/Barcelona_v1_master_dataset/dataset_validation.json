@@ -1,0 +1,62 @@
+{
+  "1_all5_recordings": true,
+  "2_no_review_required": true,
+  "3_no_nan_modelC": true,
+  "3_nan_detail": {},
+  "4_no_inf_modelC": true,
+  "4_inf_detail": {},
+  "5_modelC_cols_exact": true,
+  "6_no_forbidden_in_modelC": true,
+  "7_uv_in_range": true,
+  "7_uv_minmax": [
+    0.0,
+    1.0,
+    0.0,
+    1.0
+  ],
+  "8_distnorm_in_range": true,
+  "8_distnorm_minmax": [
+    7.040666891968008e-06,
+    1.0,
+    0.0019420577404872,
+    1.0
+  ],
+  "9_target_du_mismatch_vs_next_inrow": 0,
+  "9_target_dv_mismatch_vs_next_inrow": 0,
+  "10_11_each_recording_single_split": true,
+  "split_map": {
+    "esplanade_espanya_01": "train",
+    "placa_catalunya_01": "train",
+    "placa_espanya_01": "train",
+    "red_bridge_combined_01": "test",
+    "stairs_montjuic_01": "val"
+  },
+  "12_trajectory_id_namespaced": true,
+  "rows_by_recording": {
+    "esplanade_espanya_01": 283120,
+    "placa_catalunya_01": 355583,
+    "placa_espanya_01": 212224,
+    "red_bridge_combined_01": 85847,
+    "stairs_montjuic_01": 127605
+  },
+  "tracks_by_recording": {
+    "esplanade_espanya_01": 522,
+    "placa_catalunya_01": 1255,
+    "placa_espanya_01": 824,
+    "red_bridge_combined_01": 599,
+    "stairs_montjuic_01": 334
+  },
+  "rows_by_split": {
+    "train": 850927,
+    "val": 127605,
+    "test": 85847
+  },
+  "tracks_by_split": {
+    "train": 2601,
+    "val": 334,
+    "test": 599
+  },
+  "total_rows": 1064379,
+  "total_tracks": 3534,
+  "SAFE_FOR_TRAINING": true
+}

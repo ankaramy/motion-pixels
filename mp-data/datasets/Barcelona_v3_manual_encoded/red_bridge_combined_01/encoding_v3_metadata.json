@@ -1,0 +1,54 @@
+{
+  "recording_id": "red_bridge_combined_01",
+  "created_at": "2026-06-08T21:31:38",
+  "encoder": "v3_manual",
+  "source_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\red_bridge_combined_01\\filtered_250m\\trajectories_world_filtered_250m.csv",
+  "calib_json": "C:\\Users\\OWNER\\Desktop\\new_datasets\\red_bridge_combined_01\\calibration\\calib.json",
+  "walkable_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\red_bridge_combined_01\\walkable_mask_v3_manual.png",
+  "obstacle_mask": "C:\\Users\\OWNER\\Desktop\\IAAC\\IAAC_Thesis\\motion-pixels\\mp-data\\annotations\\manual_masks_v3\\red_bridge_combined_01\\obstacle_mask_v3_manual.png",
+  "plan_image": "C:\\Users\\OWNER\\Desktop\\new_datasets\\red_bridge_combined_01\\plan\\red-bridge-combined.png",
+  "mask_width": 1696,
+  "mask_height": 1159,
+  "invert_plan_y": false,
+  "meters_per_plan_pixel": 0.04469599112772363,
+  "scale_px_per_m_from_fit": 22.37337,
+  "metres_per_pixel_from_fit": 0.044696,
+  "transform_world_to_plan_3x2": [
+    [
+      22.373372428673072,
+      -1.1824486643710329e-06
+    ],
+    [
+      5.034942205384141e-07,
+      22.37336968120269
+    ],
+    [
+      1027.0809934661625,
+      371.2570052471788
+    ]
+  ],
+  "transform_plan_to_world_3x2": [
+    [
+      0.044695988644000206,
+      2.3622143301590043e-09
+    ],
+    [
+      -1.0058417293512534e-09,
+      0.04469599413271198
+    ],
+    [
+      -45.906400047006485,
+      -16.593703354441633
+    ]
+  ],
+  "rms_world_to_plan_px": 0.0,
+  "rms_plan_to_world_px": 0.0,
+  "anisotropy": 1.0,
+  "scale_consistency_rel_err": 0.0,
+  "transform_ambiguous": false,
+  "clearance_step_m": 0.25,
+  "clearance_max_m": 25.0,
+  "row_count": 87076,
+  "track_count": 716,
+  "left_right_convention": "left = heading + 90deg (CCW in world frame), right = heading - 90deg; clearance_asymmetry = (right-left)/(right+left+eps)."
+}

@@ -1,0 +1,44 @@
+{
+  "recording_id": "stairs_montjuic_01",
+  "status": "PASS",
+  "row_count": 128259,
+  "track_count": 392,
+  "percent_inbounds": 96.605,
+  "percent_inside_walkable": 94.776,
+  "percent_inside_walkable_of_inbounds": 98.107,
+  "percent_inside_obstacle": 1.824,
+  "percent_invalid_dist_nan": 3.395,
+  "percent_invalid_clearance_nan": 3.397,
+  "dist_to_obstacle_v3_m": {
+    "min": 0.0,
+    "mean": 2.1994,
+    "max": 6.7505
+  },
+  "dist_to_walkable_boundary_v3_m": {
+    "min": 0.0,
+    "mean": 2.0426,
+    "max": 6.4887
+  },
+  "clearance_forward_v3_m": {
+    "min": 0.25,
+    "mean": 11.0737,
+    "max": 25.0
+  },
+  "clearance_left_v3_m": {
+    "min": 0.25,
+    "mean": 8.8655,
+    "max": 25.0
+  },
+  "clearance_right_v3_m": {
+    "min": 0.25,
+    "mean": 8.9063,
+    "max": 25.0
+  },
+  "mean_metres_per_pixel": 0.02171,
+  "transform_rms_px": 0.0,
+  "transform_anisotropy": 1.0,
+  "warnings": [
+    "0.0% rows had undefined heading (stationary); directional features NaN there."
+  ],
+  "output_csv": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v3_manual_encoded\\stairs_montjuic_01\\spatial_v3_manual\\trajectories_encoded_v3.csv"
+}

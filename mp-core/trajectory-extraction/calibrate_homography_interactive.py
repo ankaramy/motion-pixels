@@ -141,10 +141,15 @@ class State:
         self.errs      = None
         self.worst_idx = None   # index of the pair with the highest reprojection error
 
-        # Scale factors: display_pixels / original_pixels  (set in run())
-        # Used by save_calibration_json to convert back to original image coords.
+        # Scale factors: display_px / rotated-frame_px  (set in run())
+        # save_calibration_json divides by these, then applies _inv_rotate_pt
+        # to arrive at pre-rotation original-image pixel coordinates.
         self.cam_display_scale: float = 1.0
         self.top_display_scale: float = 1.0
+
+        # Rotation applied to camera frame before display
+        self.frame_rotate: str  = "none"
+        self.cam_raw_orig_shape = None   # (h, w) before --rotate was applied
 
         # Misc
         self.show_help    = True
@@ -227,6 +232,44 @@ def solve_homography(img_pts, world_pts):
     n_inliers = int(mask.sum()) if mask is not None else n
     errs = _reprojection_errors(src, dst, H)
     return H, n_inliers, errs
+
+
+def _validate_points(img_pts, top_view_pts):
+    """Validate point collections before solving.  Returns (ok: bool, message: str)."""
+    n_cam = len(img_pts)
+    n_tv  = len(top_view_pts)
+    if n_cam < 4:
+        return False, f"Need at least 4 camera points.  Currently have {n_cam}."
+    if n_tv < 4:
+        return False, f"Need at least 4 plan points.  Currently have {n_tv}."
+    if n_cam != n_tv:
+        return False, (f"Camera points ({n_cam}) and plan points ({n_tv}) count mismatch.  "
+                       f"Undo the unpaired point with the U key.")
+
+    def _has_dup(pts):
+        a = np.array(pts, dtype=np.float32)
+        for i in range(len(a)):
+            for j in range(i + 1, len(a)):
+                if float(np.hypot(a[i, 0] - a[j, 0], a[i, 1] - a[j, 1])) < 2.0:
+                    return True, i + 1, j + 1
+        return False, -1, -1
+
+    dup, pi, pj = _has_dup(img_pts)
+    if dup:
+        return False, f"Camera points {pi} and {pj} are nearly identical.  Delete one with D."
+    dup, pi, pj = _has_dup(top_view_pts)
+    if dup:
+        return False, f"Plan points {pi} and {pj} are nearly identical.  Delete one with D."
+
+    n = min(n_cam, n_tv)
+    for label, pts in (("Camera", img_pts), ("Plan", top_view_pts)):
+        a = np.array(pts[:n], dtype=np.float64)
+        c = a - a.mean(axis=0)
+        s = np.linalg.svd(c, compute_uv=False)
+        if s[0] > 0 and s[-1] / s[0] < 1e-3:
+            return False, (f"{label} points are nearly collinear.  "
+                           f"Spread them across different regions of the image.")
+    return True, ""
 
 
 def _reprojection_errors(src, dst, H):
@@ -388,14 +431,72 @@ def render_canvas(base, state, window, live_err):
 
 
 # -- Image loading ------------------------------------------------------------
+
+def _detect_video_rotation(video_path):
+    """Read the rotation angle embedded in the video container via cv2.
+
+    OpenCV exposes CAP_PROP_ORIENTATION_META which returns the clockwise degrees
+    stored in the container (QuickTime 'rotate' atom, MP4 tkhd matrix, etc.).
+    This is the same value VLC and Windows Media Player apply automatically.
+
+    Returns a string matching _ROTATION_CODES: "90", "180", "270", or "none".
+    Returns "none" if the property is unavailable or zero (no rotation needed).
+    """
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        return "none"
+    angle = cap.get(cv2.CAP_PROP_ORIENTATION_META)
+    cap.release()
+    angle_int = int(round(angle)) % 360
+    return {90: "90", 180: "180", 270: "270"}.get(angle_int, "none")
+
+
+_ROTATION_CODES = {
+    "90":  cv2.ROTATE_90_CLOCKWISE,
+    "180": cv2.ROTATE_180,
+    "270": cv2.ROTATE_90_COUNTERCLOCKWISE,
+}
+
+
+def _apply_rotation(img, rotate):
+    """Rotate image clockwise by rotate degrees string, or return unchanged."""
+    code = _ROTATION_CODES.get(rotate)
+    return cv2.rotate(img, code) if code is not None else img
+
+
+def _inv_rotate_pt(px, py, rotate, orig_h, orig_w):
+    """Map (px, py) from rotated-frame space back to pre-rotation frame space.
+
+    Forward transforms (col=x, row=y in the original H×W image):
+      90°  CW : (x, y) → (orig_H-1-y, x)   rotated shape (orig_W, orig_H)
+      270° CW : (x, y) → (y, orig_W-1-x)   rotated shape (orig_W, orig_H)
+      180°    : (x, y) → (orig_W-1-x, orig_H-1-y)
+    Inverse is derived algebraically from each forward.
+    """
+    if rotate == "90":
+        return py, orig_h - 1 - px
+    if rotate == "270":
+        return orig_w - 1 - py, px
+    if rotate == "180":
+        return orig_w - 1 - px, orig_h - 1 - py
+    return px, py  # "none"
+
+
 def load_source_frame(args):
-    """Load camera frame from --frame_image or extract from --video."""
+    """Load camera frame from --frame_image or extract from --video.
+
+    Returns (rotated_frame, source_label, pre_rotation_shape_hw).
+    pre_rotation_shape_hw = (h, w) of the raw frame *before* --rotate is applied.
+    """
+    rotate = getattr(args, "rotate", "none")
     if args.frame_image:
         img = cv2.imread(str(args.frame_image))
         if img is None:
             sys.exit(f"[ERROR] Cannot read frame image: {args.frame_image}")
+        orig_shape = img.shape[:2]
+        img = _apply_rotation(img, rotate)
         print(f"[INFO] Loaded camera frame: {args.frame_image}")
-        return img, str(args.frame_image)
+        return img, str(args.frame_image), orig_shape
     # Video path
     cap = cv2.VideoCapture(str(args.video))
     if not cap.isOpened():
@@ -405,9 +506,11 @@ def load_source_frame(args):
     cap.release()
     if not ok:
         sys.exit(f"[ERROR] Could not read frame {args.frame_index} from video.")
+    orig_shape = frame.shape[:2]
+    frame = _apply_rotation(frame, rotate)
     label = f"{args.video}@frame{args.frame_index}"
     print(f"[INFO] Loaded camera frame: {label}")
-    return frame, label
+    return frame, label, orig_shape
 
 
 def load_top_view_image(args):
@@ -436,6 +539,21 @@ def pad_to_width(img, target_w):
         return img
     pad = np.full((h, target_w - w, 3), 40, dtype=np.uint8)
     return np.hstack([img, pad])
+
+
+# -- Error logging ------------------------------------------------------------
+def _write_error_log(tb_str, out_json_path):
+    """Write a crash traceback to calibration_error.txt alongside calib.json."""
+    import datetime
+    try:
+        err_path = Path(out_json_path).parent / "calibration_error.txt"
+        err_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(err_path, "w") as f:
+            f.write(f"[{datetime.datetime.now().isoformat()}]\n\n")
+            f.write(tb_str)
+        print(f"[ERROR] Traceback written to: {err_path}")
+    except Exception as e:
+        print(f"[ERROR] Could not write error log: {e}")
 
 
 # -- Output: calibration JSON -------------------------------------------------
@@ -476,8 +594,18 @@ def save_calibration_json(state, H, n_inliers, errs, args):
     ]
 
     # --- Convert camera coordinates to original pixel space -------------------
-    orig_img_pts = [[round(p[0] / cs, 3), round(p[1] / cs, 3)]
-                    for p in state.img_pts]
+    # Step 1: display → rotated-frame coords  (÷ cam_display_scale)
+    # Step 2: rotated-frame → pre-rotation original coords  (_inv_rotate_pt)
+    _rotate   = state.frame_rotate
+    _orig_hw  = state.cam_raw_orig_shape     # (h, w) before --rotate; None if unset
+    orig_img_pts = []
+    for p in state.img_pts:
+        rot_x, rot_y = p[0] / cs, p[1] / cs
+        if _orig_hw is not None and _rotate != "none":
+            ox, oy = _inv_rotate_pt(rot_x, rot_y, _rotate, _orig_hw[0], _orig_hw[1])
+        else:
+            ox, oy = rot_x, rot_y
+        orig_img_pts.append([round(ox, 3), round(oy, 3)])
 
     # --- Recompute H in original-camera-pixel → world space -------------------
     # This H can be directly applied to full-resolution tracking data from
@@ -529,6 +657,7 @@ def save_calibration_json(state, H, n_inliers, errs, args):
         "diagnostics": {
             "n_pairs":                     n,
             "n_inliers":                   n_inliers_out,
+            "frame_rotate":                state.frame_rotate,
             "cam_display_scale":           round(cs, 6),
             "top_display_scale":           round(ts, 6),
             "mean_reprojection_error_m":   round(errs["mean"],   4) if errs else None,
@@ -540,8 +669,8 @@ def save_calibration_json(state, H, n_inliers, errs, args):
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(data, indent=2))
     print(f"[INFO] Calibration saved: {out.resolve()}")
-    print(f"[INFO] Coordinates stored in original pixel space "
-          f"(cam_scale={cs:.4f}, plan_scale={ts:.4f})")
+    print(f"[INFO] Coordinates stored in pre-rotation original pixel space "
+          f"(cam_scale={cs:.4f}, rotate={state.frame_rotate}, plan_scale={ts:.4f})")
     return data
 
 
@@ -682,29 +811,52 @@ def render_topdown_plot(state, out_path):
 
 # -- Main interactive session -------------------------------------------------
 def run(args):
-    # Load images
-    cam_raw,      source_label = load_source_frame(args)
-    top_view_raw               = load_top_view_image(args)
+    rotate = getattr(args, "rotate", "none")
 
-    cam_base      = fit_to_display(cam_raw)
-    top_view_base = fit_to_display(top_view_raw)
+    # Auto-detect rotation from video container metadata when not manually specified.
+    # CAP_PROP_ORIENTATION_META returns the CW degrees stored in the container
+    # (same value VLC/Windows Media Player apply). Propagate to args.rotate so
+    # load_source_frame and save_calibration_json both see the same value.
+    if rotate == "none" and getattr(args, "video", None):
+        detected = _detect_video_rotation(str(args.video))
+        if detected != "none":
+            rotate = detected
+            args.rotate = detected
+            print(f"[INFO] Auto-rotation: {detected}° CW detected from container metadata "
+                  f"(CAP_PROP_ORIENTATION_META). Applying automatically.")
+        else:
+            print("[INFO] Auto-rotation: no rotation metadata found in container (0° / none).")
 
-    # Pad both to the same width so windows are consistent
-    target_w      = max(cam_base.shape[1], top_view_base.shape[1], DW)
-    cam_base      = pad_to_width(cam_base,      target_w)
-    top_view_base = pad_to_width(top_view_base, target_w)
+    # Load images — cam_raw is already rotated by --rotate (or auto-detected above)
+    cam_raw, source_label, cam_orig_shape = load_source_frame(args)
+    top_view_raw                          = load_top_view_image(args)
 
-    state              = State(invert_y=args.invert_plan_y)
-    state.source_label = source_label
+    # Aspect-ratio-preserving scale to fit within a generous display budget.
+    # Each image keeps its own canvas size — no cross-image padding — so neither
+    # window forces the other's aspect ratio and no stretching occurs.
+    cam_base      = fit_to_display(cam_raw,      max_w=900, max_h=900)
+    top_view_base = fit_to_display(top_view_raw, max_w=900, max_h=900)
 
-    # Record how much fit_to_display scaled each image so that
-    # save_calibration_json can convert clicked coords back to original pixels.
-    # Height is used (unaffected by pad_to_width horizontal padding).
-    state.cam_display_scale = cam_base.shape[0] / cam_raw.shape[0]
-    state.top_display_scale = top_view_base.shape[0] / top_view_raw.shape[0]
-    print(f"[INFO] Display scale — camera: {state.cam_display_scale:.4f}  "
-          f"top-view: {state.top_display_scale:.4f}")
+    cam_h,      cam_w      = cam_base.shape[:2]
+    top_view_h, top_view_w = top_view_base.shape[:2]
 
+    state                    = State(invert_y=args.invert_plan_y)
+    state.source_label       = source_label
+    state.frame_rotate       = rotate
+    state.cam_raw_orig_shape = cam_orig_shape   # (h, w) before --rotate
+
+    # Scale = fit_to_display factor; aspect-ratio-preserving so h-ratio == w-ratio.
+    state.cam_display_scale = cam_h / cam_raw.shape[0]
+    state.top_display_scale = top_view_h / top_view_raw.shape[0]
+
+    # Startup shape / scale report
+    print(f"\n[INFO] Camera frame  — original  : {cam_orig_shape[1]}×{cam_orig_shape[0]}  "
+          f"rotate={rotate}")
+    print(f"[INFO] Camera frame  — displayed : {cam_w}×{cam_h}  "
+          f"scale={state.cam_display_scale:.4f}")
+    print(f"[INFO] Plan image    — original  : {top_view_raw.shape[1]}×{top_view_raw.shape[0]}")
+    print(f"[INFO] Plan image    — displayed : {top_view_w}×{top_view_h}  "
+          f"scale={state.top_display_scale:.4f}")
     print("[INFO] Click corresponding points on camera frame and top-view image.")
 
     # Detect corners in camera image for optional snap assist
@@ -712,13 +864,14 @@ def run(args):
     c    = cv2.goodFeaturesToTrack(gray, maxCorners=400, qualityLevel=0.01, minDistance=10)
     state.corners = c.reshape(-1, 2).astype(np.float32) if c is not None else None
 
-    # OpenCV windows
+    # OpenCV windows — sized to match their canvas exactly so no stretching occurs.
+    # WINDOW_NORMAL lets the user resize freely after launch.
     cv2.namedWindow(WIN_CAM,      cv2.WINDOW_NORMAL)
     cv2.namedWindow(WIN_TOP_VIEW, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(WIN_CAM,      target_w, DH)
-    cv2.resizeWindow(WIN_TOP_VIEW, target_w, DH)
-    cv2.moveWindow(WIN_CAM,       20,            60)
-    cv2.moveWindow(WIN_TOP_VIEW,  target_w + 50, 60)
+    cv2.resizeWindow(WIN_CAM,      cam_w,      cam_h)
+    cv2.resizeWindow(WIN_TOP_VIEW, top_view_w, top_view_h)
+    cv2.moveWindow(WIN_CAM,       20,          60)
+    cv2.moveWindow(WIN_TOP_VIEW,  cam_w + 50,  60)
 
     # Scale calibration: called when 2nd scale point is clicked
     def finalize_scale():
@@ -916,81 +1069,93 @@ def run(args):
             if state.mode == "scale":
                 show_info("Cannot Save", "Complete Step 1 (scale) first.")
                 continue
-            n = min(len(state.img_pts), len(state.top_view_pts))
-            if n < 4:
-                show_info("Cannot Save",
-                          f"Need 4+ correspondence pairs.  Currently have {n}.")
-                continue
+            try:
+                ok, val_msg = _validate_points(state.img_pts, state.top_view_pts)
+                if not ok:
+                    show_info("Cannot Save", val_msg)
+                    continue
 
-            H, n_inliers, errs = solve_homography(state.img_pts, state.world_pts)
-            if H is None:
-                show_info("Error", "Homography computation failed.\n"
-                                   "Check that your points are not collinear.")
-                continue
+                H, n_inliers, errs = solve_homography(state.img_pts, state.world_pts)
+                if H is None:
+                    show_info("Error", "Homography computation failed.\n"
+                                       "Check that your points are not collinear.")
+                    continue
 
-            qlbl, _ = quality_label(errs["mean"] if errs else None)
-            print(f"\n-- Homography solved ------------------------------------------")
-            print(f"   Pairs    : {n}")
-            print(f"   Inliers  : {n_inliers}")
-            worst_idx = None
-            if errs:
-                per_pt    = errs["per_pt"]
-                worst_idx = int(np.argmax(per_pt))
-                print(f"   Mean err : {errs['mean']:.4f} m")
-                print(f"   Median   : {errs['median']:.4f} m")
-                print(f"   Max      : {errs['max']:.4f} m  (Pair {worst_idx + 1})")
-                for i, e in enumerate(per_pt):
-                    marker = "  <-- WORST" if i == worst_idx else ""
-                    print(f"   Pair {i+1:2d}  : {e:.4f} m{marker}")
-                # Outlier warnings
-                worst_err = per_pt[worst_idx]
-                if worst_err > 5.0:
-                    print(f"\n[WARN] Pair {worst_idx + 1} has very large reprojection "
-                          f"error: {worst_err:.3f} m")
-                if errs["median"] > 0 and worst_err > 3.0 * errs["median"]:
-                    print(f"[WARN] Calibration contains a strong outlier. "
-                          f"Recheck point ordering or landmark matching.")
-                    print(f"[WARN] Consider pressing D to delete Pair {worst_idx + 1}, "
-                          f"then S to re-solve.")
-            print(f"   Quality  : {qlbl}")
-            print(f"---------------------------------------------------------------")
+                n = min(len(state.img_pts), len(state.top_view_pts))
+                qlbl, _ = quality_label(errs["mean"] if errs else None)
+                print(f"\n-- Homography solved ------------------------------------------")
+                print(f"   Pairs    : {n}")
+                print(f"   Inliers  : {n_inliers}")
+                worst_idx = None
+                if errs:
+                    per_pt    = errs["per_pt"]
+                    worst_idx = int(np.argmax(per_pt))
+                    print(f"   Mean err : {errs['mean']:.4f} m")
+                    print(f"   Median   : {errs['median']:.4f} m")
+                    print(f"   Max      : {errs['max']:.4f} m  (Pair {worst_idx + 1})")
+                    for i, e in enumerate(per_pt):
+                        marker = "  <-- WORST" if i == worst_idx else ""
+                        print(f"   Pair {i+1:2d}  : {e:.4f} m{marker}")
+                    # Outlier warnings
+                    worst_err = per_pt[worst_idx]
+                    if worst_err > 5.0:
+                        print(f"\n[WARN] Pair {worst_idx + 1} has very large reprojection "
+                              f"error: {worst_err:.3f} m")
+                    if errs["median"] > 0 and worst_err > 3.0 * errs["median"]:
+                        print(f"[WARN] Calibration contains a strong outlier. "
+                              f"Recheck point ordering or landmark matching.")
+                        print(f"[WARN] Consider pressing D to delete Pair {worst_idx + 1}, "
+                              f"then S to re-solve.")
+                print(f"   Quality  : {qlbl}")
+                print(f"---------------------------------------------------------------")
 
-            state.H         = H
-            state.errs      = errs
-            state.worst_idx = worst_idx
+                state.H         = H
+                state.errs      = errs
+                state.worst_idx = worst_idx
 
-            save_calibration_json(state, H, n_inliers, errs, args)
+                save_calibration_json(state, H, n_inliers, errs, args)
 
-            if args.out_preview:
-                render_preview(cam_base, top_view_base, state, args.out_preview)
+                if args.out_preview:
+                    render_preview(cam_base, top_view_base, state, args.out_preview)
 
-            if args.out_plot:
-                render_topdown_plot(state, args.out_plot)
+                if args.out_plot:
+                    render_topdown_plot(state, args.out_plot)
 
-            state.dirty = False
+                state.dirty = False
 
-            # Build optional outlier warning for dialog
-            _outlier_warn = ""
-            if errs and worst_idx is not None:
-                _worst_err = errs["per_pt"][worst_idx]
-                if _worst_err > 5.0 or (errs["median"] > 0
-                                        and _worst_err > 3.0 * errs["median"]):
-                    _outlier_warn = (
-                        f"\n\n[WARN] Pair {worst_idx + 1} is a strong outlier "
-                        f"({_worst_err:.3f} m).\n"
-                        "Press D to delete it, then S to re-solve."
-                    )
+                # Build optional outlier warning for dialog
+                _outlier_warn = ""
+                if errs and worst_idx is not None:
+                    _worst_err = errs["per_pt"][worst_idx]
+                    if _worst_err > 5.0 or (errs["median"] > 0
+                                            and _worst_err > 3.0 * errs["median"]):
+                        _outlier_warn = (
+                            f"\n\n[WARN] Pair {worst_idx + 1} is a strong outlier "
+                            f"({_worst_err:.3f} m).\n"
+                            "Press D to delete it, then S to re-solve."
+                        )
 
-            show_info(
-                "Saved",
-                f"calib.json written to:\n{Path(args.out_json).resolve()}\n\n"
-                f"Pairs     : {n}{'  [WARN: only 4 — add more for robustness]' if n == 4 else ''}\n"
-                f"Inliers   : {n_inliers}\n"
-                f"Quality   : {qlbl}{_outlier_warn}\n\n"
-                "For best results collect 6-10 well-spread pairs.\n"
-                "Keep adding pairs and press S again to re-save,\n"
-                "or press Q to quit."
-            )
+                show_info(
+                    "Saved",
+                    f"calib.json written to:\n{Path(args.out_json).resolve()}\n\n"
+                    f"Pairs     : {n}{'  [WARN: only 4 — add more for robustness]' if n == 4 else ''}\n"
+                    f"Inliers   : {n_inliers}\n"
+                    f"Quality   : {qlbl}{_outlier_warn}\n\n"
+                    "For best results collect 6-10 well-spread pairs.\n"
+                    "Keep adding pairs and press S again to re-save,\n"
+                    "or press Q to quit."
+                )
+
+            except Exception:
+                import traceback as _tb
+                tb_str = _tb.format_exc()
+                print("\n[ERROR] Solve/save failed with an unexpected error:")
+                print(tb_str)
+                _write_error_log(tb_str, args.out_json)
+                show_info("Error",
+                          "Solve/save failed — windows are still open.\n\n"
+                          "See terminal output and:\n"
+                          f"{Path(args.out_json).parent / 'calibration_error.txt'}")
 
         # U: undo last pair
         elif char == "u":
@@ -1112,6 +1277,13 @@ def main():
     ap.add_argument("--invert_plan_y", action="store_true",
                     help="Negate Y: world_y = -(top_view_y - origin_y) * mpp. "
                          "Use when Y increases upward in your top-view. Default: off.")
+    ap.add_argument("--rotate", choices=["none", "90", "180", "270"], default="none",
+                    help="Rotate camera frame clockwise by this many degrees before display. "
+                         "Use 90 or 270 to correct portrait phone videos that OpenCV loads "
+                         "as landscape (OpenCV ignores container rotation metadata). "
+                         "Clicked image_points are inverse-rotated back to pre-rotation "
+                         "pixel space before saving, so the homography works on the "
+                         "original unrotated video frames. Default: none.")
 
     args = ap.parse_args()
 
@@ -1137,4 +1309,22 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import traceback as _tb_main
+    import datetime as _dt_main
+    try:
+        main()
+    except BaseException:
+        tb = _tb_main.format_exc()
+        print("\n" + "=" * 60)
+        print("[FATAL] Unhandled exception — full traceback:")
+        print(tb)
+        print("=" * 60)
+        # Write crash log next to this script so it survives terminal close
+        _crash_path = Path(__file__).parent / "calibration_crash.txt"
+        try:
+            with open(_crash_path, "w") as _f:
+                _f.write(f"[{_dt_main.datetime.now().isoformat()}]\n\n{tb}")
+            print(f"[FATAL] Crash log written to: {_crash_path}")
+        except Exception as _e:
+            print(f"[FATAL] Could not write crash log: {_e}")
+        input("\nPress Enter to close this window...")

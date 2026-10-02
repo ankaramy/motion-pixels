@@ -427,11 +427,13 @@ def save_plot(
         x_rng = x_hi - x_lo + eps
         y_rng = y_hi - y_lo + eps
         ax.set_xlim(x_lo - pad * x_rng, x_hi + pad * x_rng)
-        ax.set_ylim(y_lo - pad * y_rng, y_hi + pad * y_rng)
+        # Invert Y so the warped plan renders in the SOURCE plan-image orientation
+        # (plan + data flip together; alignment preserved).
+        ax.set_ylim(y_hi + pad * y_rng, y_lo - pad * y_rng)
     elif img_extent is not None:
         ixmin, ixmax, iymin, iymax = img_extent
         ax.set_xlim(ixmin, ixmax)
-        ax.set_ylim(iymin, iymax)
+        ax.set_ylim(iymax, iymin)
 
     unit_label = "m" if unit == "m" else "px"
     n_zones  = len(zones) if not zones.empty else 0

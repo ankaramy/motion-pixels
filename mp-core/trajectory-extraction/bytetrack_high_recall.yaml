@@ -1,0 +1,16 @@
+tracker_type: bytetrack
+
+# High-recall test config (esplanade_espanya_01 only).
+# Lowered thresholds so mid/far-field detections can spawn and sustain tracks.
+track_high_thresh: 0.25
+track_low_thresh: 0.05
+new_track_thresh: 0.25
+
+# Keep lost tracks across occlusions (frames)
+track_buffer: 90
+
+# Matching threshold — left at the default used by bytetrack_mp.yaml (not over-tuned)
+match_thresh: 0.85
+
+# Use detection score fusion in matching
+fuse_score: True

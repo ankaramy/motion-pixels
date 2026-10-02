@@ -1,4 +1,5 @@
 import cv2
+import time
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -420,6 +421,64 @@ def _draw_hud(frame: np.ndarray, n_active: int, avg_speed, max_speed,
 
 
 # ---------------------------------------------------------------------------
+# Orientation (visualization-only): rotate frames upright for presentation.
+# The trajectory CSV stays in raw coords on disk; we transform an in-memory copy
+# so calibration/projection are never affected.
+# ---------------------------------------------------------------------------
+
+def _rotation_from_meta(cap):
+    """Return a cv2.ROTATE_* code to display the video upright, or None."""
+    try:
+        if cap.get(cv2.CAP_PROP_ORIENTATION_AUTO) >= 1:
+            return None  # OpenCV already auto-rotates
+        meta = cap.get(cv2.CAP_PROP_ORIENTATION_META)
+    except Exception:
+        return None
+    angle = int(round(meta)) % 360 if meta else 0
+    return {
+        90:  cv2.ROTATE_90_CLOCKWISE,
+        270: cv2.ROTATE_90_COUNTERCLOCKWISE,
+        180: cv2.ROTATE_180,
+    }.get(angle)
+
+
+def _fwd_xy(x, y, rot, w_raw, h_raw):
+    """Map raw-frame coords -> rotated (upright) coords. Works on scalars or arrays."""
+    if rot == cv2.ROTATE_90_CLOCKWISE:
+        return (h_raw - 1) - y, x
+    if rot == cv2.ROTATE_90_COUNTERCLOCKWISE:
+        return y, (w_raw - 1) - x
+    if rot == cv2.ROTATE_180:
+        return (w_raw - 1) - x, (h_raw - 1) - y
+    return x, y
+
+
+def _sanitize_fps(fps, default=30.0, lo=1.0, hi=120.0):
+    """Clamp absurd/invalid capture fps for the output writer only (not for t_s math)."""
+    try:
+        f = float(fps)
+    except (TypeError, ValueError):
+        return default
+    if not (f == f) or f <= lo or f > hi:
+        return default
+    return f
+
+
+def _open_video_writer(path, fps, size):
+    """Open a VideoWriter robustly (sanitized fps, mp4v->avc1), fail loudly if it can't."""
+    wfps = _sanitize_fps(fps)
+    if abs(wfps - float(fps if fps else 0)) > 1e-3:
+        print(f"[draw_trajectories] capture fps={fps} out of range -> output at {wfps} fps")
+    for codec in ("mp4v", "avc1"):
+        writer = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*codec), wfps, size)
+        if writer.isOpened():
+            return writer
+        writer.release()
+    raise RuntimeError(f"VideoWriter failed to initialize for {path} "
+                       f"(fps={fps} -> {wfps}, size={size}). Refusing to emit a 0-byte file.")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -465,6 +524,8 @@ def main(
     highlight_top_k_dwell=0,
     # live HUD
     show_hud=False,
+    # visualization-only: rotate output upright using video rotation metadata
+    rotate_output_upright=False,
 ):
     print(f"[draw_trajectories] video_path = {video_path}")
 
@@ -594,6 +655,31 @@ def main(
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
+    # Visualization-only upright export: rotate each frame and transform the
+    # in-memory trajectory coords raw->upright, so overlays AND text panels render
+    # upright. The on-disk CSV / calibration / projection are never touched.
+    rot = _rotation_from_meta(cap) if rotate_output_upright else None
+    if rot is not None:
+        w_raw, h_raw = w, h
+        for cx_col, cy_col in (("cx", "cy"), ("foot_x", "foot_y"),
+                               ("x1", "y1"), ("x2", "y2")):
+            if cx_col in df.columns and cy_col in df.columns:
+                nx, ny = _fwd_xy(df[cx_col].to_numpy(), df[cy_col].to_numpy(),
+                                 rot, w_raw, h_raw)
+                df[cx_col], df[cy_col] = nx, ny
+        # Corners can swap min/max under rotation -> re-normalize the bbox.
+        if {"x1", "y1", "x2", "y2"}.issubset(df.columns):
+            x1n = np.minimum(df["x1"], df["x2"]); x2n = np.maximum(df["x1"], df["x2"])
+            y1n = np.minimum(df["y1"], df["y2"]); y2n = np.maximum(df["y1"], df["y2"])
+            df["x1"], df["x2"], df["y1"], df["y2"] = x1n, x2n, y1n, y2n
+        if rot in (cv2.ROTATE_90_CLOCKWISE, cv2.ROTATE_90_COUNTERCLOCKWISE):
+            w, h = h_raw, w_raw  # output frame dims are swapped for 90/270
+        if show_metrics:
+            print("[draw_trajectories] WARNING: --rotate_output_upright with "
+                  "--show_metrics: spatial overlays (flow/bottleneck/linger) are in "
+                  "raw coords and will NOT be rotated; disable one of them.")
+        print(f"[draw_trajectories] rotate_output_upright: emitting upright {w}x{h} video")
+
     heat_cap = None
     heatmap_video = Path(heatmap_video) if heatmap_video else None
     if use_heatmap and heatmap_video and heatmap_video.exists():
@@ -606,10 +692,7 @@ def main(
             print(f"[draw_trajectories] WARNING: Heatmap not found: {heatmap_video}. Continuing without heatmap.")
 
     out_video = str(out_dir / "trajectories_metrics_overlay.mp4")
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    writer = cv2.VideoWriter(out_video, fourcc, fps, (w, h))
-    if not writer.isOpened():
-        raise RuntimeError("Failed to initialize VideoWriter for trajectories_metrics_overlay.mp4")
+    writer = _open_video_writer(out_video, fps, (w, h))
 
     df.sort_values(["frame", "track_id"], inplace=True)
     by_frame = df.groupby("frame")
@@ -625,12 +708,20 @@ def main(
     first_frame_img = None
     a_heat = float(np.clip(heatmap_alpha, 0.0, 1.0))
 
+    nframes = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    t_start = time.time()
+    last_log = t_start
+    print(f"[draw_trajectories] rendering overlay: ~{nframes} frames", flush=True)
+
     while True:
         ok, frame = cap.read()
         if not ok:
             break
         frame_idx += 1
         t_s = frame_idx / fps
+
+        if rot is not None:
+            frame = cv2.rotate(frame, rot)
 
         if first_frame_img is None:
             first_frame_img = frame.copy()
@@ -829,6 +920,17 @@ def main(
 
         writer.write(frame)
 
+        now = time.time()
+        if now - last_log >= 15.0:
+            elapsed = now - t_start
+            done = frame_idx + 1
+            rate = done / elapsed if elapsed > 0 else 0.0
+            eta_min = ((nframes - done) / rate / 60.0) if (rate > 0 and nframes > 0) else float("nan")
+            pct = (100.0 * done / nframes) if nframes > 0 else 0.0
+            print(f"[draw_trajectories] frame {done}/{nframes} ({pct:.1f}%)  "
+                  f"elapsed {elapsed/60:.1f}min  rate {rate:.1f} fps  eta {eta_min:.1f}min", flush=True)
+            last_log = now
+
     cap.release()
     if heat_cap is not None:
         heat_cap.release()
@@ -914,6 +1016,10 @@ if __name__ == "__main__":
                     help="Label the N longest-dwelling tracks with their dwell time (0 = off)")
     ap.add_argument("--show_hud", action="store_true",
                     help="Show a compact global-metrics HUD (active, avg/max speed, stops, dwellers)")
+    ap.add_argument("--rotate_output_upright", action="store_true",
+                    help="Visualization only: rotate the output video upright using the "
+                         "video's rotation metadata (overlays + text render upright). "
+                         "Reads the CSV only; does not modify it or the projection.")
 
     ap.add_argument("--blur_faces",        action="store_true",
                     help="Blur the upper portion of each person bbox to anonymise faces")
@@ -965,4 +1071,5 @@ if __name__ == "__main__":
         highlight_top_k_speed=args.highlight_top_k_speed,
         highlight_top_k_dwell=args.highlight_top_k_dwell,
         show_hud=args.show_hud,
+        rotate_output_upright=args.rotate_output_upright,
     )

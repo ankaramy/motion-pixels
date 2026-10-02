@@ -332,7 +332,10 @@ def save_quiver_plot(cells: pd.DataFrame, unit: str, out_path: Path,
     x_rng = x_hi - x_lo + eps
     y_rng = y_hi - y_lo + eps
     ax.set_xlim(x_lo - pad * x_rng, x_hi + pad * x_rng)
-    ax.set_ylim(y_lo - pad * y_rng, y_hi + pad * y_rng)
+    # Invert Y so the warped plan renders in the SOURCE plan-image orientation
+    # (world-y increases downward in plan space). Plan + data flip together, so
+    # their alignment is preserved; only the display orientation changes.
+    ax.set_ylim(y_hi + pad * y_rng, y_lo - pad * y_rng)
 
     unit_label = "m" if unit == "m" else "px"
     ax.set_aspect("equal", adjustable="box")

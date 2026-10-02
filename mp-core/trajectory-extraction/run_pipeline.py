@@ -31,15 +31,20 @@ def run_script(script_name, extra_args=None, check=True):
 def compress_video(src: Path, max_mb: float, crf: int, scale: int) -> None:
     """
     Re-encode src in-place to H.264 MP4.
-    If the result still exceeds max_mb, retries once with crf+6 and half the width.
+    Full-res mode (scale <= 0): no downscaling and no size-cap retry — used for
+    visually-lossless presentation exports (default CRF 18).
+    Capped mode (scale > 0 and max_mb > 0): if the result exceeds max_mb, retries
+    once with crf+6 and half the width.
     """
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     tmp = src.with_suffix(".tmp.mp4")
+    full_res = (scale is None) or (scale <= 0)
 
     def _encode(crf_val: int, scale_val: int) -> float:
-        cmd = [
-            ffmpeg, "-y", "-i", str(src),
-            "-vf", f"scale={scale_val}:-2",
+        cmd = [ffmpeg, "-y", "-i", str(src)]
+        if not full_res:
+            cmd += ["-vf", f"scale={scale_val}:-2"]
+        cmd += [
             "-c:v", "libx264", "-preset", "veryfast",
             "-crf", str(crf_val),
             "-movflags", "+faststart",
@@ -50,9 +55,9 @@ def compress_video(src: Path, max_mb: float, crf: int, scale: int) -> None:
         return tmp.stat().st_size / (1024 * 1024)
 
     size_mb = _encode(crf, scale)
-    print(f"[compress] {src.name}: {size_mb:.1f} MB  (crf={crf}, scale={scale})")
+    print(f"[compress] {src.name}: {size_mb:.1f} MB  (crf={crf}, scale={'full' if full_res else scale})")
 
-    if size_mb > max_mb:
+    if not full_res and max_mb and size_mb > max_mb:
         print(f"[compress] {size_mb:.1f} MB > {max_mb} MB target — retrying with stronger settings")
         size_mb = _encode(min(crf + 6, 51), max(scale // 2, 320))
         print(f"[compress] Retry: {size_mb:.1f} MB")
@@ -134,13 +139,17 @@ def main(
     calib_json: str = None,
     top_view_image: str = None,
     recalibrate: bool = False,
+    model_path: str = None,
+    tracker_cfg: str = None,
+    imgsz: int = 1280,
+    conf: float = 0.25,
     run_flow_fields: bool = False,
     run_bottlenecks: bool = False,
     run_linger_zones: bool = False,
     show_behavior_on_video: bool = False,
     max_video_mb: float = 30.0,
-    output_crf: int = 26,
-    output_scale: int = 1280,
+    output_crf: int = 18,        # visually-lossless default
+    output_scale: int = 0,       # 0 = full resolution (no downscale)
     blur_faces: bool = False,
     face_height_ratio: float = 0.32,
     face_width_ratio: float = 0.65,
@@ -150,6 +159,8 @@ def main(
     highlight_top_k_speed: int = 0,
     highlight_top_k_dwell: int = 0,
     show_hud: bool = False,
+    # visualization-only upright overlay export
+    rotate_output_upright: bool = True,
     # analysis plot appearance
     top_view_alpha: float = 0.25,
     zoom_mode: str = "auto",
@@ -185,15 +196,21 @@ def main(
     world_traj_csv = str(out_dir / "trajectories_world.csv")
     metrics_dir    = str(out_dir / "metrics")
 
+    # Resolve tracking defaults (preserve original behavior when not supplied)
+    if model_path is None:
+        model_path = str(MODELS_DIR / "yolov8s.pt")
+    if tracker_cfg is None:
+        tracker_cfg = str(HERE / "bytetrack_mp.yaml")
+
     # ── 1) Tracking ──────────────────────────────────────────────────────────
     section("Stage 1 — Tracking")
     run_script("track_people.py", [
         "--video", str(video),
         "--out_dir", str(out_dir),
-        "--model_path", str(MODELS_DIR / "yolov8s.pt"),
-        "--tracker_cfg", str(HERE / "bytetrack_mp.yaml"),
-        "--imgsz", "1280",
-        "--conf", "0.25",
+        "--model_path", str(model_path),
+        "--tracker_cfg", str(tracker_cfg),
+        "--imgsz", str(imgsz),
+        "--conf", str(conf),
         "--iou", "0.50",
         "--max_det", "200",
         "--vid_stride", "1",
@@ -325,6 +342,9 @@ def main(
         draw_args += ["--highlight_top_k_dwell", str(highlight_top_k_dwell)]
     if show_hud:
         draw_args.append("--show_hud")
+    if rotate_output_upright:
+        # Visualization-only: emit the overlay upright using rotation metadata.
+        draw_args.append("--rotate_output_upright")
 
     if show_behavior_on_video:
         if calibrated:
@@ -395,6 +415,16 @@ if __name__ == "__main__":
         help="Force the interactive calibration UI to open even if calib.json already exists."
     )
 
+    # Tracking / detector params (Stage 1)
+    ap.add_argument("--model_path", default=str(MODELS_DIR / "yolov8s.pt"),
+                    help="YOLO model weights for tracking (default: yolov8s.pt)")
+    ap.add_argument("--tracker_cfg", default=str(HERE / "bytetrack_mp.yaml"),
+                    help="ByteTrack config YAML (default: bytetrack_mp.yaml)")
+    ap.add_argument("--imgsz", type=int, default=1280,
+                    help="Tracking inference image size (default: 1280)")
+    ap.add_argument("--conf", type=float, default=0.25,
+                    help="Tracking detection confidence threshold (default: 0.25)")
+
     # Behavioral analysis flags
     ap.add_argument("--run_flow_fields", action="store_true",
                     help="Run compute_flow_fields.py -> outputs/behavior/flow_fields/")
@@ -414,6 +444,13 @@ if __name__ == "__main__":
                     help="Label the N longest-dwelling tracks on the output video (0 = off)")
     ap.add_argument("--show_hud", action="store_true",
                     help="Show global-metrics HUD on the output video")
+    ap.add_argument("--rotate_output_upright", dest="rotate_output_upright",
+                    action="store_true", default=True,
+                    help="Emit the overlay video upright via rotation metadata "
+                         "(visualization only; default on)")
+    ap.add_argument("--no_rotate_output_upright", dest="rotate_output_upright",
+                    action="store_false",
+                    help="Keep the overlay video in raw frame orientation")
 
     # Analysis plot appearance
     ap.add_argument("--top_view_alpha", type=float, default=0.25,
@@ -435,13 +472,13 @@ if __name__ == "__main__":
     ap.add_argument("--face_blur_kernel", type=int, default=51,
                     help="Gaussian kernel size; applied twice for strong anonymisation (default: 51)")
 
-    # Output compression
+    # Output encoding (default: visually-lossless full-resolution H.264)
     ap.add_argument("--max_video_mb", type=float, default=30.0,
-                    help="Target max file size in MB for each output video (default: 30)")
-    ap.add_argument("--output_crf", type=int, default=26,
-                    help="H.264 CRF quality (lower = better; default: 26)")
-    ap.add_argument("--output_scale", type=int, default=1280,
-                    help="Output video width in pixels; height is scaled proportionally (default: 1280)")
+                    help="Size cap (MB) used only in capped mode (--output_scale > 0); default: 30")
+    ap.add_argument("--output_crf", type=int, default=18,
+                    help="H.264 CRF quality (lower = better; default: 18, visually lossless)")
+    ap.add_argument("--output_scale", type=int, default=0,
+                    help="Output width in px; 0 = full resolution / no downscale (default: 0)")
 
     args = ap.parse_args()
     main(
@@ -449,6 +486,10 @@ if __name__ == "__main__":
         calib_json=args.calib_json,
         top_view_image=args.top_view_image,
         recalibrate=args.recalibrate,
+        model_path=args.model_path,
+        tracker_cfg=args.tracker_cfg,
+        imgsz=args.imgsz,
+        conf=args.conf,
         run_flow_fields=args.run_flow_fields,
         run_bottlenecks=args.run_bottlenecks,
         run_linger_zones=args.run_linger_zones,
@@ -464,6 +505,7 @@ if __name__ == "__main__":
         highlight_top_k_speed=args.highlight_top_k_speed,
         highlight_top_k_dwell=args.highlight_top_k_dwell,
         show_hud=args.show_hud,
+        rotate_output_upright=args.rotate_output_upright,
         top_view_alpha=args.top_view_alpha,
         zoom_mode=args.zoom_mode,
         zoom_padding=args.zoom_padding,

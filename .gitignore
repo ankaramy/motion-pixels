@@ -1,16 +1,89 @@
+# ---------------------------------------------------------------------------
+# Python / environments
+# ---------------------------------------------------------------------------
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
+.pytest_cache/
 mp-env/
 venv/
+.venv/
+.env
+.env.*
 
-mp-data/raw/videos/
-mp-data/models/
-mp-data/outputs/
+# ---------------------------------------------------------------------------
+# Node / web build output
+# ---------------------------------------------------------------------------
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.vite/
 
-.DS_Store
-Thumbs.db
+# ---------------------------------------------------------------------------
+# Local AI-agent / editor state
+# ---------------------------------------------------------------------------
+.claude/
+**/.claude/
+.codex/
+.agents/
 .vscode/
 .idea/
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------------------
+# Scratch, caches, generated output
+# ---------------------------------------------------------------------------
+tmp/
+cache/
+output/
+*.log
+# keep the final training-run logs (provenance)
+!mp-core/trajectory-prediction/MODEL_XC/xc_run.log
+!mp-core/trajectory-prediction/MODEL_XR/xr_run.log
+!mp-core/trajectory-prediction/experiments/MODEL_X/training/train_run.log
+mp-core/trajectory-extraction/outputs/
+mp-visualization/plots_wassim/outputs/
+publication_final/_opt/
+publication_final/qc/
+publication_final/*.pdf
+publication_rebrand/
+
+# ---------------------------------------------------------------------------
+# Data that is intentionally NOT in Git (see docs/DATA_AVAILABILITY.md)
+# ---------------------------------------------------------------------------
+# large data root used via MP_DATA_ROOT
+mp-data/external/
+mp-data/raw/videos/
+mp-data/raw/images/
+mp-data/models/
+mp-data/outputs/
+mp-data/processed/
+# raw / tracked pedestrian footage, anywhere
+*.mov
+*.MOV
+*.m4v
+*.avi
+mp-data/**/*.mp4
+**/tracking/tracked.mp4
+**/trajectories_metrics_overlay.mp4
+# prototype demo video (527 MB) — kept in the local archive
+mp-visualization/prototype-official-v1/demo_assets/placa_espanya/video/
+# YOLO weights (auto-downloaded by Ultralytics)
+*.pt
+
+# ---------------------------------------------------------------------------
+# Large regenerable evaluation tables / media (release assets)
+# ---------------------------------------------------------------------------
+**/per_window_metrics.csv
+**/all_window_arrays.npz
+**/curvature_audit/curvature_metrics.csv
+mp-core/trajectory-prediction/experiments/MODEL_X_HORIZON_SWEEP/recording_audit/*.csv
+mp-core/trajectory-prediction/experiments/**/*_dataset.csv
+mp-core/trajectory-prediction/experiments/**/trajectories_schema_relational.csv
+mp-visualization/behavior_maps/**/*.mp4
+mp-visualization/behavior_maps/**/*.gif
+mp-visualization/behavior_maps/**/outputs/
+mp-visualization/behavior_maps/**/out/

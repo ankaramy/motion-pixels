@@ -1,0 +1,3 @@
+**Motion Pixels predicts spatially curved pedestrian futures.**
+
+Observed path (black), ground-truth future (grey) and the model's prediction (magenta) over the walkable architecture. These are selected qualitative examples chosen for legibility (longest, smoothest mild-turn predictions); the prediction geometry is the model's real rollout, not lengthened or rescaled. They communicate that the model can express curved future movement — quantitative turn-direction accuracy remains limited (see exp06).

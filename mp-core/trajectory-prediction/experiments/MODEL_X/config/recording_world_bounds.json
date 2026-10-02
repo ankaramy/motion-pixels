@@ -1,0 +1,49 @@
+{
+  "description": "Per-recording world-coordinate bounds (metres) of the full Barcelona_v3_manual master dataset. Used by model_x_lib.rollout_* to renormalise u,v during autoregressive rollout.",
+  "source_dataset": "Barcelona_v3_manual_master_dataset/master_dataset.csv",
+  "source_dataset_md5": "173ba156f52774ec33f3962e7c99f38e",
+  "source_rows": 1064379,
+  "generated_with": "model_x_lib.compute_world_bounds (identical to the computation used in training/evaluation)",
+  "recordings": {
+    "esplanade_espanya_01": {
+      "xmin": -131.1647,
+      "xmax": 132.0311,
+      "ymin": -13.2276,
+      "ymax": 34.4432,
+      "xrng": 263.1958,
+      "yrng": 47.6708
+    },
+    "placa_catalunya_01": {
+      "xmin": -80.1007,
+      "xmax": -17.9703,
+      "ymin": -94.0461,
+      "ymax": 4.738,
+      "xrng": 62.1304,
+      "yrng": 98.7841
+    },
+    "placa_espanya_01": {
+      "xmin": -131.2831,
+      "xmax": 205.8424,
+      "ymin": -37.8609,
+      "ymax": 54.2163,
+      "xrng": 337.1255,
+      "yrng": 92.0772
+    },
+    "red_bridge_combined_01": {
+      "xmin": -2.2871,
+      "xmax": 13.2127,
+      "ymin": -27.9703,
+      "ymax": 10.2299,
+      "xrng": 15.4998,
+      "yrng": 38.2002
+    },
+    "stairs_montjuic_01": {
+      "xmin": -5.2248,
+      "xmax": 7.8239,
+      "ymin": -18.1657,
+      "ymax": 7.4461,
+      "xrng": 13.0487,
+      "yrng": 25.611800000000002
+    }
+  }
+}

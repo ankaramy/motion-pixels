@@ -1,0 +1,10 @@
+{
+  "variant": "MODEL_XR_D_MAG_STRONGER",
+  "lambda_mag": 2.0,
+  "lambda_dir": 0.0,
+  "best_val_ADE": 0.3758136901795653,
+  "best_epoch": 21,
+  "epochs": 33,
+  "sigma_iso": 0.22302240133285522,
+  "minutes": 11.52
+}

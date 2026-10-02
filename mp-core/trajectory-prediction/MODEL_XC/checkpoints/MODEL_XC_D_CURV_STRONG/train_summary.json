@@ -1,0 +1,11 @@
+{
+  "variant": "MODEL_XC_D_CURV_STRONG",
+  "lambda_mag": 1.0,
+  "lambda_curv": 0.5,
+  "lambda_dir": 0.0,
+  "best_val_ADE": 0.3150099908490293,
+  "best_epoch": 21,
+  "epochs": 33,
+  "sigma_iso": 0.22302240133285522,
+  "minutes": 19.44
+}

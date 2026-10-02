@@ -1,0 +1,1 @@
+**Pedestrian motion read on the plan.** Selected held-out examples (esplanade plaza, stairs corridor): observed path (grey), ground-truth future (blue), model prediction (orange), over the walkable space. The model produces smooth, architecturally plausible curved paths that follow circulation space.

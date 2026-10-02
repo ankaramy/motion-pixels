@@ -1,0 +1,87 @@
+{
+  "horizon": 20,
+  "approx_distance_m": 1.0,
+  "data_availability": {
+    "horizon": 20,
+    "approx_distance_m": 1.0,
+    "need_frames": 30,
+    "tracks_total": 3534,
+    "tracks_qualifying": 2851,
+    "train_tracks": 2269,
+    "val_tracks": 296,
+    "test_tracks": 286,
+    "tracks_dropped_short": 683,
+    "per_recording_qualifying_tracks": {
+      "esplanade_espanya_01": {
+        "train": 351,
+        "val": 47,
+        "test": 47
+      },
+      "placa_catalunya_01": {
+        "train": 781,
+        "val": 103,
+        "test": 100
+      },
+      "placa_espanya_01": {
+        "train": 561,
+        "val": 71,
+        "test": 67
+      },
+      "red_bridge_combined_01": {
+        "train": 358,
+        "val": 45,
+        "test": 44
+      },
+      "stairs_montjuic_01": {
+        "train": 218,
+        "val": 30,
+        "test": 28
+      }
+    }
+  },
+  "best_epoch": 25,
+  "val_ADE": 0.4157453258246278,
+  "test_windows": 87320,
+  "train_windows": 817830,
+  "val_rollout_windows": 2500,
+  "ADE": 0.44580975683304974,
+  "FDE": 0.7084838796016417,
+  "ADE_median": 0.21444252497162206,
+  "FDE_median": 0.3247577028739856,
+  "angular_err_mean_deg": 74.1305972991684,
+  "angular_err_median_deg": 54.6421708397249,
+  "gt_len_median": 1.030512295954995,
+  "pred_len_median": 0.4446594716542924,
+  "pred_len_p75": 0.652689360533752,
+  "gt_len_p75": 2.5220158309918586,
+  "pred_gt_ratio_median": 0.4501779414654615,
+  "collapse_rate_pred_lt_25pct_gt": 0.258852496564361,
+  "minutes": 22.71,
+  "per_recording": {
+    "esplanade_espanya_01": {
+      "n": 27740,
+      "ADE": 0.4844,
+      "FDE": 0.7599
+    },
+    "placa_catalunya_01": {
+      "n": 27691,
+      "ADE": 0.195,
+      "FDE": 0.3377
+    },
+    "placa_espanya_01": {
+      "n": 17964,
+      "ADE": 1.0177,
+      "FDE": 1.5721
+    },
+    "red_bridge_combined_01": {
+      "n": 5502,
+      "ADE": 0.1315,
+      "FDE": 0.2454
+    },
+    "stairs_montjuic_01": {
+      "n": 8423,
+      "ADE": 0.1291,
+      "FDE": 0.219
+    }
+  }
+}

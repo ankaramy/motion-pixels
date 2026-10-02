@@ -1,0 +1,2 @@
+{"variant": "MODEL_XR_C_MAG_LIGHT_DIR", "lambda_mag": 1.0, "lambda_dir": 0.1,
+ "desc": "MSE + magnitude + light direction (lambda_mag=1.0, lambda_dir=0.1)"}

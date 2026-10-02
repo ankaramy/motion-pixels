@@ -1,0 +1,215 @@
+===== TRAIN A_control =====
+[MODEL_XR_A_CONTROL] device=cuda lambda_mag=0.0 lambda_dir=0.0
+[MODEL_XR_A_CONTROL] train windows (822488, 10, 10)
+[MODEL_XR_A_CONTROL ep  1] loss=0.8957 mse=0.8957 mag=0.0000 dir=0.0000 ADE=0.3259 FDE=0.5527 * (17.2s) best=0.3259@1
+[MODEL_XR_A_CONTROL ep  2] loss=0.8827 mse=0.8827 mag=0.0000 dir=0.0000 ADE=0.3043 FDE=0.4972 * (15.7s) best=0.3043@2
+[MODEL_XR_A_CONTROL ep  3] loss=0.8773 mse=0.8773 mag=0.0000 dir=0.0000 ADE=0.3076 FDE=0.4996  (21.5s) best=0.3043@2
+[MODEL_XR_A_CONTROL ep  4] loss=0.8717 mse=0.8717 mag=0.0000 dir=0.0000 ADE=0.3010 FDE=0.4925 * (17.1s) best=0.3010@4
+[MODEL_XR_A_CONTROL ep  5] loss=0.8664 mse=0.8664 mag=0.0000 dir=0.0000 ADE=0.3046 FDE=0.4997  (17.4s) best=0.3010@4
+[MODEL_XR_A_CONTROL ep  6] loss=0.8594 mse=0.8594 mag=0.0000 dir=0.0000 ADE=0.3107 FDE=0.5128  (14.6s) best=0.3010@4
+[MODEL_XR_A_CONTROL ep  7] loss=0.8523 mse=0.8523 mag=0.0000 dir=0.0000 ADE=0.2974 FDE=0.4874 * (14.4s) best=0.2974@7
+[MODEL_XR_A_CONTROL ep  8] loss=0.8416 mse=0.8416 mag=0.0000 dir=0.0000 ADE=0.3006 FDE=0.4898  (17.1s) best=0.2974@7
+[MODEL_XR_A_CONTROL ep  9] loss=0.8309 mse=0.8309 mag=0.0000 dir=0.0000 ADE=0.3006 FDE=0.4937  (17.7s) best=0.2974@7
+[MODEL_XR_A_CONTROL ep 10] loss=0.8199 mse=0.8199 mag=0.0000 dir=0.0000 ADE=0.3008 FDE=0.4931  (17.7s) best=0.2974@7
+[MODEL_XR_A_CONTROL ep 11] loss=0.8038 mse=0.8038 mag=0.0000 dir=0.0000 ADE=0.3031 FDE=0.4990  (17.1s) best=0.2974@7
+[MODEL_XR_A_CONTROL ep 12] loss=0.7901 mse=0.7901 mag=0.0000 dir=0.0000 ADE=0.3017 FDE=0.4975  (17.6s) best=0.2974@7
+[MODEL_XR_A_CONTROL ep 13] loss=0.7761 mse=0.7761 mag=0.0000 dir=0.0000 ADE=0.2971 FDE=0.4807 * (16.9s) best=0.2971@13
+[MODEL_XR_A_CONTROL ep 14] loss=0.7597 mse=0.7597 mag=0.0000 dir=0.0000 ADE=0.3019 FDE=0.4935  (16.5s) best=0.2971@13
+[MODEL_XR_A_CONTROL ep 15] loss=0.7467 mse=0.7467 mag=0.0000 dir=0.0000 ADE=0.2980 FDE=0.4877  (15.2s) best=0.2971@13
+[MODEL_XR_A_CONTROL ep 16] loss=0.7345 mse=0.7345 mag=0.0000 dir=0.0000 ADE=0.3116 FDE=0.5151  (14.8s) best=0.2971@13
+[MODEL_XR_A_CONTROL ep 17] loss=0.7184 mse=0.7184 mag=0.0000 dir=0.0000 ADE=0.2979 FDE=0.4818  (17.7s) best=0.2971@13
+[MODEL_XR_A_CONTROL ep 18] loss=0.7073 mse=0.7073 mag=0.0000 dir=0.0000 ADE=0.2981 FDE=0.4810  (18.4s) best=0.2971@13
+[MODEL_XR_A_CONTROL ep 19] loss=0.6954 mse=0.6954 mag=0.0000 dir=0.0000 ADE=0.2971 FDE=0.4770 * (17.0s) best=0.2971@19
+[MODEL_XR_A_CONTROL ep 20] loss=0.6848 mse=0.6848 mag=0.0000 dir=0.0000 ADE=0.3053 FDE=0.4988  (15.5s) best=0.2971@19
+[MODEL_XR_A_CONTROL ep 21] loss=0.6741 mse=0.6741 mag=0.0000 dir=0.0000 ADE=0.2972 FDE=0.4797  (14.6s) best=0.2971@19
+[MODEL_XR_A_CONTROL ep 22] loss=0.6649 mse=0.6649 mag=0.0000 dir=0.0000 ADE=0.3028 FDE=0.4906  (15.7s) best=0.2971@19
+[MODEL_XR_A_CONTROL ep 23] loss=0.6558 mse=0.6558 mag=0.0000 dir=0.0000 ADE=0.2998 FDE=0.4829  (17.4s) best=0.2971@19
+[MODEL_XR_A_CONTROL ep 24] loss=0.6499 mse=0.6499 mag=0.0000 dir=0.0000 ADE=0.2982 FDE=0.4818  (17.8s) best=0.2971@19
+[MODEL_XR_A_CONTROL ep 25] loss=0.6407 mse=0.6407 mag=0.0000 dir=0.0000 ADE=0.2964 FDE=0.4815 * (18.3s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 26] loss=0.6302 mse=0.6302 mag=0.0000 dir=0.0000 ADE=0.2985 FDE=0.4824  (16.5s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 27] loss=0.6248 mse=0.6248 mag=0.0000 dir=0.0000 ADE=0.3017 FDE=0.4845  (18.8s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 28] loss=0.6208 mse=0.6208 mag=0.0000 dir=0.0000 ADE=0.3039 FDE=0.4896  (18.2s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 29] loss=0.6097 mse=0.6097 mag=0.0000 dir=0.0000 ADE=0.2995 FDE=0.4837  (16.1s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 30] loss=0.6055 mse=0.6055 mag=0.0000 dir=0.0000 ADE=0.3013 FDE=0.4818  (16.0s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 31] loss=0.6012 mse=0.6012 mag=0.0000 dir=0.0000 ADE=0.3090 FDE=0.5069  (17.7s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 32] loss=0.5978 mse=0.5978 mag=0.0000 dir=0.0000 ADE=0.3027 FDE=0.4875  (18.2s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 33] loss=0.5921 mse=0.5921 mag=0.0000 dir=0.0000 ADE=0.2978 FDE=0.4817  (17.8s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 34] loss=0.5855 mse=0.5855 mag=0.0000 dir=0.0000 ADE=0.3000 FDE=0.4789  (16.8s) best=0.2964@25
+[MODEL_XR_A_CONTROL ep 35] loss=0.5796 mse=0.5796 mag=0.0000 dir=0.0000 ADE=0.2945 FDE=0.4718 * (15.5s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 36] loss=0.5778 mse=0.5778 mag=0.0000 dir=0.0000 ADE=0.3001 FDE=0.4813  (17.4s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 37] loss=0.5736 mse=0.5736 mag=0.0000 dir=0.0000 ADE=0.3021 FDE=0.4849  (18.4s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 38] loss=0.5680 mse=0.5680 mag=0.0000 dir=0.0000 ADE=0.3008 FDE=0.4795  (17.7s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 39] loss=0.5647 mse=0.5647 mag=0.0000 dir=0.0000 ADE=0.2992 FDE=0.4809  (18.0s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 40] loss=0.5555 mse=0.5555 mag=0.0000 dir=0.0000 ADE=0.3044 FDE=0.4884  (17.8s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 41] loss=0.5550 mse=0.5550 mag=0.0000 dir=0.0000 ADE=0.3009 FDE=0.4800  (17.2s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 42] loss=0.5502 mse=0.5502 mag=0.0000 dir=0.0000 ADE=0.3016 FDE=0.4816  (16.8s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 43] loss=0.5455 mse=0.5455 mag=0.0000 dir=0.0000 ADE=0.3024 FDE=0.4869  (15.5s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 44] loss=0.5431 mse=0.5431 mag=0.0000 dir=0.0000 ADE=0.3064 FDE=0.4969  (14.6s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 45] loss=0.5387 mse=0.5387 mag=0.0000 dir=0.0000 ADE=0.3026 FDE=0.4839  (17.2s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 46] loss=0.5379 mse=0.5379 mag=0.0000 dir=0.0000 ADE=0.3001 FDE=0.4844  (17.7s) best=0.2945@35
+[MODEL_XR_A_CONTROL ep 47] loss=0.5370 mse=0.5370 mag=0.0000 dir=0.0000 ADE=0.2996 FDE=0.4783  (16.7s) best=0.2945@35
+[MODEL_XR_A_CONTROL] early stop @ 47
+[MODEL_XR_A_CONTROL] DONE best_val_ADE=0.2945@35 (13.49 min)
+===== EVAL A_control =====
+[MODEL_XR_A_CONTROL] H10: ADE=0.3050 FDE=0.4799 step1=0.625 step1_sm=0.600 nd_ratio=0.395 cos=0.962
+===== HORIZON A_control =====
+[MODEL_XR_A_CONTROL H20] ADE=0.466 nd_ratio=0.375 sm_ratio=0.329 cum_ratio=0.259 cos=0.940
+[MODEL_XR_A_CONTROL H60] ADE=1.054 nd_ratio=0.336 sm_ratio=0.254 cum_ratio=0.187 cos=0.847
+[MODEL_XR_A_CONTROL H100] ADE=1.600 nd_ratio=0.331 sm_ratio=0.233 cum_ratio=0.166 cos=0.779
+[MODEL_XR_A_CONTROL H200] ADE=2.884 nd_ratio=0.299 sm_ratio=0.210 cum_ratio=0.147 cos=0.684
+[MODEL_XR_A_CONTROL H400] ADE=5.462 nd_ratio=0.253 sm_ratio=0.185 cum_ratio=0.123 cos=0.554
+[MODEL_XR_A_CONTROL] horizon sweep done
+===== TRAIN B_mag =====
+[MODEL_XR_B_MAG] device=cuda lambda_mag=1.0 lambda_dir=0.0
+[MODEL_XR_B_MAG] train windows (822488, 10, 10)
+[MODEL_XR_B_MAG ep  1] loss=1.5725 mse=0.9573 mag=0.6152 dir=0.0000 ADE=0.4669 FDE=0.8496 * (17.6s) best=0.4669@1
+[MODEL_XR_B_MAG ep  2] loss=1.5095 mse=0.9235 mag=0.5860 dir=0.0000 ADE=0.3804 FDE=0.6505 * (22.0s) best=0.3804@2
+[MODEL_XR_B_MAG ep  3] loss=1.5002 mse=0.9203 mag=0.5799 dir=0.0000 ADE=0.3825 FDE=0.6472  (20.9s) best=0.3804@2
+[MODEL_XR_B_MAG ep  4] loss=1.4931 mse=0.9169 mag=0.5762 dir=0.0000 ADE=0.3892 FDE=0.6702  (19.4s) best=0.3804@2
+[MODEL_XR_B_MAG ep  5] loss=1.4874 mse=0.9145 mag=0.5730 dir=0.0000 ADE=0.3746 FDE=0.6338 * (16.0s) best=0.3746@5
+[MODEL_XR_B_MAG ep  6] loss=1.4793 mse=0.9089 mag=0.5704 dir=0.0000 ADE=0.3767 FDE=0.6378  (17.9s) best=0.3746@5
+[MODEL_XR_B_MAG ep  7] loss=1.4756 mse=0.9077 mag=0.5680 dir=0.0000 ADE=0.3706 FDE=0.6244 * (20.5s) best=0.3706@7
+[MODEL_XR_B_MAG ep  8] loss=1.4661 mse=0.9014 mag=0.5647 dir=0.0000 ADE=0.3861 FDE=0.6568  (20.7s) best=0.3706@7
+[MODEL_XR_B_MAG ep  9] loss=1.4546 mse=0.8947 mag=0.5599 dir=0.0000 ADE=0.3724 FDE=0.6350  (19.9s) best=0.3706@7
+[MODEL_XR_B_MAG ep 10] loss=1.4447 mse=0.8895 mag=0.5552 dir=0.0000 ADE=0.3745 FDE=0.6354  (20.3s) best=0.3706@7
+[MODEL_XR_B_MAG ep 11] loss=1.4293 mse=0.8810 mag=0.5483 dir=0.0000 ADE=0.3676 FDE=0.6182 * (18.9s) best=0.3676@11
+[MODEL_XR_B_MAG ep 12] loss=1.4140 mse=0.8707 mag=0.5434 dir=0.0000 ADE=0.3555 FDE=0.5803 * (18.3s) best=0.3555@12
+[MODEL_XR_B_MAG ep 13] loss=1.3999 mse=0.8614 mag=0.5385 dir=0.0000 ADE=0.3707 FDE=0.6261  (17.4s) best=0.3555@12
+[MODEL_XR_B_MAG ep 14] loss=1.3816 mse=0.8510 mag=0.5306 dir=0.0000 ADE=0.3550 FDE=0.5900 * (20.1s) best=0.3550@14
+[MODEL_XR_B_MAG ep 15] loss=1.3677 mse=0.8429 mag=0.5248 dir=0.0000 ADE=0.3594 FDE=0.6003  (21.1s) best=0.3550@14
+Traceback (most recent call last):
+  File "C:\Users\OWNER\Desktop\IAAC\IAAC_Thesis\motion-pixels\mp-core\trajectory-prediction\MODEL_XR\train_model_xr.py", line 124, in <module>
+    main()
+  File "C:\Users\OWNER\Desktop\IAAC\IAAC_Thesis\motion-pixels\mp-core\trajectory-prediction\MODEL_XR\train_model_xr.py", line 93, in main
+    nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step()
+  File "C:\Users\OWNER\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\nn\utils\clip_grad.py", line 38, in _no_grad_wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\OWNER\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\nn\utils\clip_grad.py", line 219, in clip_grad_norm_
+    total_norm = _get_total_norm(grads, norm_type, error_if_nonfinite, foreach)
+  File "C:\Users\OWNER\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\nn\utils\clip_grad.py", line 38, in _no_grad_wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\OWNER\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\nn\utils\clip_grad.py", line 91, in _get_total_norm
+    norms.extend(torch._foreach_norm(device_tensors, norm_type))
+RuntimeError: CUDA error: unknown error
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+===== EVAL B_mag =====
+[MODEL_XR_B_MAG] H10: ADE=0.3750 FDE=0.6381 step1=1.009 step1_sm=1.098 nd_ratio=0.983 cos=0.966
+===== HORIZON B_mag =====
+[MODEL_XR_B_MAG H20] ADE=0.644 nd_ratio=1.071 sm_ratio=0.840 cum_ratio=0.614 cos=0.966
+[MODEL_XR_B_MAG H60] ADE=1.787 nd_ratio=1.184 sm_ratio=0.825 cum_ratio=0.581 cos=0.954
+[MODEL_XR_B_MAG H100] ADE=2.946 nd_ratio=1.252 sm_ratio=0.840 cum_ratio=0.573 cos=0.962
+[MODEL_XR_B_MAG H200] ADE=5.576 nd_ratio=1.299 sm_ratio=0.818 cum_ratio=0.545 cos=0.976
+[MODEL_XR_B_MAG H400] ADE=10.301 nd_ratio=1.298 sm_ratio=0.768 cum_ratio=0.518 cos=0.991
+[MODEL_XR_B_MAG] horizon sweep done
+===== TRAIN C_mag_light_dir =====
+[MODEL_XR_C_MAG_LIGHT_DIR] device=cuda lambda_mag=1.0 lambda_dir=0.1
+[MODEL_XR_C_MAG_LIGHT_DIR] train windows (822488, 10, 10)
+[MODEL_XR_C_MAG_LIGHT_DIR ep  1] loss=1.6196 mse=0.9458 mag=0.6120 dir=0.6178 ADE=0.4724 FDE=0.8593 * (23.0s) best=0.4724@1
+[MODEL_XR_C_MAG_LIGHT_DIR ep  2] loss=1.5685 mse=0.9244 mag=0.5863 dir=0.5783 ADE=0.3808 FDE=0.6532 * (20.9s) best=0.3808@2
+[MODEL_XR_C_MAG_LIGHT_DIR ep  3] loss=1.5595 mse=0.9216 mag=0.5803 dir=0.5757 ADE=0.3854 FDE=0.6509  (25.1s) best=0.3808@2
+[MODEL_XR_C_MAG_LIGHT_DIR ep  4] loss=1.5528 mse=0.9188 mag=0.5766 dir=0.5738 ADE=0.3961 FDE=0.6891  (24.1s) best=0.3808@2
+[MODEL_XR_C_MAG_LIGHT_DIR ep  5] loss=1.5464 mse=0.9156 mag=0.5736 dir=0.5721 ADE=0.3795 FDE=0.6436 * (23.6s) best=0.3795@5
+[MODEL_XR_C_MAG_LIGHT_DIR ep  6] loss=1.5382 mse=0.9112 mag=0.5699 dir=0.5704 ADE=0.3657 FDE=0.6096 * (25.8s) best=0.3657@6
+[MODEL_XR_C_MAG_LIGHT_DIR ep  7] loss=1.5321 mse=0.9084 mag=0.5667 dir=0.5696 ADE=0.3768 FDE=0.6407  (26.1s) best=0.3657@6
+[MODEL_XR_C_MAG_LIGHT_DIR ep  8] loss=1.5220 mse=0.9027 mag=0.5625 dir=0.5686 ADE=0.3863 FDE=0.6594  (26.3s) best=0.3657@6
+[MODEL_XR_C_MAG_LIGHT_DIR ep  9] loss=1.5099 mse=0.8952 mag=0.5579 dir=0.5676 ADE=0.3636 FDE=0.6166 * (27.9s) best=0.3636@9
+[MODEL_XR_C_MAG_LIGHT_DIR ep 10] loss=1.5004 mse=0.8901 mag=0.5534 dir=0.5680 ADE=0.3649 FDE=0.6198  (26.0s) best=0.3636@9
+[MODEL_XR_C_MAG_LIGHT_DIR ep 11] loss=1.4862 mse=0.8812 mag=0.5483 dir=0.5668 ADE=0.3630 FDE=0.6132 * (25.3s) best=0.3630@11
+[MODEL_XR_C_MAG_LIGHT_DIR ep 12] loss=1.4719 mse=0.8737 mag=0.5415 dir=0.5678 ADE=0.3607 FDE=0.6029 * (26.3s) best=0.3607@12
+[MODEL_XR_C_MAG_LIGHT_DIR ep 13] loss=1.4568 mse=0.8653 mag=0.5347 dir=0.5682 ADE=0.3718 FDE=0.6312  (36.0s) best=0.3607@12
+[MODEL_XR_C_MAG_LIGHT_DIR ep 14] loss=1.4401 mse=0.8536 mag=0.5298 dir=0.5670 ADE=0.3559 FDE=0.5959 * (26.0s) best=0.3559@14
+[MODEL_XR_C_MAG_LIGHT_DIR ep 15] loss=1.4260 mse=0.8460 mag=0.5233 dir=0.5670 ADE=0.3517 FDE=0.5791 * (25.3s) best=0.3517@15
+[MODEL_XR_C_MAG_LIGHT_DIR ep 16] loss=1.4106 mse=0.8358 mag=0.5181 dir=0.5671 ADE=0.3552 FDE=0.5790  (24.6s) best=0.3517@15
+[MODEL_XR_C_MAG_LIGHT_DIR ep 17] loss=1.3906 mse=0.8240 mag=0.5099 dir=0.5672 ADE=0.3549 FDE=0.5872  (26.6s) best=0.3517@15
+[MODEL_XR_C_MAG_LIGHT_DIR ep 18] loss=1.3769 mse=0.8151 mag=0.5051 dir=0.5669 ADE=0.3582 FDE=0.5997  (23.3s) best=0.3517@15
+[MODEL_XR_C_MAG_LIGHT_DIR ep 19] loss=1.3622 mse=0.8072 mag=0.4983 dir=0.5673 ADE=0.3554 FDE=0.5843  (23.1s) best=0.3517@15
+[MODEL_XR_C_MAG_LIGHT_DIR ep 20] loss=1.3494 mse=0.8003 mag=0.4925 dir=0.5661 ADE=0.3525 FDE=0.5892  (20.1s) best=0.3517@15
+[MODEL_XR_C_MAG_LIGHT_DIR ep 21] loss=1.3346 mse=0.7902 mag=0.4877 dir=0.5668 ADE=0.3439 FDE=0.5641 * (20.0s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 22] loss=1.3179 mse=0.7801 mag=0.4811 dir=0.5676 ADE=0.3551 FDE=0.5825  (25.1s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 23] loss=1.3082 mse=0.7715 mag=0.4801 dir=0.5666 ADE=0.3503 FDE=0.5832  (23.4s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 24] loss=1.2948 mse=0.7627 mag=0.4754 dir=0.5669 ADE=0.3582 FDE=0.5885  (22.3s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 25] loss=1.2838 mse=0.7570 mag=0.4701 dir=0.5672 ADE=0.3449 FDE=0.5651  (22.2s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 26] loss=1.2721 mse=0.7486 mag=0.4669 dir=0.5662 ADE=0.3531 FDE=0.5864  (22.4s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 27] loss=1.2602 mse=0.7411 mag=0.4625 dir=0.5666 ADE=0.3595 FDE=0.5962  (26.3s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 28] loss=1.2490 mse=0.7335 mag=0.4587 dir=0.5680 ADE=0.3555 FDE=0.5855  (27.0s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 29] loss=1.2354 mse=0.7247 mag=0.4540 dir=0.5670 ADE=0.3494 FDE=0.5772  (23.0s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 30] loss=1.2237 mse=0.7172 mag=0.4498 dir=0.5663 ADE=0.3504 FDE=0.5746  (21.8s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 31] loss=1.2232 mse=0.7167 mag=0.4499 dir=0.5664 ADE=0.3566 FDE=0.5932  (19.8s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 32] loss=1.2097 mse=0.7067 mag=0.4464 dir=0.5663 ADE=0.3508 FDE=0.5817  (23.1s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR ep 33] loss=1.1969 mse=0.6995 mag=0.4407 dir=0.5665 ADE=0.3525 FDE=0.5700  (25.5s) best=0.3439@21
+[MODEL_XR_C_MAG_LIGHT_DIR] early stop @ 33
+[MODEL_XR_C_MAG_LIGHT_DIR] DONE best_val_ADE=0.3439@21 (13.63 min)
+===== EVAL C_mag_light_dir =====
+[MODEL_XR_C_MAG_LIGHT_DIR] H10: ADE=0.3557 FDE=0.5878 step1=0.961 step1_sm=1.036 nd_ratio=0.836 cos=0.930
+===== HORIZON C_mag_light_dir =====
+[MODEL_XR_C_MAG_LIGHT_DIR H20] ADE=0.586 nd_ratio=0.852 sm_ratio=0.723 cum_ratio=0.528 cos=0.887
+[MODEL_XR_C_MAG_LIGHT_DIR H60] ADE=1.526 nd_ratio=0.905 sm_ratio=0.659 cum_ratio=0.472 cos=0.704
+[MODEL_XR_C_MAG_LIGHT_DIR H100] ADE=2.481 nd_ratio=0.975 sm_ratio=0.654 cum_ratio=0.469 cos=0.576
+[MODEL_XR_C_MAG_LIGHT_DIR H200] ADE=4.816 nd_ratio=1.071 sm_ratio=0.630 cum_ratio=0.443 cos=0.414
+[MODEL_XR_C_MAG_LIGHT_DIR H400] ADE=9.613 nd_ratio=1.122 sm_ratio=0.586 cum_ratio=0.401 cos=0.071
+[MODEL_XR_C_MAG_LIGHT_DIR] horizon sweep done
+===== TRAIN D_mag_stronger =====
+[MODEL_XR_D_MAG_STRONGER] device=cuda lambda_mag=2.0 lambda_dir=0.0
+[MODEL_XR_D_MAG_STRONGER] train windows (822488, 10, 10)
+[MODEL_XR_D_MAG_STRONGER ep  1] loss=2.2290 mse=1.0575 mag=0.5858 dir=0.0000 ADE=0.4406 FDE=0.7478 * (18.9s) best=0.4406@1
+[MODEL_XR_D_MAG_STRONGER ep  2] loss=2.2064 mse=1.0497 mag=0.5784 dir=0.0000 ADE=0.4868 FDE=0.8578  (17.0s) best=0.4406@1
+[MODEL_XR_D_MAG_STRONGER ep  3] loss=2.1955 mse=1.0463 mag=0.5746 dir=0.0000 ADE=0.4124 FDE=0.6803 * (19.1s) best=0.4124@3
+[MODEL_XR_D_MAG_STRONGER ep  4] loss=2.1595 mse=1.0074 mag=0.5760 dir=0.0000 ADE=0.4109 FDE=0.7077 * (22.1s) best=0.4109@4
+[MODEL_XR_D_MAG_STRONGER ep  5] loss=2.0842 mse=0.9444 mag=0.5699 dir=0.0000 ADE=0.4416 FDE=0.7714  (21.5s) best=0.4109@4
+[MODEL_XR_D_MAG_STRONGER ep  6] loss=2.0571 mse=0.9380 mag=0.5595 dir=0.0000 ADE=0.4159 FDE=0.7189  (20.9s) best=0.4109@4
+[MODEL_XR_D_MAG_STRONGER ep  7] loss=2.0493 mse=0.9356 mag=0.5568 dir=0.0000 ADE=0.3889 FDE=0.6582 * (20.5s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep  8] loss=2.0342 mse=0.9317 mag=0.5513 dir=0.0000 ADE=0.4141 FDE=0.7102  (22.1s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep  9] loss=2.0219 mse=0.9277 mag=0.5471 dir=0.0000 ADE=0.4104 FDE=0.7079  (20.2s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 10] loss=2.0085 mse=0.9255 mag=0.5415 dir=0.0000 ADE=0.4035 FDE=0.6894  (21.4s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 11] loss=1.9896 mse=0.9192 mag=0.5352 dir=0.0000 ADE=0.4054 FDE=0.6925  (21.3s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 12] loss=1.9717 mse=0.9146 mag=0.5286 dir=0.0000 ADE=0.3982 FDE=0.6751  (23.0s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 13] loss=1.9539 mse=0.9108 mag=0.5216 dir=0.0000 ADE=0.4019 FDE=0.6860  (19.0s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 14] loss=1.9310 mse=0.9023 mag=0.5144 dir=0.0000 ADE=0.3920 FDE=0.6623  (16.9s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 15] loss=1.9127 mse=0.8956 mag=0.5086 dir=0.0000 ADE=0.3905 FDE=0.6591  (21.7s) best=0.3889@7
+[MODEL_XR_D_MAG_STRONGER ep 16] loss=1.8868 mse=0.8895 mag=0.4986 dir=0.0000 ADE=0.3875 FDE=0.6507 * (21.4s) best=0.3875@16
+[MODEL_XR_D_MAG_STRONGER ep 17] loss=1.8640 mse=0.8821 mag=0.4909 dir=0.0000 ADE=0.4012 FDE=0.6804  (19.7s) best=0.3875@16
+[MODEL_XR_D_MAG_STRONGER ep 18] loss=1.8405 mse=0.8730 mag=0.4838 dir=0.0000 ADE=0.3869 FDE=0.6484 * (21.4s) best=0.3869@18
+[MODEL_XR_D_MAG_STRONGER ep 19] loss=1.8206 mse=0.8675 mag=0.4766 dir=0.0000 ADE=0.3933 FDE=0.6631  (21.2s) best=0.3869@18
+[MODEL_XR_D_MAG_STRONGER ep 20] loss=1.7983 mse=0.8602 mag=0.4690 dir=0.0000 ADE=0.3935 FDE=0.6680  (21.1s) best=0.3869@18
+[MODEL_XR_D_MAG_STRONGER ep 21] loss=1.7771 mse=0.8529 mag=0.4621 dir=0.0000 ADE=0.3758 FDE=0.6257 * (21.5s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 22] loss=1.7566 mse=0.8475 mag=0.4546 dir=0.0000 ADE=0.4081 FDE=0.6978  (19.3s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 23] loss=1.7302 mse=0.8412 mag=0.4445 dir=0.0000 ADE=0.3886 FDE=0.6524  (19.2s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 24] loss=1.7214 mse=0.8362 mag=0.4426 dir=0.0000 ADE=0.4044 FDE=0.6878  (19.7s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 25] loss=1.7000 mse=0.8294 mag=0.4353 dir=0.0000 ADE=0.3793 FDE=0.6333  (21.1s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 26] loss=1.6842 mse=0.8248 mag=0.4297 dir=0.0000 ADE=0.3864 FDE=0.6493  (18.4s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 27] loss=1.6673 mse=0.8184 mag=0.4244 dir=0.0000 ADE=0.4058 FDE=0.6919  (23.3s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 28] loss=1.6528 mse=0.8130 mag=0.4199 dir=0.0000 ADE=0.3922 FDE=0.6591  (20.8s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 29] loss=1.6364 mse=0.8095 mag=0.4135 dir=0.0000 ADE=0.3875 FDE=0.6522  (19.9s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 30] loss=1.6274 mse=0.8054 mag=0.4110 dir=0.0000 ADE=0.4060 FDE=0.6909  (19.8s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 31] loss=1.6112 mse=0.8004 mag=0.4054 dir=0.0000 ADE=0.3878 FDE=0.6496  (27.8s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 32] loss=1.5958 mse=0.7970 mag=0.3994 dir=0.0000 ADE=0.3844 FDE=0.6444  (20.9s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER ep 33] loss=1.5789 mse=0.7913 mag=0.3938 dir=0.0000 ADE=0.3998 FDE=0.6756  (20.1s) best=0.3758@21
+[MODEL_XR_D_MAG_STRONGER] early stop @ 33
+[MODEL_XR_D_MAG_STRONGER] DONE best_val_ADE=0.3758@21 (11.52 min)
+===== EVAL D_mag_stronger =====
+[MODEL_XR_D_MAG_STRONGER] H10: ADE=0.3916 FDE=0.6590 step1=1.054 step1_sm=1.174 nd_ratio=1.043 cos=0.946
+===== HORIZON D_mag_stronger =====
+[MODEL_XR_D_MAG_STRONGER H20] ADE=0.649 nd_ratio=1.211 sm_ratio=0.909 cum_ratio=0.661 cos=0.945
+[MODEL_XR_D_MAG_STRONGER H60] ADE=1.677 nd_ratio=1.315 sm_ratio=0.911 cum_ratio=0.643 cos=0.875
+[MODEL_XR_D_MAG_STRONGER H100] ADE=2.698 nd_ratio=1.371 sm_ratio=0.918 cum_ratio=0.646 cos=0.859
+[MODEL_XR_D_MAG_STRONGER H200] ADE=5.136 nd_ratio=1.417 sm_ratio=0.932 cum_ratio=0.654 cos=0.885
+[MODEL_XR_D_MAG_STRONGER H400] ADE=9.753 nd_ratio=1.471 sm_ratio=0.913 cum_ratio=0.630 cos=0.972
+[MODEL_XR_D_MAG_STRONGER] horizon sweep done
+===== AGGREGATE =====
+[agg] best variant = MODEL_XR_C_MAG_LIGHT_DIR
+[agg] CSVs + figures written. Summary:
+                 variant      ADE      FDE  step1_sm_ratio_med  nd_ratio_med  cosine_med
+      MODEL_XR_A_CONTROL 0.304954 0.479936            0.599629      0.395246    0.962287
+          MODEL_XR_B_MAG 0.375000 0.638137            1.097550      0.982828    0.965722
+MODEL_XR_C_MAG_LIGHT_DIR 0.355684 0.587838            1.035928      0.835729    0.930076
+ MODEL_XR_D_MAG_STRONGER 0.391598 0.659014            1.174206      1.043071    0.945781
+
+failure flags:
+                  variant           failure_flags  step1_sm_ratio_med  nd_ratio_med      ADE  cosine_med  espanya_nd_gain
+          MODEL_XR_B_MAG ade_substantially_worse            1.097550      0.982828 0.375000    0.965722           0.9437
+MODEL_XR_C_MAG_LIGHT_DIR ade_substantially_worse            1.035928      0.835729 0.355684    0.930076           0.7334
+ MODEL_XR_D_MAG_STRONGER ade_substantially_worse            1.174206      1.043071 0.391598    0.945781           0.8615
+XR_ALL_COMPLETE

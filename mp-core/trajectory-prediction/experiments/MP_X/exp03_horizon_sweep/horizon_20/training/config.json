@@ -1,0 +1,59 @@
+{
+  "experiment": "h20",
+  "model": "TrajectoryLSTM (frozen Model C)",
+  "feature_order": [
+    "du",
+    "dv",
+    "speed",
+    "heading_sin",
+    "heading_cos",
+    "turn_rate",
+    "u",
+    "v",
+    "dist_to_obstacle_norm",
+    "dist_to_boundary_norm"
+  ],
+  "targets": [
+    "target_du",
+    "target_dv"
+  ],
+  "window": 10,
+  "label_horizon": 20,
+  "use_weighted_sampler": false,
+  "sampler_weights": {
+    "straight": 1.0,
+    "mild_30_90": 8.0,
+    "sharp_90_150": 12.0,
+    "uturn_150_180": 16.0
+  },
+  "train_window_filter": true,
+  "val_window_filter": true,
+  "batch_size": 512,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "scheduler": "StepLR(step=25, gamma=0.35)",
+  "grad_clip": 1.0,
+  "max_epochs": 80,
+  "patience": 15,
+  "seed": 42,
+  "device": "cuda",
+  "n_train_windows": 10905,
+  "n_val_windows": 55,
+  "train_bin_counts": {
+    "straight": 0,
+    "mild_30_90": 3042,
+    "sharp_90_150": 2316,
+    "uturn_150_180": 5547
+  },
+  "val_bin_counts": {
+    "straight": 0,
+    "mild_30_90": 12,
+    "sharp_90_150": 13,
+    "uturn_150_180": 30
+  },
+  "actual_epochs": 41,
+  "best_epoch": 26,
+  "best_val_loss": 1.0647385120391846,
+  "train_time_s": 6.2,
+  "dataset": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v3_manual_master_dataset\\model_C_dataset.csv"
+}

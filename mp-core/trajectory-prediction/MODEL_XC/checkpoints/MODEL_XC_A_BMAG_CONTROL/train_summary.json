@@ -1,0 +1,11 @@
+{
+  "variant": "MODEL_XC_A_BMAG_CONTROL",
+  "lambda_mag": 1.0,
+  "lambda_curv": 0.0,
+  "lambda_dir": 0.0,
+  "best_val_ADE": 0.34728262727653186,
+  "best_epoch": 16,
+  "epochs": 28,
+  "sigma_iso": 0.22302240133285522,
+  "minutes": 20.12
+}

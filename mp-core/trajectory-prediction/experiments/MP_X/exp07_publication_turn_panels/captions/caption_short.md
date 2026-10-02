@@ -1,0 +1,1 @@
+**Motion Pixels predicts curved pedestrian futures.** Selected held-out examples (esplanade): observed path (grey), ground-truth future (blue), model prediction (orange). The model expresses clear turning, though the exact final direction is not yet reliable.

@@ -1,0 +1,2 @@
+{"variant": "MODEL_XR_D_MAG_STRONGER", "lambda_mag": 2.0, "lambda_dir": 0.0,
+ "desc": "MSE + stronger magnitude loss (lambda_mag=2.0)"}

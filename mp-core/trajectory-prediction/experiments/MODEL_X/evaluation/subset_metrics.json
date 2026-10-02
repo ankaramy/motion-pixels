@@ -1,0 +1,57 @@
+{
+  "checkpoint": "best_by_val_ADE.pth",
+  "all_test": {
+    "n": 90310,
+    "ADE_mean": 0.30495421027978026,
+    "FDE_mean": 0.47993598615157707,
+    "RMSE_mean": 0.35440021209868516,
+    "ADE_median": 0.13567253329686751,
+    "FDE_median": 0.19817542939298116,
+    "angular_err_mean_deg": 75.63817749457954,
+    "angular_err_median_deg": 58.901941064977066,
+    "pred_path_len_median": 0.17154281340071556,
+    "gt_path_len_median": 0.514582194193984,
+    "len_ratio_median": 0.4134783655078218
+  },
+  "genuine_turns": {
+    "n": 2858,
+    "ADE_mean": 0.7298829788899873,
+    "FDE_mean": 1.2253385541996078,
+    "RMSE_mean": 0.8472702371155787,
+    "ADE_median": 0.6545694506217855,
+    "FDE_median": 1.1467563262559672,
+    "angular_err_mean_deg": 71.62124722707082,
+    "angular_err_median_deg": 45.247621674679756,
+    "pred_path_len_median": 0.5432041283466522,
+    "gt_path_len_median": 1.8813978023949829,
+    "len_ratio_median": 0.30217705698823094,
+    "turn_capture_rate": 0.3806857942617215
+  },
+  "straight": {
+    "n": 9161,
+    "ADE_mean": 0.7813567711631896,
+    "FDE_mean": 1.3575184057987824,
+    "RMSE_mean": 0.9082611757596674,
+    "ADE_median": 0.5061356942062313,
+    "FDE_median": 0.8451107021033674,
+    "angular_err_mean_deg": 79.34873821427763,
+    "angular_err_median_deg": 50.60619809177924,
+    "pred_path_len_median": 0.34396900804296865,
+    "gt_path_len_median": 1.6800793222690404,
+    "len_ratio_median": 0.22105939021627471
+  },
+  "long_displacement_top25pct": {
+    "n": 22578,
+    "ADE_mean": 0.7941904922515999,
+    "FDE_mean": 1.3265458024594896,
+    "RMSE_mean": 0.9260829264534232,
+    "ADE_median": 0.5378335204415435,
+    "FDE_median": 0.8893080414024496,
+    "angular_err_mean_deg": 77.33409955093231,
+    "angular_err_median_deg": 53.38421796160428,
+    "pred_path_len_median": 0.39046592636223454,
+    "gt_path_len_median": 1.7764431066540558,
+    "len_ratio_median": 0.2349546261768452,
+    "gt_net_disp_threshold_m": 0.581867869016716
+  }
+}

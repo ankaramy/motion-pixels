@@ -1,0 +1,67 @@
+[train] device=cuda  torch=2.7.0+cu118
+[train] loading C:\Users\OWNER\Desktop\new_datasets\Barcelona_v3_manual_master_dataset\master_dataset.csv
+[train] building train windows from 2827 tracks ...
+[train] train windows: X=(822488, 10, 10)  Y=(822488, 2)
+[train] val rollout subsample: 3000 windows
+[ep   1/80] train=0.89573 val=0.78443 ADE=0.3259 FDE=0.5527 AF (15.1s)  best_ADE=0.3259@1
+[ep   2/80] train=0.88273 val=0.78120 ADE=0.3043 FDE=0.4972 AF (13.6s)  best_ADE=0.3043@2
+[ep   3/80] train=0.87729 val=0.77965 ADE=0.3076 FDE=0.4996    (13.9s)  best_ADE=0.3043@2
+[ep   4/80] train=0.87165 val=0.77642 ADE=0.3010 FDE=0.4925 AF (15.0s)  best_ADE=0.3010@4
+[ep   5/80] train=0.86645 val=0.77628 ADE=0.3046 FDE=0.4997    (15.5s)  best_ADE=0.3010@4
+[ep   6/80] train=0.85941 val=0.77911 ADE=0.3107 FDE=0.5128    (14.5s)  best_ADE=0.3010@4
+[ep   7/80] train=0.85229 val=0.77687 ADE=0.2974 FDE=0.4874 AF (14.6s)  best_ADE=0.2974@7
+[ep   8/80] train=0.84156 val=0.77947 ADE=0.3006 FDE=0.4898    (13.6s)  best_ADE=0.2974@7
+[ep   9/80] train=0.83092 val=0.78349 ADE=0.3006 FDE=0.4937    (14.4s)  best_ADE=0.2974@7
+[ep  10/80] train=0.81991 val=0.79242 ADE=0.3008 FDE=0.4931    (14.5s)  best_ADE=0.2974@7
+[ep  11/80] train=0.80382 val=0.80895 ADE=0.3031 FDE=0.4990    (14.4s)  best_ADE=0.2974@7
+[ep  12/80] train=0.79008 val=0.79474 ADE=0.3017 FDE=0.4975    (14.4s)  best_ADE=0.2974@7
+[ep  13/80] train=0.77611 val=0.80793 ADE=0.2971 FDE=0.4807 AF (14.2s)  best_ADE=0.2971@13
+[ep  14/80] train=0.75970 val=0.80936 ADE=0.3019 FDE=0.4935    (14.2s)  best_ADE=0.2971@13
+[ep  15/80] train=0.74673 val=0.82709 ADE=0.2980 FDE=0.4877    (14.2s)  best_ADE=0.2971@13
+[ep  16/80] train=0.73449 val=0.81954 ADE=0.3116 FDE=0.5151    (14.2s)  best_ADE=0.2971@13
+[ep  17/80] train=0.71835 val=0.81962 ADE=0.2979 FDE=0.4818    (14.5s)  best_ADE=0.2971@13
+[ep  18/80] train=0.70727 val=0.83137 ADE=0.2981 FDE=0.4810    (14.2s)  best_ADE=0.2971@13
+[ep  19/80] train=0.69544 val=0.83024 ADE=0.2971 FDE=0.4770 AF (13.1s)  best_ADE=0.2971@19
+[ep  20/80] train=0.68482 val=0.84823 ADE=0.3053 FDE=0.4988    (13.6s)  best_ADE=0.2971@19
+[ep  21/80] train=0.67414 val=0.84512 ADE=0.2972 FDE=0.4797    (14.9s)  best_ADE=0.2971@19
+[ep  22/80] train=0.66488 val=0.85341 ADE=0.3028 FDE=0.4906    (14.8s)  best_ADE=0.2971@19
+[ep  23/80] train=0.65580 val=0.84387 ADE=0.2998 FDE=0.4829    (14.5s)  best_ADE=0.2971@19
+[ep  24/80] train=0.64994 val=0.86801 ADE=0.2982 FDE=0.4818    (14.6s)  best_ADE=0.2971@19
+[ep  25/80] train=0.64067 val=0.86605 ADE=0.2964 FDE=0.4815 A  (13.2s)  best_ADE=0.2964@25
+[ep  26/80] train=0.63020 val=0.86939 ADE=0.2985 FDE=0.4824    (13.0s)  best_ADE=0.2964@25
+[ep  27/80] train=0.62477 val=0.86619 ADE=0.3017 FDE=0.4845    (14.3s)  best_ADE=0.2964@25
+[ep  28/80] train=0.62078 val=0.88048 ADE=0.3039 FDE=0.4896    (14.3s)  best_ADE=0.2964@25
+[ep  29/80] train=0.60972 val=0.87694 ADE=0.2995 FDE=0.4837    (14.4s)  best_ADE=0.2964@25
+[ep  30/80] train=0.60549 val=0.88803 ADE=0.3013 FDE=0.4818    (15.0s)  best_ADE=0.2964@25
+[ep  31/80] train=0.60116 val=0.88012 ADE=0.3090 FDE=0.5069    (14.4s)  best_ADE=0.2964@25
+[ep  32/80] train=0.59784 val=0.88581 ADE=0.3027 FDE=0.4875    (14.6s)  best_ADE=0.2964@25
+[ep  33/80] train=0.59210 val=0.87477 ADE=0.2978 FDE=0.4817    (13.9s)  best_ADE=0.2964@25
+[ep  34/80] train=0.58554 val=0.87614 ADE=0.3000 FDE=0.4789    (14.0s)  best_ADE=0.2964@25
+[ep  35/80] train=0.57957 val=0.89638 ADE=0.2945 FDE=0.4718 AF (13.6s)  best_ADE=0.2945@35
+[ep  36/80] train=0.57780 val=0.88523 ADE=0.3001 FDE=0.4813    (12.9s)  best_ADE=0.2945@35
+[ep  37/80] train=0.57357 val=0.88401 ADE=0.3021 FDE=0.4849    (13.4s)  best_ADE=0.2945@35
+[ep  38/80] train=0.56799 val=0.87776 ADE=0.3008 FDE=0.4795    (14.5s)  best_ADE=0.2945@35
+[ep  39/80] train=0.56474 val=0.88231 ADE=0.2992 FDE=0.4809    (14.3s)  best_ADE=0.2945@35
+[ep  40/80] train=0.55546 val=0.88407 ADE=0.3044 FDE=0.4884    (14.0s)  best_ADE=0.2945@35
+[ep  41/80] train=0.55499 val=0.88252 ADE=0.3009 FDE=0.4800    (13.9s)  best_ADE=0.2945@35
+[ep  42/80] train=0.55015 val=0.89377 ADE=0.3016 FDE=0.4816    (13.1s)  best_ADE=0.2945@35
+[ep  43/80] train=0.54551 val=0.88420 ADE=0.3024 FDE=0.4869    (13.4s)  best_ADE=0.2945@35
+[ep  44/80] train=0.54310 val=0.90182 ADE=0.3064 FDE=0.4969    (14.8s)  best_ADE=0.2945@35
+[ep  45/80] train=0.53868 val=0.89846 ADE=0.3026 FDE=0.4839    (14.8s)  best_ADE=0.2945@35
+[ep  46/80] train=0.53792 val=0.89625 ADE=0.3001 FDE=0.4844    (14.2s)  best_ADE=0.2945@35
+[ep  47/80] train=0.53703 val=0.88560 ADE=0.2996 FDE=0.4783    (14.4s)  best_ADE=0.2945@35
+[train] early stop at epoch 47 (no val ADE improvement for 12)
+[train] DONE {
+  "epochs_completed": 47,
+  "best_val_ADE": 0.29449076037291133,
+  "best_val_ADE_epoch": 35,
+  "best_val_FDE": 0.4718351596522068,
+  "best_val_FDE_epoch": 35,
+  "final_train_loss": 0.5370332010199339,
+  "final_val_loss": 0.8855994103843369,
+  "train_windows": 822488,
+  "val_rollout_windows": 3000,
+  "device": "cuda",
+  "selected_checkpoint": "best_by_val_ADE.pth",
+  "minutes": 11.3
+}

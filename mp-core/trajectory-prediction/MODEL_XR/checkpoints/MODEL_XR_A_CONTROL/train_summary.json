@@ -1,0 +1,10 @@
+{
+  "variant": "MODEL_XR_A_CONTROL",
+  "lambda_mag": 0.0,
+  "lambda_dir": 0.0,
+  "best_val_ADE": 0.29449076037291133,
+  "best_epoch": 35,
+  "epochs": 47,
+  "sigma_iso": 0.22302240133285522,
+  "minutes": 13.49
+}

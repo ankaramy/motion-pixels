@@ -1,0 +1,11 @@
+{
+  "variant": "MODEL_XC_B_CURV_LIGHT",
+  "lambda_mag": 1.0,
+  "lambda_curv": 0.1,
+  "lambda_dir": 0.0,
+  "best_val_ADE": 0.3271504823357754,
+  "best_epoch": 32,
+  "epochs": 44,
+  "sigma_iso": 0.22302240133285522,
+  "minutes": 26.27
+}

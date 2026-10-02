@@ -1,0 +1,5 @@
+**Figure — Predicted pedestrian motion overlaid on the architectural plan.**
+
+20 smooth, gently-curving held-out predictions selected for architectural legibility (gentle 30°–90° turns, below-median ADE) and rendered on the V3 manual walkable-space masks of the esplanade (plaza) and stairs (corridor). Observed history (grey), ground-truth future (blue) and model prediction (orange) are shown with final-direction arrows and a 5 m scale bar; panels are tagged by architectural situation (obstacle avoidance / corridor following / plaza circulation).
+
+These figures communicate that Motion Pixels predictions read as **plausible architectural circulation** — the predicted paths stay within walkable space and curve smoothly with the built environment. They are a qualitative, communication-oriented selection (smooth, accurate, legible cases), not a measure of turn-direction accuracy; see exp06 for the quantitative result.

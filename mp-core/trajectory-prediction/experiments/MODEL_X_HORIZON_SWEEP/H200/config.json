@@ -1,0 +1,41 @@
+{
+  "horizon": 200,
+  "approx_distance_m": 10.0,
+  "obs_len": 10,
+  "features": [
+    "du",
+    "dv",
+    "speed",
+    "heading_sin",
+    "heading_cos",
+    "turn_rate",
+    "u",
+    "v",
+    "dist_to_obstacle_norm",
+    "dist_to_boundary_norm"
+  ],
+  "targets": [
+    "target_du",
+    "target_dv"
+  ],
+  "arch": {
+    "hidden": 128,
+    "layers": 2,
+    "dropout": 0.2
+  },
+  "training": {
+    "objective": "single-step next-displacement MSE (Model X)",
+    "rollout_depth_eval": 200,
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 1e-05,
+    "batch_size": 256,
+    "grad_clip": 1.0,
+    "max_epochs": 80,
+    "patience": 12,
+    "seed": 42,
+    "checkpoint": "best val H-step rollout ADE"
+  },
+  "track_filter": "len >= obs+H = 210",
+  "dataset": "C:\\Users\\OWNER\\Desktop\\new_datasets\\Barcelona_v3_manual_master_dataset\\master_dataset.csv"
+}

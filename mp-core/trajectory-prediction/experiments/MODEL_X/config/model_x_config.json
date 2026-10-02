@@ -1,0 +1,96 @@
+{
+  "model_name": "MODEL_X",
+  "description": "General-purpose Horizon-10 retraining of Model C for best overall trajectory prediction on the available validated Barcelona dataset (5 recordings).",
+  "created": "2026-06-11",
+
+  "dataset": {
+    "version": "Barcelona_v3_manual_master",
+    "csv_path": "Barcelona_v3_manual_master_dataset/master_dataset.csv",
+    "model_c_csv_path": "Barcelona_v3_manual_master_dataset/model_C_dataset.csv",
+    "path_note": "Relative to MP_DATA_ROOT (default <repo>/mp-data/external); resolved in model_x_lib.py. See docs/DATA_AVAILABILITY.md.",
+    "spatial_source": "Encoder V3 real manual architectural masks",
+    "expected_recordings_requested": 7,
+    "recordings_available": [
+      "esplanade_espanya_01",
+      "placa_catalunya_01",
+      "placa_espanya_01",
+      "stairs_montjuic_01",
+      "red_bridge_combined_01"
+    ],
+    "recordings_excluded": {
+      "placa_montjuic_01": "EXCLUDED: ill-conditioned homography, never encoded",
+      "stairs_montjuic_02": "EXCLUDED: ill-conditioned homography, never encoded"
+    }
+  },
+
+  "features": {
+    "input_feature_order": [
+      "du", "dv", "speed", "heading_sin", "heading_cos", "turn_rate",
+      "u", "v", "dist_to_obstacle_norm", "dist_to_boundary_norm"
+    ],
+    "n_features": 10,
+    "target_cols": ["target_du", "target_dv"],
+    "spatial_cols": ["dist_to_obstacle_norm", "dist_to_boundary_norm"]
+  },
+
+  "architecture": {
+    "class": "TrajectoryLSTM",
+    "source": "experiments/schema_ablation_bridge/run_bridge_ablation.py (verbatim copy, not edited in place)",
+    "hidden_size": 128,
+    "num_layers": 2,
+    "dropout": 0.2,
+    "head": "Linear(128 -> 2)"
+  },
+
+  "windowing": {
+    "obs_window": 10,
+    "horizon": 10,
+    "training_target": "single-step next-displacement (target_du, target_dv) at last observed frame",
+    "eval_rollout": "10-step autoregressive in world metres",
+    "min_track_len_for_train_window": 11,
+    "min_track_len_for_eval_window": 20,
+    "spatial_during_rollout": "frozen at last observed value (no KDTree re-query; documented simplification)"
+  },
+
+  "split": {
+    "strategy": "mixed-recording track-level split",
+    "by": "trajectory_id",
+    "stratified_by": "recording_id",
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1,
+    "seed": 42,
+    "note": "Every recording contributes tracks to train/val/test. NOT unseen-site generalization. Old embedded split column is ignored."
+  },
+
+  "training": {
+    "epochs_max": 80,
+    "early_stopping_patience": 12,
+    "batch_size": 256,
+    "optimizer": "AdamW",
+    "lr": 1e-3,
+    "weight_decay": 1e-5,
+    "loss": "MSE on scaled (target_du, target_dv)",
+    "grad_clip": 1.0,
+    "device": "cuda",
+    "seed": 42,
+    "feature_scaler": "StandardScaler (fit on train windows)",
+    "target_scaler": "StandardScaler (fit on train targets)",
+    "checkpoint_selection": "best_by_val_ADE (primary), best_by_val_FDE, last_epoch all saved"
+  },
+
+  "turn_labels_reporting_only": {
+    "heading_change_deg": 30,
+    "h10_displacement_floor_m": 1.0,
+    "max_single_step_m": 0.6
+  },
+
+  "outputs": {
+    "splits": "splits/model_x_track_split.csv",
+    "models": "models/",
+    "training_logs": "training/",
+    "evaluation": "evaluation/",
+    "plots": "plots/",
+    "report": "reports/model_x_report.md"
+  }
+}

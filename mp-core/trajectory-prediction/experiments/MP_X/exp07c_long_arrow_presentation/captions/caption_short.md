@@ -1,0 +1,1 @@
+**Motion Pixels — qualitative prediction examples.** Black = observed path, grey = ground-truth future, magenta = model prediction, on the walkable plan. The model expresses smooth, spatially-plausible curved futures (selected, architecturally-readable cases).

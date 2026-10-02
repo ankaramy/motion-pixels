@@ -1,0 +1,87 @@
+{
+  "horizon": 200,
+  "approx_distance_m": 10.0,
+  "data_availability": {
+    "horizon": 200,
+    "approx_distance_m": 10.0,
+    "need_frames": 210,
+    "tracks_total": 3534,
+    "tracks_qualifying": 1200,
+    "train_tracks": 958,
+    "val_tracks": 122,
+    "test_tracks": 120,
+    "tracks_dropped_short": 2334,
+    "per_recording_qualifying_tracks": {
+      "esplanade_espanya_01": {
+        "train": 178,
+        "val": 21,
+        "test": 30
+      },
+      "placa_catalunya_01": {
+        "train": 362,
+        "val": 43,
+        "test": 42
+      },
+      "placa_espanya_01": {
+        "train": 201,
+        "val": 30,
+        "test": 22
+      },
+      "red_bridge_combined_01": {
+        "train": 85,
+        "val": 13,
+        "test": 14
+      },
+      "stairs_montjuic_01": {
+        "train": 132,
+        "val": 15,
+        "test": 12
+      }
+    }
+  },
+  "best_epoch": 19,
+  "val_ADE": 2.496109063931544,
+  "test_windows": 55505,
+  "train_windows": 711368,
+  "val_rollout_windows": 2500,
+  "ADE": 2.5948681645687124,
+  "FDE": 5.016330087730044,
+  "ADE_median": 1.9163234834866503,
+  "FDE_median": 3.663413817122814,
+  "angular_err_mean_deg": 83.72339588128014,
+  "angular_err_median_deg": 79.29558451167,
+  "gt_len_median": 10.681619155965839,
+  "pred_len_median": 3.216815597205344,
+  "pred_len_p75": 5.92065123749937,
+  "gt_len_p75": 25.94713509456877,
+  "pred_gt_ratio_median": 0.32239730328432814,
+  "collapse_rate_pred_lt_25pct_gt": 0.43349247815512115,
+  "minutes": 8.66,
+  "per_recording": {
+    "esplanade_espanya_01": {
+      "n": 21322,
+      "ADE": 2.346,
+      "FDE": 4.4879
+    },
+    "placa_catalunya_01": {
+      "n": 16915,
+      "ADE": 1.8958,
+      "FDE": 3.8889
+    },
+    "placa_espanya_01": {
+      "n": 10710,
+      "ADE": 5.1863,
+      "FDE": 9.6694
+    },
+    "red_bridge_combined_01": {
+      "n": 1512,
+      "ADE": 1.0591,
+      "FDE": 2.3745
+    },
+    "stairs_montjuic_01": {
+      "n": 5046,
+      "ADE": 0.9496,
+      "FDE": 1.9439
+    }
+  }
+}

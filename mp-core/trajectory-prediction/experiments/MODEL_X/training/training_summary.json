@@ -1,0 +1,14 @@
+{
+  "epochs_completed": 47,
+  "best_val_ADE": 0.29449076037291133,
+  "best_val_ADE_epoch": 35,
+  "best_val_FDE": 0.4718351596522068,
+  "best_val_FDE_epoch": 35,
+  "final_train_loss": 0.5370332010199339,
+  "final_val_loss": 0.8855994103843369,
+  "train_windows": 822488,
+  "val_rollout_windows": 3000,
+  "device": "cuda",
+  "selected_checkpoint": "best_by_val_ADE.pth",
+  "minutes": 11.3
+}

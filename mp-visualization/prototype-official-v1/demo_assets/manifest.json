@@ -1,0 +1,27 @@
+﻿{
+    "dataset_id":  "placa_espanya",
+    "selected_video_filename":  null,
+    "selected_plan_filename":  null,
+    "demo_video_path":  "",
+    "demo_plan_path":  "demo_assets/raw/placa_espanya_plan_source.png",
+    "calibration_path":  "",
+    "trajectory_paths":  [
+
+                         ],
+    "behavior_paths":  [
+                           "demo_assets/behavior/placa_espanya_obstacle_overlay.png",
+                           "demo_assets/behavior/placa_espanya_obstacle_mask_v3.png",
+                           "demo_assets/behavior/placa_espanya_ground_truth_overlay_v3.png",
+                           "demo_assets/behavior/placa_espanya_encoding_overlay_light.png",
+                           "demo_assets/behavior/placa_espanya_obstacle_metrics.json",
+                           "demo_assets/behavior/placa_espanya_ground_truth_metrics.json"
+                       ],
+    "prediction_paths":  [
+
+                         ],
+    "metrics_paths":  [
+                          "demo_assets/behavior/placa_espanya_obstacle_metrics.json",
+                          "demo_assets/behavior/placa_espanya_ground_truth_metrics.json"
+                      ],
+    "source_note":  "Original thesis/source folders were read only. Matching Plaça Espanya plan/behavior assets were copied into this folder; no matching raw video, calibration, trajectory CSV, or prediction output files were found in the requested source roots."
+}

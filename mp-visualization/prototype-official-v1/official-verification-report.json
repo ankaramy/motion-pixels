@@ -1,0 +1,160 @@
+{
+  "ok": true,
+  "materialFailures": [],
+  "ignoredMediaAborts": [
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/video/tracked.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/video/tracked.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/behavior_maps_final/speed_population.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/behavior_maps_final/flow_fields.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/behavior_maps_final/bottleneck_density.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/prediction_maps/prediction_anim_placa_espanya_01_plain.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/behavior_maps_final/flow_fields.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/behavior_maps_final/bottleneck_density.mp4",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:5178/demo_assets/placa_espanya/behavior_maps_final/speed_population.mp4",
+      "failure": "net::ERR_ABORTED"
+    }
+  ],
+  "badResponses": [],
+  "consoleErrors": [],
+  "checks": [
+    {
+      "screen": "home",
+      "root": true,
+      "app": true,
+      "visibleText": "Dataset\nMethod\n\nMapping Out Spatial Intelligence\n\nStart New Study\nOpen Last Study",
+      "brokenImages": [],
+      "videos": []
+    },
+    {
+      "screen": "upload",
+      "root": true,
+      "app": true,
+      "visibleText": "Dataset\nMethod\n01\nDetection\nYOLOv8\n02\nTracking\nByteTrack\n03\nCalibration\nHomography\n04\nSpatial Encoding\nContext\n05\nMetrics\nSpeed + Flow\n06\nDataset\nTrajectories\n07\nPrediction\nNext pass\n08\nStudio\nPair Movement With Space\n\nChoose footage and a ",
+      "brokenImages": [],
+      "videos": []
+    },
+    {
+      "screen": "calibrate",
+      "root": true,
+      "app": true,
+      "visibleText": "Dataset\nMethod\n01\nDetection\nYOLOv8\n02\nTracking\nByteTrack\n03\nCalibration\nHomography\n04\nSpatial Encoding\nContext\n05\nMetrics\nSpeed + Flow\n06\nDataset\nTrajectories\n07\nPrediction\nNext pass\n08\nStudio\nCalibrate Correspondence Points\nPlaca Espanya d",
+      "brokenImages": [],
+      "videos": [
+        {
+          "src": "demo_assets/placa_espanya/video/tracked.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1080,
+          "layer": ""
+        }
+      ]
+    },
+    {
+      "screen": "encode",
+      "root": true,
+      "app": true,
+      "visibleText": "Dataset\nMethod\n01\nDetection\nYOLOv8\n02\nTracking\nByteTrack\n03\nCalibration\nHomography\n04\nSpatial Encoding\nContext\n05\nMetrics\nSpeed + Flow\n06\nDataset\nTrajectories\n07\nPrediction\nNext pass\n08\nStudio\nEncoding Spatial Context\nPlaca Espanya dataset\n",
+      "brokenImages": [],
+      "videos": []
+    },
+    {
+      "screen": "process",
+      "root": true,
+      "app": true,
+      "visibleText": "Dataset\nMethod\n01\nDetection\nYOLOv8\n02\nTracking\nByteTrack\n03\nCalibration\nHomography\n04\nSpatial Encoding\nContext\n05\nMetrics\nSpeed + Flow\n06\nDataset\nTrajectories\n07\nPrediction\nNext pass\n08\nStudio\nRunning Pipeline\nPlaca Espanya dataset\nBehavior",
+      "brokenImages": [],
+      "videos": [
+        {
+          "src": "demo_assets/placa_espanya/behavior_maps_final/speed_population.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1150,
+          "layer": ""
+        },
+        {
+          "src": "demo_assets/placa_espanya/behavior_maps_final/flow_fields.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1150,
+          "layer": ""
+        },
+        {
+          "src": "demo_assets/placa_espanya/behavior_maps_final/bottleneck_density.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1150,
+          "layer": ""
+        },
+        {
+          "src": "demo_assets/placa_espanya/prediction_maps/prediction_anim_placa_espanya_01_plain.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 960,
+          "layer": ""
+        }
+      ]
+    },
+    {
+      "screen": "workspace",
+      "root": true,
+      "app": true,
+      "visibleText": "Dataset\nMethod\n01\nDetection\nYOLOv8\n02\nTracking\nByteTrack\n03\nCalibration\nHomography\n04\nSpatial Encoding\nContext\n05\nMetrics\nSpeed + Flow\n06\nDataset\nTrajectories\n07\nPrediction\nNext pass\n08\nStudio\nSTUDIO\nSpeed\nlow speed\nhigh speed\nFlow Fields\nl",
+      "brokenImages": [],
+      "videos": [
+        {
+          "src": "demo_assets/placa_espanya/behavior_maps_final/speed_population.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1150,
+          "layer": "speed"
+        },
+        {
+          "src": "demo_assets/placa_espanya/behavior_maps_final/flow_fields.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1150,
+          "layer": "flow"
+        },
+        {
+          "src": "demo_assets/placa_espanya/behavior_maps_final/bottleneck_density.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 1150,
+          "layer": "bottlenecks"
+        },
+        {
+          "src": "demo_assets/placa_espanya/prediction_maps/prediction_anim_placa_espanya_01_plain.mp4",
+          "readyState": 4,
+          "videoWidth": 1920,
+          "videoHeight": 960,
+          "layer": "predictions"
+        }
+      ]
+    }
+  ]
+}

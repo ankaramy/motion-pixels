@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reset Motion Pixels Demo</title>
+</head>
+<body>
+<script>
+try { window.localStorage.clear(); } catch (err) {}
+try { window.sessionStorage.clear(); } catch (err) {}
+window.location.replace('./index.html?reset=1');
+</script>
+<noscript>
+  <p>JavaScript is required to reset the demo state. Open <a href="./index.html?reset=1">index.html?reset=1</a>.</p>
+</noscript>
+</body>
+</html>
